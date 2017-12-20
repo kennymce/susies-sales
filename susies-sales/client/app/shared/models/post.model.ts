@@ -1,4 +1,4 @@
-export class Cat {
+export class Post {
   _id?: string;
   name?: string;
   weight?: number;

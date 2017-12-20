@@ -3,7 +3,7 @@ import * as chaiHttp from 'chai-http';
 
 process.env.NODE_ENV = 'test';
 import { app } from '../app';
-import Cat from '../models/cat';
+import Cat from '../models/post';
 
 const should = chai.use(chaiHttp).should();
 
@@ -15,11 +15,11 @@ describe('Cats', () => {
     });
   });
 
-  describe('Backend tests for cats', () => {
+  describe('Backend tests for Posts', () => {
 
-    it('should get all the cats', done => {
+    it('should get all the Posts', done => {
       chai.request(app)
-        .get('/api/cats')
+        .get('/api/Posts')
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('array');
@@ -28,9 +28,9 @@ describe('Cats', () => {
         });
     });
 
-    it('should get cats count', done => {
+    it('should get Posts count', done => {
       chai.request(app)
-        .get('/api/cats/count')
+        .get('/api/Posts/count')
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('number');
@@ -39,10 +39,10 @@ describe('Cats', () => {
         });
     });
 
-    it('should create new cat', done => {
+    it('should create new post', done => {
       const cat = new Cat({ name: 'Fluffy', weight: 4, age: 2 });
       chai.request(app)
-        .post('/api/cat')
+        .post('/api/post')
         .send(cat)
         .end((err, res) => {
           res.should.have.status(200);
@@ -54,7 +54,7 @@ describe('Cats', () => {
         });
     });
 
-    it('should get a cat by its id', done => {
+    it('should get a post by its id', done => {
       const cat = new Cat({ name: 'Cat', weight: 2, age: 4 });
       cat.save((error, newCat) => {
         chai.request(app)
@@ -71,7 +71,7 @@ describe('Cats', () => {
       });
     });
 
-    it('should update a cat by its id', done => {
+    it('should update a post by its id', done => {
       const cat = new Cat({ name: 'Cat', weight: 2, age: 4 });
       cat.save((error, newCat) => {
         chai.request(app)
@@ -84,7 +84,7 @@ describe('Cats', () => {
       });
     });
 
-    it('should delete a cat by its id', done => {
+    it('should delete a post by its id', done => {
       const cat = new Cat({ name: 'Cat', weight: 2, age: 4 });
       cat.save((error, newCat) => {
         chai.request(app)
