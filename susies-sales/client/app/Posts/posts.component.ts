@@ -18,9 +18,11 @@ export class PostsComponent implements OnInit {
   isEditing = false;
 
   addPostForm: FormGroup;
-  name = new FormControl('', Validators.required);
-  age = new FormControl('', Validators.required);
-  weight = new FormControl('', Validators.required);
+  description = new FormControl('', Validators.required);
+  from = new FormControl('', Validators.required);
+  size = new FormControl('', Validators.required);
+  price = new FormControl('', Validators.required);
+  photo = new FormControl('', Validators.required);
 
   constructor(private postService: PostService,
               private formBuilder: FormBuilder,
@@ -29,9 +31,11 @@ export class PostsComponent implements OnInit {
   ngOnInit() {
     this.getPosts();
     this.addPostForm = this.formBuilder.group({
-      name: this.name,
-      age: this.age,
-      weight: this.weight
+      description: this.description,
+      from: this.from,
+      size: this.size,
+      price: this.price,
+      photo: this.photo
     });
   }
 
@@ -48,7 +52,7 @@ export class PostsComponent implements OnInit {
       res => {
         this.posts.push(res);
         this.addPostForm.reset();
-        this.toast.setMessage('item added successfully.', 'success');
+        this.toast.setMessage('post added successfully.', 'success');
       },
       error => console.log(error)
     );

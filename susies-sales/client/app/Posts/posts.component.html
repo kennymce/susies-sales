@@ -8,9 +8,11 @@
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
         <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Weight</th>
+          <th>Description</th>
+          <th>From</th>
+          <th>Size</th>
+          <th>Price</th>
+          <th>Photo</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -21,9 +23,11 @@
       </tbody>
       <tbody *ngIf="!isEditing">
         <tr *ngFor="let post of posts">
-          <td>{{post.name}}</td>
-          <td>{{post.age}}</td>
-          <td>{{post.weight}}</td>
+          <td>{{post.description}}</td>
+          <td>{{post.from}}</td>
+          <td>{{post.size}}</td>
+          <td>{{post.price}}</td>
+          <td>{{post.photo}}</td>
           <td>
             <button class="btn btn-sm btn-warning" (click)="enableEditing(post)"><i class="fa fa-pencil"></i> Edit</button>
             <button class="btn btn-sm btn-danger" (click)="deletePost(post)"><i class="fa fa-trash"></i> Delete</button>
@@ -35,13 +39,19 @@
           <td colspan="4">
             <form class="form-inline" #form="ngForm" (ngSubmit)="editPost(post)" style="display:inline">
               <div class="form-group">
-                <input class="form-control" type="text" name="name" [(ngModel)]="post.name" placeholder="Name" required>
+                <input class="form-control" type="text" name="description" [(ngModel)]="post.description" placeholder="Description" required>
               </div>
               <div class="form-group">
-                <input class="form-control" type="number" name="age" [(ngModel)]="post.age" placeholder="Age" min="0" required>
+                <input class="form-control" type="text" name="from" [(ngModel)]="post.from" placeholder="From" required>
               </div>
               <div class="form-group">
-                <input class="form-control" type="number" name="weight" [(ngModel)]="post.weight" placeholder="Weight" step="any" min="0" required>
+                <input class="form-control" type="number" name="size" [(ngModel)]="post.size" placeholder="Size" step="any" min="0" required>
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="number" name="price" [(ngModel)]="post.price" placeholder="Price" step="any" min="0" required>
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="photo" [(ngModel)]="post.photo" placeholder="Photo" required>
               </div>
               <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
             </form>
@@ -58,13 +68,19 @@
   <div class="card-block">
     <form class="form-inline" [formGroup]="addPostForm" (ngSubmit)="addPost()" style="text-align:center">
       <div class="form-group">
-        <input class="form-control" type="text" name="name" formControlName="name" placeholder="Name">
+        <input class="form-control" type="text" name="description" formControlName='description' placeholder="Description">
       </div>
       <div class="form-group">
-        <input class="form-control" type="number" name="age" formControlName="age" placeholder="Age" min="0">
+        <input class="form-control" type="text" name="from" formControlName='from' placeholder="From">
       </div>
       <div class="form-group">
-        <input class="form-control" type="number" name="weight" formControlName="weight" placeholder="Weight" step="any" min="0">
+        <input class="form-control" type="number" name="size" formControlName='size' placeholder="Size" step="any" min="0">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="number" name="price" formControlName='price' placeholder="Price" step="any" min="0">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="photo" formControlName='photo' placeholder="Photo" min="0">
       </div>
       <button class="btn btn-primary" type="submit" [disabled]="!addPostForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
     </form>
