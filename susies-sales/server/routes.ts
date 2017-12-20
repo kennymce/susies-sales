@@ -1,8 +1,8 @@
 import * as express from 'express';
 
-import CatCtrl from './controllers/cat';
+import CatCtrl from './controllers/post';
 import UserCtrl from './controllers/user';
-import Cat from './models/cat';
+import Cat from './models/post';
 import User from './models/user';
 
 export default function setRoutes(app) {
@@ -13,12 +13,12 @@ export default function setRoutes(app) {
   const userCtrl = new UserCtrl();
 
   // Cats
-  router.route('/cats').get(catCtrl.getAll);
-  router.route('/cats/count').get(catCtrl.count);
-  router.route('/cat').post(catCtrl.insert);
-  router.route('/cat/:id').get(catCtrl.get);
-  router.route('/cat/:id').put(catCtrl.update);
-  router.route('/cat/:id').delete(catCtrl.delete);
+  router.route('/Posts').get(catCtrl.getAll);
+  router.route('/Posts/count').get(catCtrl.count);
+  router.route('/post').post(catCtrl.insert);
+  router.route('/post/:id').get(catCtrl.get);
+  router.route('/post/:id').put(catCtrl.update);
+  router.route('/post/:id').delete(catCtrl.delete);
 
   // Users
   router.route('/login').post(userCtrl.login);

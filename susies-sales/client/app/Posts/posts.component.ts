@@ -1,89 +1,89 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { CatService } from '../services/cat.service';
+import { PostService } from '../services/post.service';
 import { ToastComponent } from '../shared/toast/toast.component';
-import { Cat } from '../shared/models/cat.model';
+import { Post } from '../shared/models/post.model';
 
 @Component({
-  selector: 'app-cats',
-  templateUrl: './cats.component.html',
-  styleUrls: ['./cats.component.css']
+  selector: 'app-posts',
+  templateUrl: './posts.component.html',
+  styleUrls: ['./posts.component.css']
 })
-export class CatsComponent implements OnInit {
+export class PostsComponent implements OnInit {
 
-  cat = new Cat();
-  cats: Cat[] = [];
+  post = new Post();
+  posts: Post[] = [];
   isLoading = true;
   isEditing = false;
 
-  addCatForm: FormGroup;
+  addPostForm: FormGroup;
   name = new FormControl('', Validators.required);
   age = new FormControl('', Validators.required);
   weight = new FormControl('', Validators.required);
 
-  constructor(private catService: CatService,
+  constructor(private postService: PostService,
               private formBuilder: FormBuilder,
               public toast: ToastComponent) { }
 
   ngOnInit() {
-    this.getCats();
-    this.addCatForm = this.formBuilder.group({
+    this.getPosts();
+    this.addPostForm = this.formBuilder.group({
       name: this.name,
       age: this.age,
       weight: this.weight
     });
   }
 
-  getCats() {
-    this.catService.getCats().subscribe(
-      data => this.cats = data,
+  getPosts() {
+    this.postService.getPosts().subscribe(
+      data => this.posts = data,
       error => console.log(error),
       () => this.isLoading = false
     );
   }
 
-  addCat() {
-    this.catService.addCat(this.addCatForm.value).subscribe(
+  addPost() {
+    this.postService.addPosts(this.addPostForm.value).subscribe(
       res => {
-        this.cats.push(res);
-        this.addCatForm.reset();
+        this.posts.push(res);
+        this.addPostForm.reset();
         this.toast.setMessage('item added successfully.', 'success');
       },
       error => console.log(error)
     );
   }
 
-  enableEditing(cat: Cat) {
+  enableEditing(post: Post) {
     this.isEditing = true;
-    this.cat = cat;
+    this.post = post;
   }
 
   cancelEditing() {
     this.isEditing = false;
-    this.cat = new Cat();
+    this.post = new Post();
     this.toast.setMessage('item editing cancelled.', 'warning');
-    // reload the cats to reset the editing
-    this.getCats();
+    // reload the Posts to reset the editing
+    this.getPosts();
   }
 
-  editCat(cat: Cat) {
-    this.catService.editCat(cat).subscribe(
+  editPost(post: Post) {
+    this.postService.editPost(post).subscribe(
       () => {
         this.isEditing = false;
-        this.cat = cat;
+        this.post = post;
         this.toast.setMessage('item edited successfully.', 'success');
       },
       error => console.log(error)
     );
   }
 
-  deleteCat(cat: Cat) {
+  deletePost(post: Post) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
-      this.catService.deleteCat(cat).subscribe(
+      this.postService.deletePost(post).subscribe(
         () => {
-          const pos = this.cats.map(elem => elem._id).indexOf(cat._id);
-          this.cats.splice(pos, 1);
+          const pos = this.posts.map(elem => elem._id).indexOf(post._id);
+          this.posts.splice(pos, 1);
           this.toast.setMessage('item deleted successfully.', 'success');
         },
         error => console.log(error)
