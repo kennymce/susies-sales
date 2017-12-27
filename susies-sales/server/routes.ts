@@ -26,7 +26,7 @@ export default function setRoutes(app) {
   });
   const upload = multer({ // multer settings
     storage: storage
-  }).single('file');
+  }).array('file');
 
   /** API path that will upload the files */
   router.route('/pictures')

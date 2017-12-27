@@ -54,7 +54,7 @@
                 <input class="form-control" type="text" name="photo" [(ngModel)]="post.photo" placeholder="Photo" required>
               </div>
               <div class='form-group'>
-                <input  class="btn btn-sm btn-warning" type="file" id="file" (change)="handleFileInput($event.target.files)" multiple>
+                <input  class="btn btn-sm btn-warning" type="file" name='file' id="file" (change)="handleFileInput($event.target.files)" multiple>
               </div>
               <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o" ></i> Save</button>
             </form>

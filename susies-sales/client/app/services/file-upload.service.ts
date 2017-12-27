@@ -7,12 +7,15 @@ export class FileUploadService {
 
   constructor( private http: HttpClient) {  }
 
-  postFile(fileToUpload: File): Observable<boolean> {
-    const endpoint = 'http://localhost:3000/api/pictures';
+  postFiles(filesToUpload: FileList): Observable<boolean> {
+    const endpoint = 'http://localhost:3000/api/pictures'; // TODO make this a parameter
     const formData: FormData = new FormData();
-    formData.append('file', fileToUpload, fileToUpload.name);
+
+    for (let i = 0; i < filesToUpload.length; i++) {
+      formData.append('file', filesToUpload[i], filesToUpload[i]['name']);
+    }
     return this.http
-      .post(endpoint, formData, { headers: {'file': fileToUpload.name }})
+      .post(endpoint, formData)
       .map(() =>  true );
   }
 }

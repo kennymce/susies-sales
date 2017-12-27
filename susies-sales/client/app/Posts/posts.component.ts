@@ -7,7 +7,6 @@ import { Post } from '../shared/models/post.model';
 import { CurrencyPipe} from '@angular/common';
 import {FileUploadService} from '../services/file-upload.service';
 
-
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
@@ -33,15 +32,14 @@ export class PostsComponent implements OnInit {
               private formBuilder: FormBuilder,
               public toast: ToastComponent) { }
 
-  fileToUpload: File = null;
+  filesToUpload: FileList;
 
   handleFileInput(files: FileList) {
-    this.fileToUpload = files.item(0);
-    this.uploadFileToActivity();
+     this.filesToUpload = files;
+    this.uploadFilesToAPI();
   }
-
-  uploadFileToActivity() {
-    this.fileUploadService.postFile(this.fileToUpload).subscribe(data => {
+  uploadFilesToAPI() {
+    this.fileUploadService.postFiles(this.filesToUpload).subscribe(data => {
       // do something, if upload success
     }, error => {
       console.log(error);
