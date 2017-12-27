@@ -16,6 +16,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { AccountComponent } from './account/account.component';
 import { AdminComponent } from './admin/admin.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     AuthGuardLogin,
     AuthGuardAdmin,
     PostService,
-    UserService
+    UserService,
+    HttpClientModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

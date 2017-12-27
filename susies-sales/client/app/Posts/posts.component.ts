@@ -4,11 +4,15 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { PostService } from '../services/post.service';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { Post } from '../shared/models/post.model';
+import { CurrencyPipe} from '@angular/common';
+import {FileUploadService} from '../services/file-upload.service';
+
 
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
-  styleUrls: ['./posts.component.css']
+  styleUrls: ['./posts.component.css'],
+  providers: [CurrencyPipe, FileUploadService]
 })
 export class PostsComponent implements OnInit {
 
@@ -25,8 +29,28 @@ export class PostsComponent implements OnInit {
   photo = new FormControl('', Validators.required);
 
   constructor(private postService: PostService,
+              private fileUploadService: FileUploadService,
               private formBuilder: FormBuilder,
               public toast: ToastComponent) { }
+
+  fileToUpload: File = null;
+
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
+    this.uploadFileToActivity();
+  }
+
+  uploadFileToActivity() {
+    this.fileUploadService.postFile(this.fileToUpload).subscribe(data => {
+      // do something, if upload success
+    }, error => {
+      console.log(error);
+    });
+  }
+//  transformCurrency(number) {
+//    this.currencyPipe.transform(number, 'GBP');
+//  }
+// TODO Currency Pipe https://stackoverflow.com/questions/42254077/angular-2-date-pipe-inside-a-formcontrol-input
 
   ngOnInit() {
     this.getPosts();
