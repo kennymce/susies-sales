@@ -29,14 +29,14 @@
           <td>{{post.price}}</td>
           <td>{{post.photo}}</td>
           <td>
-            <button class="btn btn-sm btn-warning" (click)="enableEditing(post)"><i class="fa fa-pencil"></i> Edit</button>
+            <button class="btn btn-sm btn-warning" (click)="goEditPost(post._id)"><i class="fa fa-pencil"></i> Edit</button>
             <button class="btn btn-sm btn-danger" (click)="deletePost(post)"><i class="fa fa-trash"></i> Delete</button>
           </td>
         </tr>
       </tbody>
-      <tbody *ngIf="isEditing">
-        <tr>
-          <td colspan="4">
+    </table>
+      <Div *ngIf="isEditing">
+        <fieldset>
             <form class="form-inline" #form="ngForm" (ngSubmit)="editPost(post)" style="display:inline">
               <div class="form-group">
                 <input class="form-control" type="text" name="description" [(ngModel)]="post.description" placeholder="Description" required>
@@ -59,10 +59,9 @@
               <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o" ></i> Save</button>
             </form>
             <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        </fieldset>
+      </Div>
+
   </div>
 </div>
 

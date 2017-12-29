@@ -1,0 +1,8 @@
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Edit Post</h4>
+  <app-post [postId]=''></app-post>
+</div>

@@ -1,6 +1,7 @@
 export class Post {
   _id?: string;
-  name?: string;
-  weight?: number;
-  age?: number;
+  description?: string;
+  from?: string;
+  size?: number;
+  price?: number;
 }

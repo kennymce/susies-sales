@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { Router } from '@angular/router';
 import { PostService } from '../services/post.service';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { Post } from '../shared/models/post.model';
-import { CurrencyPipe} from '@angular/common';
-import {FileUploadService} from '../services/file-upload.service';
+import { CurrencyPipe } from '@angular/common';
+import { FileUploadService } from '../services/file-upload.service';
 
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.css'],
-  providers: [CurrencyPipe, FileUploadService]
+  providers: [CurrencyPipe, FileUploadService] // TODO FileUploadService should be globally available so it can be a singleton
 })
 export class PostsComponent implements OnInit {
 
@@ -30,7 +30,8 @@ export class PostsComponent implements OnInit {
   constructor(private postService: PostService,
               private fileUploadService: FileUploadService,
               private formBuilder: FormBuilder,
-              public toast: ToastComponent) { }
+              public toast: ToastComponent,
+              private router: Router) { }
 
   filesToUpload: FileList;
 
@@ -83,6 +84,11 @@ export class PostsComponent implements OnInit {
   enableEditing(post: Post) {
     this.isEditing = true;
     this.post = post;
+  }
+
+  goEditPost(_id: string) {
+    alert('post._id = ' + _id);
+    this.router.navigate(['posts/edit-post'], {queryParams : {postId: _id} });
   }
 
   cancelEditing() {

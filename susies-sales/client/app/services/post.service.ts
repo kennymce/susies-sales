@@ -21,8 +21,8 @@ export class PostService {
     return this.http.post<Post>('/api/post', post);
   }
 
-  getPost(post: Post): Observable<Post> {
-    return this.http.get<Post>(`/api/post/${post._id}`);
+  getPost(id: string): Observable<Post> {
+    return this.http.get<Post>(`/api/post/${id}`);
   }
 
   editPost(post: Post): Observable<string> {
