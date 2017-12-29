@@ -20,7 +20,7 @@ export class PostService {
   addPosts(post: Post): Observable<Post> {
     return this.http.post<Post>('/api/post', post);
   }
-
+// https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
   getPost(id: string): Observable<Post> {
     return this.http.get<Post>(`/api/post/${id}`);
   }

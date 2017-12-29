@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { Router } from '@angular/router';
+import { Post } from '../shared/models/post.model';
 
 @Component({
   selector: 'app-post',
@@ -7,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
-  @Input() postId: string;
+  @Input() post: Post;
   postUpdated = false;
   @Output() postWasUpdated: EventEmitter<boolean> = new EventEmitter<boolean>();
 

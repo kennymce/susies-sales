@@ -4,5 +4,5 @@
 
 <div class="card" *ngIf="!isLoading">
   <h4 class="card-header">Edit Post</h4>
-  <app-post [postId]=''></app-post>
+  <app-post [post]='postToBeEdited$'></app-post>
 </div>
