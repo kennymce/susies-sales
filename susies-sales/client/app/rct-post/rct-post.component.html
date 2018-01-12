@@ -1,3 +1,5 @@
+<app-loading [condition]="isLoading"></app-loading>
+<app-toast [message]="toast.message"></app-toast>
 <div class="card">
   <div class="card-block">
 
@@ -64,7 +66,8 @@
               <input id="filebutton"
                      name="filebutton"
                      class="input-file"
-                     type="file">
+                     type="file"
+                     (change)="handleFileInput($event.target.files)" multiple>
             </div>
           </div>
 

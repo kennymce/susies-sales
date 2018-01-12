@@ -3,13 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/do';
 
 import { Post } from '../shared/models/post.model';
 import { IPost } from '../Posts/post';
-import {test_post} from '../Posts/test_post';
 
 
 @Injectable()
@@ -30,6 +28,7 @@ export class PostService {
   addPosts(post: Post): Observable<Post> {
     return this.http.post<Post>('/api/post', post);
   }
+
   getPost(id: string): Observable<Post> {
     return this.http.get<Post>(`/api/post/${id}`);
   }
@@ -39,9 +38,7 @@ export class PostService {
     return this.http
       .get(url)
       .map(response => {
-        //alert('returning response...');
         this.thePost = <IPost>response;
-        //alert('description from the service: ' + this.thePost.description);
         return <IPost>response;
       })
       .do(post => console.log('getting product from service: '+ JSON.stringify(this.thePost)))
@@ -49,7 +46,7 @@ export class PostService {
   }
 
   savePost(post: IPost): Observable<IPost> {
-    //logic to save a new post goes in here but updating only for now
+    // TODO logic to save a new post goes in here but updating only for now
     return this.updatePost(post);
   }
 

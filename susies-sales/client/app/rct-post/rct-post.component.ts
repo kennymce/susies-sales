@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { IPost } from '../Posts/post';
-import {Post} from '../shared/models/post.model';
-import {PostService} from '../services/post.service';
+import { Post} from '../shared/models/post.model';
+import { PostService} from '../services/post.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute} from '@angular/router';
 import { Router } from '@angular/router';
+import { ToastComponent } from '../shared/toast/toast.component';
+import { FileUploadService } from '../services/file-upload.service';
+
 
 @Component({
   selector: 'app-rct-post',
   templateUrl: './rct-post.component.html',
-  styleUrls: ['./rct-post.component.css']
+  styleUrls: ['./rct-post.component.css'],
+  providers: [FileUploadService]
 })
 export class RctPostComponent implements OnInit {
   postForm: FormGroup;
@@ -19,11 +23,14 @@ export class RctPostComponent implements OnInit {
   postId: string;
   pageTitle: string;
   errorMessage: string;
+  filesToUpload: FileList;
 
   constructor(private fb: FormBuilder,
               private postService: PostService,
               private _route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              public toast: ToastComponent,
+              private fileUploadService: FileUploadService) { }
 
   ngOnInit(): void {
 
@@ -94,7 +101,24 @@ export class RctPostComponent implements OnInit {
     console.log('in onSaveComplete() method');
     // Reset the form to clear the flags
     this.postForm.reset();
+    this.toast.setMessage('Post added successfully.', 'success');
     this.router.navigate(['../posts/posts']);
+  }
+
+  handleFileInput(files: FileList) {
+    this.filesToUpload = files;
+    this.uploadFilesToAPI();
+    // TODO tie the uploaded files to the correct record
+    // TODO deal with duplicate filenames: currently the upload fails silently
+    // TODO list the associated files in the form, including when the post loads in edit mode
+  }
+  uploadFilesToAPI() {
+    this.fileUploadService.postFiles(this.filesToUpload).subscribe(data => {
+      // do something, if upload success
+      this.toast.setMessage('Files uploaded successfully.', 'success');
+    }, error => {
+      console.log(error);
+    });
   }
 }
 

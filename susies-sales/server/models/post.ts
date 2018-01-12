@@ -6,7 +6,9 @@ const postSchema = new mongoose.Schema({
   from: String,
   size: Number,
   price: Number,
-  photo: String
+  photo: [{
+    type: String
+  }]
 });
 
 const Post = mongoose.model('Post', postSchema);
