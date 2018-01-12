@@ -19,6 +19,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EditPostComponent } from './Posts/edit-post.component';
 import { PostComponent } from './shared/post.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RctPostComponent } from './rct-post/rct-post.component';
 
 @NgModule({
   declarations: [
@@ -32,11 +34,13 @@ import { PostComponent } from './shared/post.component';
     AdminComponent,
     NotFoundComponent,
     EditPostComponent,
-    PostComponent
+    PostComponent,
+    RctPostComponent
   ],
   imports: [
     RoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   providers: [
     AuthService,

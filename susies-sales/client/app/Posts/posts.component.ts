@@ -87,8 +87,7 @@ export class PostsComponent implements OnInit {
   }
 
   goEditPost(_id: string) {
-    alert('post._id = ' + _id);
-    this.router.navigate(['posts/edit-post'], {queryParams : {postId: _id} });
+    this.router.navigate(['rct-post/rct-post'], {queryParams : {postId: _id} });
   }
 
   cancelEditing() {

@@ -2,7 +2,8 @@
 
 <app-toast [message]="toast.message"></app-toast>
 
-<div class="card" *ngIf="!isLoading">
+<div class="card" *ngIf="!isLoading && _postResult">
   <h4 class="card-header">Edit Post</h4>
-  <app-post [post]='postToBeEdited$'></app-post>
+  <!--<div class="card-blockquote">Post description:  {{typeof _postResult}}</div>-->
+  <app-post [post]='_postResult | async'></app-post>
 </div>
