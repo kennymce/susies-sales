@@ -4,4 +4,5 @@ export interface IPost {
   from: string;
   size: number;
   price: number;
+  photos: string[];
 }

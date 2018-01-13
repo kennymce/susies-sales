@@ -6,7 +6,7 @@ const postSchema = new mongoose.Schema({
   from: String,
   size: Number,
   price: Number,
-  photo: [{
+  photos: [{
     type: String
   }]
 });

@@ -5,4 +5,5 @@ export class Post {
   from?: string;
   size?: number;
   price?: number;
+  photos?: string[];
 }

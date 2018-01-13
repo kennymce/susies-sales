@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
+import {EmptyObservable} from 'rxjs/observable/EmptyObservable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/do';
@@ -46,17 +47,18 @@ export class PostService {
   }
 
   savePost(post: IPost): Observable<IPost> {
-    // TODO logic to save a new post goes in here but updating only for now
+    // TODO logic to save a new post also goes in here
     return this.updatePost(post);
   }
 
   private updatePost(post: Post) {
     console.log('in updatePost method in service');
+    console.log('post.photos is...' + post.photos);
     let url = `/api/post/${post.postId}`;
     return this.http.put(url, post, {headers: {'Content-Type':'application/json'}})
       .map(() => post)
       .do(post => console.log('updatingPost, in updatePost: ' + JSON.stringify(post)))
-      .catch(PostService.handleError);
+      .catch(this.handleAngularJsonBug);
   }
 
   static handleError (error: Response | any) {
@@ -70,5 +72,19 @@ export class PostService {
 
   deletePost(post: Post): Observable<string> {
     return this.http.delete(`/api/post/${post._id}`, { responseType: 'text' });
+  }
+
+  private handleAngularJsonBug (error: HttpErrorResponse) {
+    // TODO remove when this issue is fixed: https://github.com/angular/angular/issues/18396
+    const JsonParseError = 'Http failure during parsing for';
+    const matches = error.message.match(new RegExp(JsonParseError, 'ig'));
+
+    if (error.status === 200 && matches.length === 1) {
+      // return obs that completes;
+      return new EmptyObservable();
+    } else {
+      console.log('re-throwing ');
+      return Observable.throw(error);		// re-throw
+    }
   }
 }

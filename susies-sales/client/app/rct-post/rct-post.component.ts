@@ -24,6 +24,8 @@ export class RctPostComponent implements OnInit {
   pageTitle: string;
   errorMessage: string;
   filesToUpload: FileList;
+  photoHTML: string;
+  numberOfFiles: number;
 
   constructor(private fb: FormBuilder,
               private postService: PostService,
@@ -39,7 +41,8 @@ export class RctPostComponent implements OnInit {
       description: '',
       price: '',
       from: '',
-      size: ''
+      size: '',
+      photos: ''
     });
     this.initPostIdFromRouteParam();
     this.getPost();
@@ -66,6 +69,7 @@ export class RctPostComponent implements OnInit {
       this.postForm.reset();
     }
     this.post = post;
+    this.numberOfFiles = post.photos.length;
 
     if (!this.post){
       this.pageTitle = 'Create New Post';
@@ -78,13 +82,14 @@ export class RctPostComponent implements OnInit {
       description: this.post.description,
       price: this.post.price,
       from: this.post.from,
-      size: this.post.size
-    })
+      size: this.post.size,
+      photos: this.post.photos
+    });
+    this.photoHTML = (this.renderPhotos(this.post.photos));
   }
 
   save() {
     if (this.postForm.dirty && this.postForm.valid) {
-      console.log('in save() method: postId = ' + this.post.postId);
       // Copy the form values over the post object values
       let p = Object.assign({}, this.post, this.postForm.value);
       this.postService.savePost(p)
@@ -93,12 +98,9 @@ export class RctPostComponent implements OnInit {
           (error: any) => this.errorMessage = <any>error
         );
     }
-    console.log(this.postForm);
-    console.log('Saved: ' + JSON.stringify(this.postForm.value));
   }
 
   onSaveComplete(): void {
-    console.log('in onSaveComplete() method');
     // Reset the form to clear the flags
     this.postForm.reset();
     this.toast.setMessage('Post added successfully.', 'success');
@@ -107,18 +109,46 @@ export class RctPostComponent implements OnInit {
 
   handleFileInput(files: FileList) {
     this.filesToUpload = files;
-    this.uploadFilesToAPI();
+    try {
+      this.uploadFilesToAPI();
+      this.post.photos = Array.from(this.filesToUpload, x => x.name);
+    } catch(error) {
+      this.handleError(error);
+    }
     // TODO tie the uploaded files to the correct record
     // TODO deal with duplicate filenames: currently the upload fails silently
     // TODO list the associated files in the form, including when the post loads in edit mode
+    // TODO make the toaster work for errors
   }
   uploadFilesToAPI() {
     this.fileUploadService.postFiles(this.filesToUpload).subscribe(data => {
       // do something, if upload success
       this.toast.setMessage('Files uploaded successfully.', 'success');
+      this.photoHTML = (this.renderPhotos(this.post.photos));
+      this.postForm.patchValue({photos: this.post.photos})
     }, error => {
       console.log(error);
     });
   }
-}
 
+  cancel() {
+    // TODO implement cancel()
+  }
+  renderPhotos(inputArray: string[]): string {
+    // add the opening and closing UL tags and sandwich the items inbetween
+    let outputString: string = '<UL>';
+    for (let photo of inputArray) {
+      outputString +=(this.renderListItem(photo));
+    }
+    outputString.concat('</UL>');
+    return outputString;
+  }
+
+  renderListItem(photo): string {
+    return (`<li>${photo}</li>`);
+  }
+
+  handleError(error): void {
+    this.toast.setMessage(`Dammit - error: ${error.toString()}`, 'error');
+  }
+}

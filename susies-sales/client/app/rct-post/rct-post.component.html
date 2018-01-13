@@ -56,6 +56,11 @@
                      value=""
                      formControlName="price">
 
+              <!-- Invisible input for photos -->
+              <input id="photos"
+                     type="hidden"
+                     formControlName="photos">
+
             </div>
           </div>
 
@@ -70,22 +75,44 @@
                      (change)="handleFileInput($event.target.files)" multiple>
             </div>
           </div>
+        </fieldset>
 
-          <div align='center'>
-            <div class="btn-group row" role="group" aria-label="Basic example">
-              <button type="button"
-                      class="btn btn-primary"
-                      (click)='save()'
-                      [disabled]="!postForm.valid">Save
-              </button>
-              <button type="button"
-                      class="btn btn-secondary"
-                      (click)='applyCancel()'>Cancel
-              </button>
+        <!-- File List -->
+        <div align="center" style="align-content: left">
+          <div id="accordion" role="tablist">
+            <div class="card" style="width: 50%">
+              <div class="card-header" role="tab" id="headingOne">
+                <h5 class="mb-0" align="left">
+                  Photos ({{numberOfFiles}})
+                </h5>
+              </div>
+
+              <div class="card-body" [innerHTML]="photoHTML" align="left">
+
+              </div>
             </div>
           </div>
-        </fieldset>
+        </div>
       </form>
+    </div>
+  </div>
+  <!--Save & Cancel Buttons -->
+  <div class="card-footer" align="center">
+    <div class="btn-group row" role="group" aria-label="Basic example">
+      <button type="button"
+              class="btn btn-secondary"
+              (click)='preview()'
+              [disabled]="!postForm.valid">Preview
+      </button>
+      <button type="button"
+              class="btn btn-primary"
+              (click)='save()'
+              [disabled]="!postForm.valid">Save
+      </button>
+      <button type="button"
+              class="btn btn-secondary"
+              (click)='cancel()'>Cancel
+      </button>
     </div>
   </div>
 </div>
