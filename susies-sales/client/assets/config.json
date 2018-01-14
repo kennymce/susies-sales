@@ -1,0 +1,5 @@
+{
+  "imagesDirectory": "http://localhost:3000/uploaded_/",
+  "applicationVersion": "1.0.0"
+}
+// TODO add global config: https://medium.com/@hasan.hameed/reading-configuration-files-in-angular-2-9d18b7a6aa4

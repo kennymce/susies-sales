@@ -7,34 +7,39 @@
   <div class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
-        <tr>
-          <th>Description</th>
-          <th>From</th>
-          <th>Size</th>
-          <th>Price</th>
-          <th>Photo</th>
-          <th>Actions</th>
-        </tr>
+      <tr>
+        <th>Description</th>
+        <th>From</th>
+        <th>Size</th>
+        <th>Price</th>
+        <th>Photos</th>
+        <th>Actions</th>
+      </tr>
       </thead>
       <tbody *ngIf="posts.length === 0">
-        <tr>
-          <td colspan="4">There are no posts in the DB. Add a new post below.</td>
-        </tr>
+      <tr>
+        <td colspan="4">There are no posts in the DB. Add a new post below.</td>
+      </tr>
       </tbody>
       <tbody *ngIf="!isEditing">
-        <tr *ngFor="let post of posts">
-          <td>{{post.description}}</td>
-          <td>{{post.from}}</td>
-          <td>{{post.size}}</td>
-          <td>{{post.price}}</td>
-          <td>{{post.photo}}</td>
-          <td>
-            <button class="btn btn-sm btn-warning" (click)="goEditPost(post._id)"><i class="fa fa-pencil"></i> Edit</button>
-            <button class="btn btn-sm btn-danger" (click)="deletePost(post)"><i class="fa fa-trash"></i> Delete</button>
-          </td>
-        </tr>
+      <tr *ngFor="let post of posts">
+        <td>{{post.description}}</td>
+        <td>{{post.from}}</td>
+        <td>{{post.size}}</td>
+        <td>{{post.price}}</td>
+        <td>{{post.photos.length}}</td>
+        <td>
+          <button class="btn btn-sm btn-warning" style="width:70px" (click)="goEditPost(post._id)"><i
+            class="fa fa-pencil"></i> Edit
+          </button>
+          <button class="btn btn-sm btn-danger" style="width:70px" (click)="deletePost(post)"><i
+            class="fa fa-trash"></i> Delete
+          </button>
+        </td>
+      </tr>
       </tbody>
     </table>
+    <!--
       <Div *ngIf="isEditing">
         <fieldset>
             <form class="form-inline" #form="ngForm" (ngSubmit)="editPost(post)" style="display:inline">
@@ -86,5 +91,8 @@
       </div>
       <button class="btn btn-primary" type="submit" [disabled]="!addPostForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
     </form>
+  </div>
+</div>
+-->
   </div>
 </div>

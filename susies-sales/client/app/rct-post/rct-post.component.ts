@@ -115,9 +115,9 @@ export class RctPostComponent implements OnInit {
     } catch(error) {
       this.handleError(error);
     }
-    // TODO tie the uploaded files to the correct record
+    this.postForm.markAsDirty()
+    console.log('dirty? - ' + this.postForm.dirty);
     // TODO deal with duplicate filenames: currently the upload fails silently
-    // TODO list the associated files in the form, including when the post loads in edit mode
     // TODO make the toaster work for errors
   }
   uploadFilesToAPI() {
@@ -132,7 +132,7 @@ export class RctPostComponent implements OnInit {
   }
 
   cancel() {
-    // TODO implement cancel()
+    this.router.navigate(['posts']);
   }
   renderPhotos(inputArray: string[]): string {
     // add the opening and closing UL tags and sandwich the items inbetween
@@ -145,7 +145,12 @@ export class RctPostComponent implements OnInit {
   }
 
   renderListItem(photo): string {
-    return (`<li>${photo}</li>`);
+    // TODO this should come from config
+    const picturesURL = 'http://localhost:3000/api/pictures/';
+    var link: string = picturesURL + photo;
+    link = encodeURI(link);
+    var listItem: string = `<li><a href="${link}">${photo}</a></li>`;
+    return (listItem);
   }
 
   handleError(error): void {

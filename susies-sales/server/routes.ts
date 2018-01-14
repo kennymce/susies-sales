@@ -16,7 +16,7 @@ export default function setRoutes(app) {
   // Pictures
   const storage = multer.diskStorage({ // multers disk storage settings
     destination: function (req, file, cb) {
-      cb(null, './uploaded_');
+      cb(null, __dirname + '/uploaded_/');
     },
     filename: function (req, file, cb) {
       const datetimestamp = Date.now();
@@ -31,7 +31,7 @@ export default function setRoutes(app) {
   /** API path that will upload the files */
   router.route('/pictures')
     .post(function(req, res) {
-    console.log('in router.route for /pictures....');
+    console.log('in router.route for POST /pictures/');
     upload(req, res, function (err){
       if ( err ) {
         console.log('error in upload: ' + err);
@@ -41,6 +41,32 @@ export default function setRoutes(app) {
       res.json({error_code: 0, err_desc : null});
     });
   });
+  router.route('/pictures/:name')
+    .get(function (req, res, next) {
+      var options = {
+        root: __dirname + '/uploaded_/',
+        dotfiles: 'deny',
+        headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+        }
+      };
+      var fileName = req.params.name;
+      res.sendFile(fileName, options, function (err) {
+        if (err) {
+          next(err);
+        } else {
+          console.log('Sent:', fileName);
+        }
+      });
+
+    });
+/*
+    .get(function(req, res) {
+      console.log('in router.route for GET /pictures/');
+      res.sendFile('./uploaded_/' + req.params.name, err => console.log(err.message));
+    });
+*/
 
   // Posts
   router.route('/Posts').get(postCtrl.getAll);
