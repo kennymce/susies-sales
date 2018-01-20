@@ -8,6 +8,7 @@ import { ActivatedRoute} from '@angular/router';
 import { Router } from '@angular/router';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { FileUploadService } from '../services/file-upload.service';
+import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 
 
 @Component({
@@ -26,18 +27,20 @@ export class RctPostComponent implements OnInit {
   filesToUpload: FileList;
   photoHTML: string;
   numberOfFiles: number;
+  showPhotoPanel: boolean;
 
   constructor(private fb: FormBuilder,
               private postService: PostService,
               private _route: ActivatedRoute,
               private router: Router,
               public toast: ToastComponent,
-              private fileUploadService: FileUploadService) { }
+              private fileUploadService: FileUploadService,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
 
     this.postForm = this.fb.group({
-      postId: '',
+      postId: 'new',
       description: '',
       price: '',
       from: '',
@@ -45,9 +48,13 @@ export class RctPostComponent implements OnInit {
       photos: ''
     });
     this.initPostIdFromRouteParam();
-    this.getPost();
+    if (this.postId != 'new') {
+      this.getPost();
+      this.pageTitle = "Edit Post";
+    } else {
+      this.pageTitle = "Create New Post";
+    }
   }
-
   initPostIdFromRouteParam(): void {
     // Get the postId from the query params
     this.sub = this._route
@@ -70,12 +77,17 @@ export class RctPostComponent implements OnInit {
     }
     this.post = post;
     this.numberOfFiles = post.photos.length;
+    if (this.numberOfFiles > 0){
+      this.showPhotoPanel = true;
+      console.log('showphotopanel = true');
+    }
 
     if (!this.post){
       this.pageTitle = 'Create New Post';
     } else {
       this.pageTitle = 'Edit Post';
     }
+
     // Update the data on the form
     this.postForm.patchValue({
       postId: this.postId,
@@ -97,14 +109,18 @@ export class RctPostComponent implements OnInit {
           () => this.onSaveComplete(),
           (error: any) => this.errorMessage = <any>error
         );
+    } else if (!this.postForm.dirty){
+      this.onSaveComplete(); //TODO tidy this up
     }
   }
 
   onSaveComplete(): void {
     // Reset the form to clear the flags
     this.postForm.reset();
-    this.toast.setMessage('Post added successfully.', 'success');
-    this.router.navigate(['../posts/posts']);
+    if (this.postForm.dirty){
+      this.toast.setMessage('Post added successfully.', 'success');
+    }
+    this.router.navigate(['posts']);
   }
 
   handleFileInput(files: FileList) {
@@ -112,11 +128,12 @@ export class RctPostComponent implements OnInit {
     try {
       this.uploadFilesToAPI();
       this.post.photos = Array.from(this.filesToUpload, x => x.name);
+      this.numberOfFiles = this.post.photos.length;
+      this.showPhotoPanel = this.numberOfFiles > 0;
     } catch(error) {
       this.handleError(error);
     }
-    this.postForm.markAsDirty()
-    console.log('dirty? - ' + this.postForm.dirty);
+    this.postForm.markAsDirty();
     // TODO deal with duplicate filenames: currently the upload fails silently
     // TODO make the toaster work for errors
   }
@@ -147,10 +164,12 @@ export class RctPostComponent implements OnInit {
   renderListItem(photo): string {
     // TODO this should come from config
     const picturesURL = 'http://localhost:3000/api/pictures/';
-    var link: string = picturesURL + photo;
+    let link: string = picturesURL + photo;
     link = encodeURI(link);
-    var listItem: string = `<li><a href="${link}">${photo}</a></li>`;
-    return (listItem);
+    let listItem: string = `<li><a href="${link}">${photo}</a></li>`; //TODO this should open in a new tab: window.open('url', '_blank');
+    return(listItem); // or if we can't do that due to the domSanitizer then warn user about unsaved changes
+    //let listItem: string = `<li><a href="" onclick="window.open(${link}","_blank")</a></li>`;
+    //return (this.sanitizer.bypassSecurityTrustScript(listItem)).toString();
   }
 
   handleError(error): void {

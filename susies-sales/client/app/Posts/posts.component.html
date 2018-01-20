@@ -3,7 +3,7 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card" *ngIf="!isLoading">
-  <h4 class="card-header">Current Posts ({{posts.length}})</h4>
+  <h4 class="card-header">Current Posts ({{posts.length}})<button class="btn-link nounderline" style="width:100px" (click)="goCreatePost()"><i class="fa fa-id-card"></i> New</button></h4>
   <div class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
@@ -39,6 +39,7 @@
       </tr>
       </tbody>
     </table>
+
     <!--
       <Div *ngIf="isEditing">
         <fieldset>

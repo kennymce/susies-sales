@@ -1,0 +1,4 @@
+/* Make the 'No files chosen' label invisible */
+input[type='file'] {
+  color: transparent;
+}

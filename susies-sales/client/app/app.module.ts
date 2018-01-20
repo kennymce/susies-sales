@@ -21,6 +21,8 @@ import { EditPostComponent } from './Posts/edit-post.component';
 import { PostComponent } from './shared/post.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RctPostComponent } from './rct-post/rct-post.component';
+import {ViewPostComponent} from './rct-post/view-post.component';
+
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { RctPostComponent } from './rct-post/rct-post.component';
     NotFoundComponent,
     EditPostComponent,
     PostComponent,
-    RctPostComponent
+    RctPostComponent,
+    ViewPostComponent
   ],
   imports: [
     RoutingModule,

@@ -17,6 +17,7 @@ export class PostService {
   constructor(private http: HttpClient) { }
 
   thePost: IPost;
+  create: boolean;
 
   getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>('/api/Posts');
@@ -48,7 +49,20 @@ export class PostService {
 
   savePost(post: IPost): Observable<IPost> {
     // TODO logic to save a new post also goes in here
-    return this.updatePost(post);
+    console.log('in savePost, the postId = ' + post.postId);
+    if (post.postId == 'new') {
+      return this.createPost(post)
+    } else {
+      return this.updatePost(post);
+    }
+  }
+
+  createPost(post: IPost): Observable<IPost> {
+    //post.postId = undefined;
+    return this.http.post('/api/post', post, {headers: {'Content-Type': 'application/json'}})
+      .map(this.extractData)
+      .do(post => console.log('creating Post in service: ' + JSON.stringify((post))))
+      .catch(this.handleAngularJsonBug);
   }
 
   private updatePost(post: Post) {
@@ -59,6 +73,11 @@ export class PostService {
       .map(() => post)
       .do(post => console.log('updatingPost, in updatePost: ' + JSON.stringify(post)))
       .catch(this.handleAngularJsonBug);
+  }
+
+  private extractData(response: Response) {
+    let body = response.json();
+    return body || {};
   }
 
   static handleError (error: Response | any) {

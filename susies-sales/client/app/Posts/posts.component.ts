@@ -90,6 +90,10 @@ export class PostsComponent implements OnInit {
     this.router.navigate(['rct-post/rct-post'], {queryParams : {postId: _id} });
   }
 
+  goCreatePost(): void {
+    this.router.navigate(['rct-post/rct-post'], {queryParams: {postId: 'new'}});
+  }
+
   cancelEditing() {
     this.isEditing = false;
     this.post = new Post();

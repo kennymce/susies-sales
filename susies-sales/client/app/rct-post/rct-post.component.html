@@ -2,7 +2,7 @@
 <app-toast [message]="toast.message"></app-toast>
 <div class="card">
   <div class="card-block">
-
+    <h4 class="card-title">{{pageTitle}}</h4>
     <div class='container'>
       <form (ngSubmit)="save()" class="form-vertical" [formGroup]="postForm">
         <fieldset>
@@ -66,7 +66,8 @@
 
           <!-- File Button -->
           <div class="form-group row">
-            <label class="col-md-4 control-label text-lg-right" for="filebutton">Choose Pictures</label>
+            <label id="filebuttonlabel" name="filebuttonlabel" class="col-md-4 control-label text-lg-right"
+                   for="filebutton">Choose Pictures</label>
             <div class="col-md-4">
               <input id="filebutton"
                      name="filebutton"
@@ -78,7 +79,7 @@
         </fieldset>
 
         <!-- File List -->
-        <div align="center" style="align-content: left">
+        <div *ngIf="showPhotoPanel" align="center" style="align-content: left">
           <div id="accordion" role="tablist">
             <div class="card" style="width: 50%">
               <div class="card-header" role="tab" id="headingOne">

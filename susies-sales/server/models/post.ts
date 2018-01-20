@@ -11,6 +11,16 @@ const postSchema = new mongoose.Schema({
   }]
 });
 
+postSchema.pre('save', function (next) {
+  // If the postId is 'new' it's a new record so replace the postId with an ObjectId
+  var self = this;
+
+  if (self.postId == 'new') {
+    self.postId = mongoose.Types.ObjectId();
+  }
+  next();
+});
+
 const Post = mongoose.model('Post', postSchema);
 
 export default Post;
