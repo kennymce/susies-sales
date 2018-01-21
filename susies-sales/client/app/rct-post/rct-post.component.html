@@ -79,7 +79,7 @@
         </fieldset>
 
         <!-- File List -->
-        <div *ngIf="showPhotoPanel" align="center" style="align-content: left">
+        <div *ngIf="showPhotoPanel" id="photoContainer" align="center" style="align-content: left">
           <div id="accordion" role="tablist">
             <div class="card" style="width: 50%">
               <div class="card-header" role="tab" id="headingOne">
@@ -87,10 +87,12 @@
                   Photos ({{numberOfFiles}})
                 </h5>
               </div>
-
-              <div class="card-body" [innerHTML]="photoHTML" align="left">
-
-              </div>
+              <ul class="photoList" *ngFor="let photo of post.photos; let p = index">
+                <li>
+                  <span class="photoListItem"><span><i class="fa fa-external-link"></i></span>
+                    <span class="photoListSpacer"></span><span (click)="openPhoto(photo)">{{photo}}</span></span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

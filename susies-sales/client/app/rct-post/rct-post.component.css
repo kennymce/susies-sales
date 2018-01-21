@@ -2,3 +2,16 @@
 input[type='file'] {
   color: transparent;
 }
+.photoList {
+  align-content: left;
+  list-style-type: none;
+}
+.photoListSpacer {
+  margin-left: 5px;
+}
+.photoListItem {
+  cursor: pointer;
+  position: relative;
+}
+#photoContainer {
+}

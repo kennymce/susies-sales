@@ -8,7 +8,6 @@ import { ActivatedRoute} from '@angular/router';
 import { Router } from '@angular/router';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { FileUploadService } from '../services/file-upload.service';
-import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 
 
 @Component({
@@ -25,7 +24,6 @@ export class RctPostComponent implements OnInit {
   pageTitle: string;
   errorMessage: string;
   filesToUpload: FileList;
-  photoHTML: string;
   numberOfFiles: number;
   showPhotoPanel: boolean;
 
@@ -34,8 +32,7 @@ export class RctPostComponent implements OnInit {
               private _route: ActivatedRoute,
               private router: Router,
               public toast: ToastComponent,
-              private fileUploadService: FileUploadService,
-              private sanitizer: DomSanitizer) { }
+              private fileUploadService: FileUploadService) { }
 
   ngOnInit(): void {
 
@@ -97,7 +94,6 @@ export class RctPostComponent implements OnInit {
       size: this.post.size,
       photos: this.post.photos
     });
-    this.photoHTML = (this.renderPhotos(this.post.photos));
   }
 
   save() {
@@ -139,9 +135,8 @@ export class RctPostComponent implements OnInit {
   }
   uploadFilesToAPI() {
     this.fileUploadService.postFiles(this.filesToUpload).subscribe(data => {
-      // do something, if upload success
+      // upload success
       this.toast.setMessage('Files uploaded successfully.', 'success');
-      this.photoHTML = (this.renderPhotos(this.post.photos));
       this.postForm.patchValue({photos: this.post.photos})
     }, error => {
       console.log(error);
@@ -151,25 +146,9 @@ export class RctPostComponent implements OnInit {
   cancel() {
     this.router.navigate(['posts']);
   }
-  renderPhotos(inputArray: string[]): string {
-    // add the opening and closing UL tags and sandwich the items inbetween
-    let outputString: string = '<UL>';
-    for (let photo of inputArray) {
-      outputString +=(this.renderListItem(photo));
-    }
-    outputString.concat('</UL>');
-    return outputString;
-  }
 
-  renderListItem(photo): string {
-    // TODO this should come from config
-    const picturesURL = 'http://localhost:3000/api/pictures/';
-    let link: string = picturesURL + photo;
-    link = encodeURI(link);
-    let listItem: string = `<li><a href="${link}">${photo}</a></li>`; //TODO this should open in a new tab: window.open('url', '_blank');
-    return(listItem); // or if we can't do that due to the domSanitizer then warn user about unsaved changes
-    //let listItem: string = `<li><a href="" onclick="window.open(${link}","_blank")</a></li>`;
-    //return (this.sanitizer.bypassSecurityTrustScript(listItem)).toString();
+  openPhoto(photo: string) {
+    window.open('http://localhost:3000/api/pictures/' + photo, '_blank');
   }
 
   handleError(error): void {
