@@ -1,8 +1,8 @@
 <app-loading [condition]="isLoading"></app-loading>
 <app-toast [message]="toast.message"></app-toast>
 <div class="card">
+  <h4 class="card-header">{{pageTitle}}</h4>
   <div class="card-block">
-    <h4 class="card-title">{{pageTitle}}</h4>
     <div class='container'>
       <form (ngSubmit)="save()" class="form-vertical" [formGroup]="postForm">
         <fieldset>
@@ -79,7 +79,7 @@
         </fieldset>
 
         <!-- File List -->
-        <div *ngIf="showPhotoPanel" id="photoContainer" align="center" style="align-content: left">
+        <div *ngIf="showPhotoPanel" id="photoContainer" align="center">
           <div id="accordion" role="tablist">
             <div class="card" style="width: 50%">
               <div class="card-header" role="tab" id="headingOne">
@@ -90,7 +90,7 @@
               <ul class="photoList" *ngFor="let photo of post.photos; let p = index">
                 <li>
                   <span class="photoListItem"><span><i class="fa fa-external-link"></i></span>
-                    <span class="photoListSpacer"></span><span (click)="openPhoto(photo)">{{photo}}</span></span>
+                    <span class="photoListSpacer"></span><span class="photoListText" (click)="openPhoto(photo)">{{photo}}</span></span>
                 </li>
               </ul>
             </div>

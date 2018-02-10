@@ -2,6 +2,7 @@ import * as express from 'express';
 
 import PostCtrl from './controllers/post';
 import UserCtrl from './controllers/user';
+import GimmieCtrl from './controllers/gimmie';
 import Post from './models/post';
 import User from './models/user';
 
@@ -11,6 +12,7 @@ export default function setRoutes(app) {
 
   const postCtrl = new PostCtrl();
   const userCtrl = new UserCtrl();
+  const gimmieCtrl = new GimmieCtrl();
   const multer = require('multer');
 
   // Pictures
@@ -43,7 +45,7 @@ export default function setRoutes(app) {
   });
   router.route('/pictures/:name')
     .get(function (req, res, next) {
-      var options = {
+      let options = {
         root: __dirname + '/uploaded_/',
         dotfiles: 'deny',
         headers: {
@@ -51,7 +53,7 @@ export default function setRoutes(app) {
           'x-sent': true
         }
       };
-      var fileName = req.params.name;
+      let fileName = req.params.name;
       res.sendFile(fileName, options, function (err) {
         if (err) {
           next(err);
@@ -84,6 +86,14 @@ export default function setRoutes(app) {
   router.route('/user/:id').get(userCtrl.get);
   router.route('/user/:id').put(userCtrl.update);
   router.route('/user/:id').delete(userCtrl.delete);
+
+  // Gimmies
+  router.route( '/gimmie').post(gimmieCtrl.getAll);
+  router.route('/gimmie/count').get(gimmieCtrl.count);
+  router.route('/gimmie').post(gimmieCtrl.insert);
+  router.route('/gimmie/:id').get(gimmieCtrl.get);
+  router.route('/gimmie/:id').put(gimmieCtrl.update);
+  router.route('/gimme/:id').delete(gimmieCtrl.delete);
 
   // Apply the routes to our application with the prefix /api
   app.use('/api', router);

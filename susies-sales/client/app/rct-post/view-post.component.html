@@ -1,0 +1,47 @@
+<app-loading [condition]="isLoading"></app-loading>
+<div *ngIf="!isLoading" class="card">
+  <h4 class="card-header">{{pageTitle}}</h4>
+  <div class="centredBlock">
+    <div class="card-block" class="previewCardBlock">
+      <div class='container'>
+        <form class="form-vertical" [formGroup]="postForm">
+          <fieldset>
+            <input type="hidden" formControlName="photos">
+          </fieldset>
+        </form>
+      </div>
+
+
+      <!--<app-carousel [photos]="this.post.photos"></app-carousel>-->
+      <app-carousel [photos]="this.post.photos"></app-carousel>
+    </div>
+    <div class="postDetsContainer">
+      <div class="postDets">
+        <div>{{ this.post.description}}</div>
+        <div><span>From: </span>{{ this.post.from}}</div>
+        <div><span>Size: </span>{{ this.post.size}}</div>
+        <div><span>Price: £</span>{{ this.post.price}}</div>
+      </div>
+      <div class="verticalSpacer"></div>
+      <button type="button"
+              class="btn btn-info"
+              (click)='claim()'>Yes please!
+      </button>
+    </div>
+  </div>
+
+
+  <!--Save, Back and Preview Buttons -->
+  <div class="card-footer" align="center">
+    <div class="btn-group row" role="group">
+      <button type="button"
+              class="btn btn-secondary"
+              (click)='goBack()'>Back
+      </button>
+      <!--<button type="button"-->
+      <!--class="btn btn-info"-->
+      <!--(click)='debug()'>debug-->
+      <!--</button>-->
+    </div>
+  </div>
+</div>

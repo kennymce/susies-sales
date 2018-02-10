@@ -21,8 +21,9 @@ import { EditPostComponent } from './Posts/edit-post.component';
 import { PostComponent } from './shared/post.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RctPostComponent } from './rct-post/rct-post.component';
-import {ViewPostComponent} from './rct-post/view-post.component';
-
+import { ViewPostComponent } from './rct-post/view-post.component';
+import { CarouselComponent } from './rct-post/carousel.component';
+ import { NgxSiemaModule } from 'ngx-siema';
 
 @NgModule({
   declarations: [
@@ -38,12 +39,14 @@ import {ViewPostComponent} from './rct-post/view-post.component';
     EditPostComponent,
     PostComponent,
     RctPostComponent,
-    ViewPostComponent
+    ViewPostComponent,
+    CarouselComponent
   ],
   imports: [
     RoutingModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSiemaModule.forRoot()
   ],
   providers: [
     AuthService,
@@ -51,7 +54,7 @@ import {ViewPostComponent} from './rct-post/view-post.component';
     AuthGuardAdmin,
     PostService,
     UserService,
-    HttpClientModule
+    HttpClientModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

@@ -13,5 +13,10 @@ input[type='file'] {
   cursor: pointer;
   position: relative;
 }
+.photoListText:hover {
+  text-decoration: underline;
+}
+
 #photoContainer {
+  align-content: left;
 }

@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { FileUploadService } from '../services/file-upload.service';
 
-
 @Component({
   selector: 'app-rct-post',
   templateUrl: './rct-post.component.html',
@@ -17,6 +16,7 @@ import { FileUploadService } from '../services/file-upload.service';
   providers: [FileUploadService]
 })
 export class RctPostComponent implements OnInit {
+
   postForm: FormGroup;
   post: Post = new Post();
   sub: Subscription;
@@ -26,6 +26,7 @@ export class RctPostComponent implements OnInit {
   filesToUpload: FileList;
   numberOfFiles: number;
   showPhotoPanel: boolean;
+  isLoading: boolean = true;
 
   constructor(private fb: FormBuilder,
               private postService: PostService,
@@ -50,8 +51,10 @@ export class RctPostComponent implements OnInit {
       this.pageTitle = "Edit Post";
     } else {
       this.pageTitle = "Create New Post";
+      this.isLoading = false;
     }
   }
+
   initPostIdFromRouteParam(): void {
     // Get the postId from the query params
     this.sub = this._route
@@ -94,29 +97,33 @@ export class RctPostComponent implements OnInit {
       size: this.post.size,
       photos: this.post.photos
     });
+    this.isLoading = false;
   }
 
-  save() {
+  save(mode) {
     if (this.postForm.dirty && this.postForm.valid) {
       // Copy the form values over the post object values
       let p = Object.assign({}, this.post, this.postForm.value);
       this.postService.savePost(p)
         .subscribe(
-          () => this.onSaveComplete(),
+          () => this.onSaveComplete(mode),
           (error: any) => this.errorMessage = <any>error
         );
-    } else if (!this.postForm.dirty){
-      this.onSaveComplete(); //TODO tidy this up
     }
+    this.onSaveComplete(mode); // TODO is this needed?
   }
 
-  onSaveComplete(): void {
+  onSaveComplete(mode): void {
     // Reset the form to clear the flags
     this.postForm.reset();
     if (this.postForm.dirty){
       this.toast.setMessage('Post added successfully.', 'success');
     }
-    this.router.navigate(['posts']);
+    if (mode!='preview') {
+      this.router.navigate(['posts']);
+    } else {
+      this.router.navigate(['rct-post/view-post'], {queryParams : {postId: this.post.postId, mode: 'preview'} });
+    }
   }
 
   handleFileInput(files: FileList) {
@@ -149,6 +156,10 @@ export class RctPostComponent implements OnInit {
 
   openPhoto(photo: string) {
     window.open('http://localhost:3000/api/pictures/' + photo, '_blank');
+  }
+
+  preview(): void {
+    this.save('preview');
   }
 
   handleError(error): void {

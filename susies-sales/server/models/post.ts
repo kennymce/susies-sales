@@ -13,10 +13,12 @@ const postSchema = new mongoose.Schema({
 
 postSchema.pre('save', function (next) {
   // If the postId is 'new' it's a new record so replace the postId with an ObjectId
-  var self = this;
+  let self = this;
 
   if (self.postId == 'new') {
-    self.postId = mongoose.Types.ObjectId();
+    let postId = mongoose.Types.ObjectId();
+    self.postId = postId;
+    self._id = postId;
   }
   next();
 });

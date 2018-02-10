@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import 'bootstrap/dist/js/bootstrap.bundle.js';
 
 @Component({
   selector: 'app-root',

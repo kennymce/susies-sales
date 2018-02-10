@@ -1,0 +1,30 @@
+.centredBlock {
+  display: flex;
+  padding-left: 30px;
+  text-align: center;
+  justify-content: normal;
+  /*border-width: 1px;*/
+  /*border-style: solid;*/
+  align-items: left;
+}
+.previewCardBlock {
+  margin: 0 auto;
+  padding-left: auto;
+  display: inline-block;
+  width: 50%;
+  /*border-style: solid;*/
+  /*border-width: 1px;*/
+}
+
+.postDets {
+  margin: 0 auto;
+  border-width: 1px;
+  border-style: outset;
+  box-shadow: gainsboro 5px 5px;
+  margin-top: 50px;
+}
+
+.postDetsContainer {
+  width: 30%;
+  padding-right: 50px;
+}

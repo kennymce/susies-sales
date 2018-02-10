@@ -1,0 +1,9 @@
+<div class="carousel">
+<ngx-siema [options]="options">
+  <!--<ngx-siema-slide><img class="carouselImage" src="http://localhost:3000/api/pictures/2015-04-07 10.51.11LLOOOOOOOOOOOOOONG.jpg"/></ngx-siema-slide>-->
+  <ngx-siema-slide *ngFor="let photo of photos"><img class="carouselImage" src="{{ returnPhotoURI(photo) }}"/></ngx-siema-slide>
+</ngx-siema>
+  <div class="verticalSpacer"></div>
+<button type="button" class="btn btn-info" (click)="prev()">Prev</button>
+<button type="button" class="btn btn-info"(click)="next()">Next</button>
+</div>

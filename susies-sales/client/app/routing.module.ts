@@ -11,11 +11,13 @@ import { AuthGuardLogin } from './services/auth-guard-login.service';
 import { AuthGuardAdmin } from './services/auth-guard-admin.service';
 import { RctPostComponent } from './rct-post/rct-post.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import {ViewPostComponent} from './rct-post/view-post.component';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
   { path: 'posts', component: PostsComponent },
   { path: 'rct-post/rct-post', component: RctPostComponent},
+  { path: 'rct-post/view-post', component: ViewPostComponent},
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },

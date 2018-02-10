@@ -5,3 +5,7 @@
 }
 .nounderline{text-decoration: none}
 
+.newButton {
+  border: none;
+  cursor: pointer;
+}
