@@ -12,10 +12,12 @@ import { AuthGuardAdmin } from './services/auth-guard-admin.service';
 import { RctPostComponent } from './rct-post/rct-post.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {ViewPostComponent} from './rct-post/view-post.component';
+import {UserPostsComponent} from './Posts/user-posts.component';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
   { path: 'posts', component: PostsComponent },
+  { path: 'posts/user-posts', component: UserPostsComponent},
   { path: 'rct-post/rct-post', component: RctPostComponent},
   { path: 'rct-post/view-post', component: ViewPostComponent},
   { path: 'register', component: RegisterComponent },
@@ -23,8 +25,8 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuardLogin] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuardAdmin] },
-  { path: 'notfound', component: NotFoundComponent },
-  { path: '**', redirectTo: '/notfound' },
+  { path: 'notfound', component: NotFoundComponent }
+  //{ path: '**', redirectTo: '/notfound' },
 ];
 
 @NgModule({

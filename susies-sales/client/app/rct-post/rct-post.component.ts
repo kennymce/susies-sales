@@ -52,6 +52,7 @@ export class RctPostComponent implements OnInit {
     } else {
       this.pageTitle = "Create New Post";
       this.isLoading = false;
+      //TODO router guards (mode is in queryString)
     }
   }
 

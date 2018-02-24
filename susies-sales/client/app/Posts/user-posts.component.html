@@ -3,9 +3,6 @@
 
 <div class="card" *ngIf="!isLoading">
   <h4 class="card-header">Posts ({{posts.length}})
-    <button *ngIf="auth.loggedIn && auth.isAdmin" class="btn-link nounderline newButton" style="width:100px" (click)="goCreatePost()"><i
-      class="fa fa-id-card"></i> New
-    </button>
   </h4>
   <div class="card-block">
     <table class="table table-bordered table-striped">
@@ -19,28 +16,25 @@
         <th>Actions</th>
       </tr>
       </thead>
-      <tbody *ngIf="posts.length === 0">
+      <tbody *ngIf="this.posts.length === 0">
       <tr>
-        <td colspan="4">No posts yet!</td>
+        <td colspan="4">Nothing yet!</td>
       </tr>
       </tbody>
       <tbody *ngIf="!isEditing">
-      <tr *ngFor="let post of posts">
+      <tr *ngFor="let post of this.posts">
         <td>{{post.description}}</td>
         <td>{{post.from}}</td>
         <td>{{post.size}}</td>
         <td>{{post.price}}</td>
         <td>{{post.photos.length}}</td>
         <td>
-          <button *ngIf="auth.loggedIn && auth.isAdmin" class="btn btn-sm btn-primary" style="width:70px" (click)="goEditPost(post._id)"><i
-            class="fa fa-pencil"></i> Edit
-          </button>
-          <button *ngIf="auth.loggedIn && !auth.isAdmin" class="btn btn-sm btn-primary" style="width:70px" (click)="goVeiwPost(post._id)"><i
+          <button *ngIf="auth.loggedIn" class="btn btn-sm btn-primary" style="width:70px" (click)="goVeiwPost(post._id)"><i
             class="fa fa-tags"></i> View
           </button>
-          <button *ngIf="auth.loggedIn && auth.isAdmin" class="btn btn-sm btn-secondary" style="width:70px" (click)="deletePost(post)">
+          <button *ngIf="auth.loggedIn" class="btn btn-sm btn-secondary" style="width:70px" (click)="removePost(post)">
             <i
-              class="fa fa-trash"></i> Delete
+              class="fa fa-trash"></i>Remove
           </button>
         </td>
       </tr>

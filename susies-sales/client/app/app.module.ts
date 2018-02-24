@@ -24,6 +24,8 @@ import { RctPostComponent } from './rct-post/rct-post.component';
 import { ViewPostComponent } from './rct-post/view-post.component';
 import { CarouselComponent } from './rct-post/carousel.component';
  import { NgxSiemaModule } from 'ngx-siema';
+import {GimmieService} from './services/gimmie.service';
+import { UserPostsComponent } from './Posts/user-posts.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { CarouselComponent } from './rct-post/carousel.component';
     PostComponent,
     RctPostComponent,
     ViewPostComponent,
-    CarouselComponent
+    CarouselComponent,
+    UserPostsComponent
   ],
   imports: [
     RoutingModule,
@@ -53,6 +56,7 @@ import { CarouselComponent } from './rct-post/carousel.component';
     AuthGuardLogin,
     AuthGuardAdmin,
     PostService,
+    GimmieService,
     UserService,
     HttpClientModule,
   ],

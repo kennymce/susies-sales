@@ -16,6 +16,19 @@ export default class UserCtrl extends BaseCtrl {
         res.status(200).json({ token: token });
       });
     });
-  }
+  };
 
+  // Get all for given user
+  getAllPostsForUser = (req, res) => {
+    this.model.findOne({ userId: req.params.id })
+      .populate('user','gimmie')
+      .exec(function (err, user) {
+        if (err) return console.error(err);
+
+        console.log('The gimmies are',user.gimmies.postId);
+    }, (err, item) => {
+      if (err) { return console.error(err); }
+      res.status(200).json(item);
+    });
+  };
 }

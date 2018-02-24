@@ -63,16 +63,11 @@ export default function setRoutes(app) {
       });
 
     });
-/*
-    .get(function(req, res) {
-      console.log('in router.route for GET /pictures/');
-      res.sendFile('./uploaded_/' + req.params.name, err => console.log(err.message));
-    });
-*/
 
   // Posts
   router.route('/Posts').get(postCtrl.getAll);
   router.route('/Posts/count').get(postCtrl.count);
+  router.route( '/Posts/user/:id').get(userCtrl.getAllPostsForUser);
   router.route('/post').post(postCtrl.insert);
   router.route('/post/:id').get(postCtrl.get);
   router.route('/post/:id').put(postCtrl.update);
@@ -88,10 +83,10 @@ export default function setRoutes(app) {
   router.route('/user/:id').delete(userCtrl.delete);
 
   // Gimmies
-  router.route( '/gimmie').post(gimmieCtrl.getAll);
+  router.route( '/gimmie').get(gimmieCtrl.getAll);
   router.route('/gimmie/count').get(gimmieCtrl.count);
   router.route('/gimmie').post(gimmieCtrl.insert);
-  router.route('/gimmie/:id').get(gimmieCtrl.get);
+  router.route('/gimmie/:id').get(gimmieCtrl.getAllGimmiesForUser);
   router.route('/gimmie/:id').put(gimmieCtrl.update);
   router.route('/gimme/:id').delete(gimmieCtrl.delete);
 

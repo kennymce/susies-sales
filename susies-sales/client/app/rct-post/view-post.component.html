@@ -25,7 +25,7 @@
       <div class="verticalSpacer"></div>
       <button type="button"
               class="btn btn-info"
-              (click)='claim()'>Yes please!
+              (click)='claim()'><span *ngIf="!this.gimmied">Yes please!</span><span *ngIf="this.gimmied">Requested</span>
       </button>
     </div>
   </div>

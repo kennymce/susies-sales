@@ -35,7 +35,7 @@ export class GimmieService{
     return this.http.get<Gimmie>(`/api/gimmie/${id}`);
   }
 
-  getGimmieJSON(id: string): Observable<IGimmie> {
+  getGimmiesForUser(id: string): Observable<IGimmie[]> {
     let url = `/api/gimmie/${id}`;
     return this.http
       .get(url)
@@ -48,8 +48,8 @@ export class GimmieService{
   }
 
   saveGimmie(gimmie: IGimmie): Observable<IGimmie> {
-    console.log('in saveGimmie, the gimmieId = ' + gimmie.gimmieId);
     if (gimmie.gimmieId == 'new') {
+      console.log('in saveGimmie, the gimmieId = ' + gimmie.gimmieId);
       return this.createGimmie(gimmie)
     } else {
       return this.updateGimmie(gimmie);
@@ -59,7 +59,10 @@ export class GimmieService{
   createGimmie(gimmie: IGimmie): Observable<IGimmie> {
     return this.http.post('/api/gimmie', gimmie, {headers: {'Content-Type': 'application/json'}})
       .map(this.extractData)
-      .do(gimmie => console.log('creating Gimmie in service: ' + JSON.stringify((gimmie))))
+      .do(gimmie => {
+        console.log('creating Gimmie in service: ' + JSON.stringify((gimmie)));
+        //return gimmie;
+      })
       .catch(this.handleAngularJsonBug);
   }
 
@@ -73,7 +76,9 @@ export class GimmieService{
   }
 
   private extractData(response: Response) {
-    let body = response.json();
+    console.log('response: ',response);
+     let body = JSON.stringify(response);
+    // TODO this ^ seems not to work - don't think it's really needed. Look at this in Post Service too
     return body || {};
   }
 
@@ -97,9 +102,10 @@ export class GimmieService{
 
     if (error.status === 200 && matches.length === 1) {
       // return obs that completes;
+      console.log('returning empty observable from handleAgnularBug in Gimmie Service')
       return new EmptyObservable();
     } else {
-      console.log('re-throwing ');
+      console.log('re-throwing : ', error);
       return Observable.throw(error);		// re-throw
     }
   }

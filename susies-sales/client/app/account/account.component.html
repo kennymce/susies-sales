@@ -14,7 +14,7 @@
         <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
         <input class="form-control" type="email" name="email" [(ngModel)]="user.email" placeholder="Email" required>
       </div>
-      <div class="input-group">
+      <div class="input-group" *ngIf="(this.user.role == 'Admin')">
         <span class="input-group-addon"><i class="fa fa-black-tie"></i></span>
         <select class="form-control" name="role" [(ngModel)]="user.role">
           <option value="" disabled>Role</option>

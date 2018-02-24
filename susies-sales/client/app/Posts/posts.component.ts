@@ -6,6 +6,9 @@ import { ToastComponent } from '../shared/toast/toast.component';
 import { Post } from '../shared/models/post.model';
 import { CurrencyPipe } from '@angular/common';
 import { FileUploadService } from '../services/file-upload.service';
+import {AuthService} from '../services/auth.service';
+import {UserService} from '../services/user.service';
+import {User} from '../shared/models/user.model';
 
 @Component({
   selector: 'app-posts',
@@ -31,9 +34,12 @@ export class PostsComponent implements OnInit {
               private fileUploadService: FileUploadService,
               private formBuilder: FormBuilder,
               public toast: ToastComponent,
-              private router: Router) { }
+              private router: Router,
+              public auth: AuthService,
+              private userService: UserService) { }
 
   filesToUpload: FileList;
+  user: User;
 
   handleFileInput(files: FileList) {
      this.filesToUpload = files;
@@ -52,6 +58,7 @@ export class PostsComponent implements OnInit {
 // TODO Currency Pipe https://stackoverflow.com/questions/42254077/angular-2-date-pipe-inside-a-formcontrol-input
 
   ngOnInit() {
+    this.getUser();
     this.getPosts();
     this.addPostForm = this.formBuilder.group({
       description: this.description,
@@ -60,6 +67,14 @@ export class PostsComponent implements OnInit {
       price: this.price,
       photo: this.photo
     });
+  }
+
+  getUser() {
+    this.userService.getUser(this.auth.currentUser).subscribe(
+      data => this.user = data,
+      error => console.log(error),
+      () => this.isLoading = false
+    );
   }
 
   getPosts() {
@@ -88,6 +103,10 @@ export class PostsComponent implements OnInit {
 
   goEditPost(_id: string) {
     this.router.navigate(['rct-post/rct-post'], {queryParams : {postId: _id} });
+  }
+
+  goVeiwPost(_id: string) {
+    this.router.navigate(['rct-post/view-post'], {queryParams : {postId: _id, mode: "view"} });
   }
 
   goCreatePost(): void {
