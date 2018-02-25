@@ -26,6 +26,8 @@ import { CarouselComponent } from './rct-post/carousel.component';
  import { NgxSiemaModule } from 'ngx-siema';
 import {GimmieService} from './services/gimmie.service';
 import { UserPostsComponent } from './Posts/user-posts.component';
+import { NgxSmartModalModule, NgxSmartModalService } from 'ngx-smart-modal';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { UserPostsComponent } from './Posts/user-posts.component';
     RoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    NgxSiemaModule.forRoot()
+    NgxSiemaModule.forRoot(),
+    NgxSmartModalModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     AuthService,
@@ -59,6 +63,7 @@ import { UserPostsComponent } from './Posts/user-posts.component';
     GimmieService,
     UserService,
     HttpClientModule,
+    NgxSmartModalService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

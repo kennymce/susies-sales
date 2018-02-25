@@ -9,7 +9,7 @@ import {UserService} from '../services/user.service';
 import {User} from '../shared/models/user.model';
 import {GimmieService} from '../services/gimmie.service';
 import {IPost} from './post';
-import {Observer} from 'rxjs/Observer';
+import {NgxSmartModalService} from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-user-posts',
@@ -34,7 +34,8 @@ export class UserPostsComponent implements OnInit {
               private router: Router,
               public auth: AuthService,
               private userService: UserService,
-              private gimmieService: GimmieService) {
+              private gimmieService: GimmieService,
+              public ngxSmartModalService: NgxSmartModalService) {
   }
 
   user: User;
@@ -89,9 +90,24 @@ export class UserPostsComponent implements OnInit {
     }))
   }
 
+  setModalData(_id: string) {
+    console.log('Setting modal data to: ',_id);
+    this.ngxSmartModalService.getModal('myModal').open();
+    this.ngxSmartModalService.setModalData(_id, 'myModal');
+  }
+
+  confirmRemove() {
+    let _postId = this.ngxSmartModalService.getModalData('myModal');
+    console.log('Removing post_id: ',_postId);
+    this.removePost(_postId);
+    this.ngxSmartModalService.closeLatestModal();
+    this.ngxSmartModalService.resetModalData('myModal');
+}
 
   removePost(_id: string) {
     console.log('not yet implemented: removePost:', _id);
+    this.posts.filter(post => post._id !== _id);
+    //TODO want to filter out the deleted one so the whole page doesn't have to reload
   }
 
   goVeiwPost(_id: string) {

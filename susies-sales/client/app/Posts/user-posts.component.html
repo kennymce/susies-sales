@@ -2,7 +2,7 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card" *ngIf="!isLoading">
-  <h4 class="card-header">Posts ({{posts.length}})
+  <h4 class="card-header">Items you have asked for ({{posts.length}})
   </h4>
   <div class="card-block">
     <table class="table table-bordered table-striped">
@@ -18,10 +18,17 @@
       </thead>
       <tbody *ngIf="this.posts.length === 0">
       <tr>
-        <td colspan="4">Nothing yet!</td>
+        <td colspan="6">Nothing yet!</td>
       </tr>
       </tbody>
-      <tbody *ngIf="!isEditing">
+      <ngx-smart-modal [closable]="false" [escapable]="true" #myModal [identifier]="'myModal'">
+        <h1>Really?</h1>
+        <p>Are you sure you want to remove this from your choices?</p>
+
+        <button (click)="myModal.close()">No! I still want it!</button>
+        <button (click)="confirmRemove()">Yes, totally sure</button>
+      </ngx-smart-modal>
+      <tbody>
       <tr *ngFor="let post of this.posts">
         <td>{{post.description}}</td>
         <td>{{post.from}}</td>
@@ -29,12 +36,11 @@
         <td>{{post.price}}</td>
         <td>{{post.photos.length}}</td>
         <td>
-          <button *ngIf="auth.loggedIn" class="btn btn-sm btn-primary" style="width:70px" (click)="goVeiwPost(post._id)"><i
+          <button *ngIf="auth.loggedIn" class="btn btn-sm btn-primary" style="width:77px" (click)="goVeiwPost(post._id)"><i
             class="fa fa-tags"></i> View
           </button>
-          <button *ngIf="auth.loggedIn" class="btn btn-sm btn-secondary" style="width:70px" (click)="removePost(post)">
-            <i
-              class="fa fa-trash"></i>Remove
+          <button *ngIf="auth.loggedIn" class="btn btn-sm btn-secondary" style="width:77px" (click)="setModalData(post._id)">
+            <i class="fa fa-trash"></i> Remove
           </button>
         </td>
       </tr>

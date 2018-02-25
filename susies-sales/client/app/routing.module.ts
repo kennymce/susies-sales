@@ -17,7 +17,7 @@ import {UserPostsComponent} from './Posts/user-posts.component';
 const routes: Routes = [
   { path: '', component: AboutComponent },
   { path: 'posts', component: PostsComponent },
-  { path: 'posts/user-posts', component: UserPostsComponent},
+  { path: 'user-posts', component: UserPostsComponent},
   { path: 'rct-post/rct-post', component: RctPostComponent},
   { path: 'rct-post/view-post', component: ViewPostComponent},
   { path: 'register', component: RegisterComponent },
