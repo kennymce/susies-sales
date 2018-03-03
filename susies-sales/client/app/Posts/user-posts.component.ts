@@ -75,7 +75,6 @@ export class UserPostsComponent implements OnInit {
         console.log('Got gimmies for ', this.user.username);
         this.getPosts();
         console.log('Finished getting gimmies for ', this.user.username);
-        console.log('Number of posts retrieved: ', this.posts.length);
       }
     );
     this.isLoading = false;
@@ -105,9 +104,9 @@ export class UserPostsComponent implements OnInit {
 }
 
   removePost(_id: string) {
-    console.log('not yet implemented: removePost:', _id);
-    this.posts.filter(post => post._id !== _id);
-    //TODO want to filter out the deleted one so the whole page doesn't have to reload
+    const pos = this.posts.map(elem => elem._id).indexOf(_id);
+    this.posts.splice(pos, 1);
+    this.toast.setMessage('item deleted successfully.', 'success');
   }
 
   goVeiwPost(_id: string) {

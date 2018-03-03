@@ -32,6 +32,7 @@ export class ViewPostComponent implements OnInit {
   photoArray: Array<string>;
   user: User;
   gimmied: boolean;
+  postsForUser: Post[];
 
   constructor(private fb: FormBuilder,
               private postService: PostService,
@@ -104,8 +105,19 @@ export class ViewPostComponent implements OnInit {
     this.userService.getUser(this.auth.currentUser).subscribe(
       data => this.user = data,
       error => console.log(error),
-      () => this.isLoading = false
+      () => this.onGetUserComplete()
     );
+  }
+
+  onGetUserComplete()  {
+    const promise = new Promise((resolve => {
+      this.isLoading = false;
+      console.log('user is: ', this.user);
+      this.getPostsForUser();
+      resolve();
+    }));
+    // This needs to be called once everything has completed
+    this.gimmied = this.userHasGimmiedPost(this.post.postId);
   }
 
   goBack() {
@@ -150,8 +162,35 @@ export class ViewPostComponent implements OnInit {
     );
   }
 
-  debug() {
-    this.photoArray =Array.from(this.post.photos);
-    alert(this.photoArray.length);
+  userHasGimmiedPost(_Id) : boolean {
+    const post = this.postsForUser.filter( post => post._id === _Id);
+    console.log ('gimmie is@: ', post);
+    console.log('userHasGimmiedPost: ', (post === null));
+    return (post == null);
   }
+
+  getPostsForUser() {
+    this.gimmieService.getGimmiesForUser(this.auth.currentUser.username).subscribe(
+      data => {
+        this.user.gimmies = data;
+        console.log('Getting gimmies: they have :', JSON.stringify(this.user.gimmies));
+      },
+      error => console.log(error),
+      () => {
+        console.log('Got gimmies for ', this.user.username);
+        this.getPosts();
+      }
+    );
+    this.isLoading = false;
+  }
+
+  getPosts() {
+    this.user.gimmies.forEach(((post) => {
+      console.log('Getting posts for Gimmies');
+      this.postService.getPostJSON(post.postId)
+        .subscribe(
+          (post: IPost) => this.postsForUser.push(post))
+    }))
+  }
+
 }

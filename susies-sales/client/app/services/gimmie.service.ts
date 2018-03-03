@@ -61,7 +61,6 @@ export class GimmieService{
       .map(this.extractData)
       .do(gimmie => {
         console.log('creating Gimmie in service: ' + JSON.stringify((gimmie)));
-        //return gimmie;
       })
       .catch(this.handleAngularJsonBug);
   }
