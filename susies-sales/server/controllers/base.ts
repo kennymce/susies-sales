@@ -4,6 +4,7 @@ abstract class BaseCtrl {
 
   // Get all
   getAll = (req, res) => {
+    console.log('in get all')
     this.model.find({}, (err, docs) => {
       if (err) { return console.error(err); }
       res.status(200).json(docs);
@@ -12,6 +13,7 @@ abstract class BaseCtrl {
 
   // Count all
   count = (req, res) => {
+    console.log('in count all');
     this.model.count((err, count) => {
       if (err) { return console.error(err); }
       res.status(200).json(count);
@@ -37,6 +39,7 @@ abstract class BaseCtrl {
 
   // Get by id
   get = (req, res) => {
+    console.log(`in get by id: ${req.params.id}`);
     this.model.findOne({ _id: req.params.id }, (err, item) => {
       if (err) { return console.error(err); }
       res.status(200).json(item);
@@ -56,6 +59,7 @@ abstract class BaseCtrl {
 
   // Delete by id
   delete = (req, res) => {
+    console.log(`deleting by Id: ${req.params.id}`);
     this.model.findOneAndRemove({ _id: req.params.id }, (err) => {
       if (err) { return console.error(err); }
       res.sendStatus(200);

@@ -5,4 +5,5 @@ export interface IPost {
   size: number;
   price: number;
   photos: string[];
+  dateTimePublish: Date;
 }

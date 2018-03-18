@@ -6,9 +6,12 @@ import { ToastComponent } from '../shared/toast/toast.component';
 import { Post } from '../shared/models/post.model';
 import { CurrencyPipe } from '@angular/common';
 import { FileUploadService } from '../services/file-upload.service';
-import {AuthService} from '../services/auth.service';
-import {UserService} from '../services/user.service';
-import {User} from '../shared/models/user.model';
+import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
+import { User } from '../shared/models/user.model';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckbox } from '@angular/material';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-posts',
@@ -20,6 +23,7 @@ export class PostsComponent implements OnInit {
 
   post = new Post();
   posts: Post[] = [];
+  selectedPosts: Post[] = [];
   isLoading = true;
   isEditing = false;
 
@@ -29,6 +33,12 @@ export class PostsComponent implements OnInit {
   size = new FormControl('', Validators.required);
   price = new FormControl('', Validators.required);
   photo = new FormControl('', Validators.required);
+
+  initialSelection = [];
+  allowMultiSelect = true;
+  selection = new SelectionModel<Post>(this.allowMultiSelect, this.initialSelection);
+
+  @ViewChild('myCheckbox') private myCheckbox: MatCheckbox;
 
   constructor(private postService: PostService,
               private fileUploadService: FileUploadService,
@@ -40,6 +50,7 @@ export class PostsComponent implements OnInit {
 
   filesToUpload: FileList;
   user: User;
+  dataSource:  Post[];
 
   handleFileInput(files: FileList) {
      this.filesToUpload = files;
@@ -81,8 +92,13 @@ export class PostsComponent implements OnInit {
     this.postService.getPosts().subscribe(
       data => this.posts = data,
       error => console.log(error),
-      () => this.isLoading = false
+      () => this.onGetPostsComplete()
     );
+  }
+
+  onGetPostsComplete() {
+    this.dataSource = this.posts;
+    this.isLoading = false;
   }
 
   addPost() {
@@ -101,35 +117,16 @@ export class PostsComponent implements OnInit {
     this.post = post;
   }
 
-  goEditPost(_id: string) {
-    this.router.navigate(['rct-post/rct-post'], {queryParams : {postId: _id} });
+  goEditPost(row: any) {
+    this.router.navigate(['rct-post/rct-post'], {queryParams : {postId: row.postId} });
   }
 
-  goVeiwPost(_id: string) {
-    this.router.navigate(['rct-post/view-post'], {queryParams : {postId: _id, mode: "view"} });
+  goVeiwPost(row: any) {
+    this.router.navigate(['rct-post/view-post'], {queryParams : {postId: row.postId, mode: "view"} });
   }
 
   goCreatePost(): void {
     this.router.navigate(['rct-post/rct-post'], {queryParams: {postId: 'new'}});
-  }
-
-  cancelEditing() {
-    this.isEditing = false;
-    this.post = new Post();
-    this.toast.setMessage('item editing cancelled.', 'warning');
-    // reload the Posts to reset the editing
-    this.getPosts();
-  }
-
-  editPost(post: Post) {
-    this.postService.editPost(post).subscribe(
-      () => {
-        this.isEditing = false;
-        this.post = post;
-        this.toast.setMessage('item edited successfully.', 'success');
-      },
-      error => console.log(error)
-    );
   }
 
   deletePost(post: Post) {
@@ -143,6 +140,48 @@ export class PostsComponent implements OnInit {
         error => console.log(error)
       );
     }
+  }
+
+  // Material table logic
+
+  columnsToDisplay = [ 'description', 'from', 'size', 'price', 'actions', 'select', 'dateTimePublish'];
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.length;
+    return numSelected == numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.forEach(row => this.selection.select(row));
+    if (this.isAllSelected()) {
+      // add all posts to selectedPosts
+      this.selectedPosts = this.dataSource;
+    } else if (!this.isAllSelected()) {
+      this.selectedPosts = [];
+    }
+  }
+
+// END Material table logic
+
+  selectPostRow(row: any, isSelected: boolean) {
+    console.log(isSelected);
+    if (isSelected) {
+      this.selectedPosts.push(row);
+    } else if (!isSelected) {
+      this.selectedPosts.splice(row);
+    }
+    // alert('selectPostRow: ' + row.postId);
+    console.log(row);
+    console.log(this.selectedPosts);
+  }
+
+  schedulePosts() {
+    console.log(this.selectedPosts);
   }
 
 }

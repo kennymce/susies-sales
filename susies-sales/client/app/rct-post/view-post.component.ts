@@ -32,7 +32,7 @@ export class ViewPostComponent implements OnInit {
   photoArray: Array<string>;
   user: User;
   gimmied: boolean;
-  postsForUser: Post[];
+  postsForUser: Post[] = [];
 
   constructor(private fb: FormBuilder,
               private postService: PostService,
@@ -56,6 +56,7 @@ export class ViewPostComponent implements OnInit {
     this.initRouteParams();
     this.getPost();
     this.getUser();
+    //this.debug()
   }
 
   initRouteParams(): void {
@@ -76,6 +77,7 @@ export class ViewPostComponent implements OnInit {
   }
 
   onPostRetrieved(post: IPost): void {
+    console.log('onPostRetrieved...')
     if (this.postForm) {
       this.postForm.reset();
     }
@@ -102,6 +104,7 @@ export class ViewPostComponent implements OnInit {
   }
 
   getUser() {
+    console.log('getUser...')
     this.userService.getUser(this.auth.currentUser).subscribe(
       data => this.user = data,
       error => console.log(error),
@@ -110,12 +113,15 @@ export class ViewPostComponent implements OnInit {
   }
 
   onGetUserComplete()  {
+    console.log('onGetUserComplete...')
     const promise = new Promise((resolve => {
       this.isLoading = false;
       console.log('user is: ', this.user);
       this.getPostsForUser();
       resolve();
-    }));
+    })).then(function() {
+      console.log('in onGetUserComplete promise');
+    });
     // This needs to be called once everything has completed
     this.gimmied = this.userHasGimmiedPost(this.post.postId);
   }
@@ -125,6 +131,8 @@ export class ViewPostComponent implements OnInit {
       this.router.navigate(['rct-post/rct-post'], {queryParams: {postId: this.postId}});
     } else if (this.viewMode == 'view'){
       this.router.navigate(['posts']);
+    } else if (this.viewMode == 'view-mine') {
+      this.router.navigate(['user-posts']);
     }
   }
 
@@ -163,13 +171,16 @@ export class ViewPostComponent implements OnInit {
   }
 
   userHasGimmiedPost(_Id) : boolean {
+    console.log(`looking for post_id: ${_Id} 
+      within the ${this.postsForUser.length} posts of ${this.postsForUser}` );
     const post = this.postsForUser.filter( post => post._id === _Id);
     console.log ('gimmie is@: ', post);
-    console.log('userHasGimmiedPost: ', (post === null));
-    return (post == null);
+    console.log('userHasGimmiedPost: ', (post.length > 0));
+    return (post.length > 0);
   }
 
   getPostsForUser() {
+    console.log('in getPostsForUser...');
     this.gimmieService.getGimmiesForUser(this.auth.currentUser.username).subscribe(
       data => {
         this.user.gimmies = data;
@@ -181,16 +192,29 @@ export class ViewPostComponent implements OnInit {
         this.getPosts();
       }
     );
+
     this.isLoading = false;
   }
 
   getPosts() {
     this.user.gimmies.forEach(((post) => {
-      console.log('Getting posts for Gimmies');
+      console.log('Getting posts for gimmie: ',post.postId);
       this.postService.getPostJSON(post.postId)
         .subscribe(
-          (post: IPost) => this.postsForUser.push(post))
+          (post: IPost) => {
+            // TODO I think there's a more efficient way of doing this
+             this.postsForUser.push(post);
+             this.gimmied = this.userHasGimmiedPost(this.post.postId);
+          })
     }))
   }
 
+  debug() {
+    console.log(`postsForUser: (${this.postsForUser.length}): ${this.postsForUser}`);
+    this.postsForUser.forEach(obj => {
+      console.log(obj.postId);
+      console.log(this.userHasGimmiedPost(obj.postId));
+      this.gimmied = this.userHasGimmiedPost(obj.postId);
+    })
+  }
 }

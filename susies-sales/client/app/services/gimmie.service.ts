@@ -90,8 +90,9 @@ export class GimmieService{
     return this.http.put(`/api/gimmie/${gimmie._id}`, gimmie, { responseType: 'text' });
   }
 
-  deleteGimmie(gimmie: Gimmie): Observable<string> {
-    return this.http.delete(`/api/gimmie/${gimmie._id}`, { responseType: 'text' });
+  deleteGimmie(_id: string): Observable<string> {
+    console.log(`deleting gimmie in gimmieService: ${_id}`);
+    return this.http.delete(`/api/gimmie/${_id}`, { responseType: 'text' });
   }
 
   private handleAngularJsonBug (error: HttpErrorResponse) {

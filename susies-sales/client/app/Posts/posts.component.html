@@ -3,48 +3,80 @@
 
 <div class="card" *ngIf="!isLoading">
   <h4 class="card-header">Posts ({{posts.length}})
-    <button *ngIf="auth.loggedIn && auth.isAdmin" class="btn-link nounderline newButton" style="width:100px" (click)="goCreatePost()"><i
+    <button *ngIf="auth.loggedIn && auth.isAdmin" style="width:100px"
+            (click)="goCreatePost()"><i
       class="fa fa-id-card"></i> New
     </button>
+    <button (click)="schedulePosts()"> Schedule </button>
   </h4>
-  <div class="card-block">
-    <table class="table table-bordered table-striped">
-      <thead class="thead-default">
-      <tr>
-        <th>Description</th>
-        <th>From</th>
-        <th>Size</th>
-        <th>Price</th>
-        <th>Photos</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody *ngIf="posts.length === 0">
-      <tr>
-        <td colspan="4">No posts yet!</td>
-      </tr>
-      </tbody>
-      <tbody *ngIf="!isEditing">
-      <tr *ngFor="let post of posts">
-        <td>{{post.description}}</td>
-        <td>{{post.from}}</td>
-        <td>{{post.size}}</td>
-        <td>{{post.price}}</td>
-        <td>{{post.photos.length}}</td>
-        <td>
-          <button *ngIf="auth.loggedIn && auth.isAdmin" class="btn btn-sm btn-primary" style="width:70px" (click)="goEditPost(post._id)"><i
-            class="fa fa-pencil"></i> Edit
-          </button>
-          <button *ngIf="auth.loggedIn && !auth.isAdmin" class="btn btn-sm btn-primary" style="width:70px" (click)="goVeiwPost(post._id)"><i
-            class="fa fa-tags"></i> View
-          </button>
-          <button *ngIf="auth.loggedIn && auth.isAdmin" class="btn btn-sm btn-secondary" style="width:70px" (click)="deletePost(post)">
-            <i
-              class="fa fa-trash"></i> Delete
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <div>
+
+    <mat-table [dataSource]="dataSource">
+      <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+      <mat-row *matRowDef="let posts; columns: columnsToDisplay"></mat-row>
+
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null; selectPostRow(row, selection.isSelected(row))"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+
+        <mat-cell *matCellDef="let row">
+          <span class="actionSpan">
+            <mat-icon-button class="fa fa-pencil" (click)="goEditPost(row)"></mat-icon-button>
+          </span>
+          <span class="actionSpan">
+            <mat-icon-button class="fa fa-tags" (click)="goVeiwPost(row)"></mat-icon-button>
+          </span>
+          <span class="actionSpan">
+            <mat-icon-button class="fa fa-trash" (click)="deletePost(row)"></mat-icon-button>
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-cell *matCellDef="let post">{{post.description}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="from">
+        <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
+        <mat-cell *matCellDef="let post">{{post.from }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="size">
+        <mat-header-cell *matHeaderCellDef>Size</mat-header-cell>
+        <mat-cell *matCellDef="let post">{{post.size}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+        <mat-cell *matCellDef="let post">£ {{post.price}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="postId">
+        <mat-header-cell *matHeaderCellDef> Post_ID </mat-header-cell>
+        <mat-cell *matCellDef="let post">£ {{post.postId}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="dateTimePublish">
+        <mat-header-cell *matHeaderCellDef>Publish Date/Time </mat-header-cell>
+        <mat-cell *matCellDef="let post">{{post.dateTimePublish | date:"dd:MMM:yyyy hh-mm"}}</mat-cell>
+      </ng-container>
+    </mat-table>
+
   </div>
 </div>

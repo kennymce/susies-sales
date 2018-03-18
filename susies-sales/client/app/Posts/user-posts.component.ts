@@ -103,14 +103,41 @@ export class UserPostsComponent implements OnInit {
     this.ngxSmartModalService.resetModalData('myModal');
 }
 
-  removePost(_id: string) {
-    const pos = this.posts.map(elem => elem._id).indexOf(_id);
+  removePost(postId: string) {
+    const pos = this.posts.map(elem => elem._id).indexOf(postId);
     this.posts.splice(pos, 1);
-    this.toast.setMessage('item deleted successfully.', 'success');
+    const gimmie = this.user.gimmies.find(gimmie => gimmie.postId === postId)
+    this.doRemovePost(postId, gimmie._id);
+  }
+
+  deleteGimmie(postId: string, gimmieId: string) {
+    this.gimmieService.deleteGimmie(gimmieId).subscribe(
+      data => this.saveUser(),
+      error => console.log(error),
+      () => console.log(`Gimmie deleted for postId ${postId} gimmieId ${gimmieId}`)
+    );
+    const pos = this.user.gimmies.map(elem => elem._id).indexOf(postId);
+    this.user.gimmies.splice(pos, 1);
+  }
+
+  doRemovePost(postId: string, gimmieId: string) {
+      this.deleteGimmie(postId,gimmieId);
+      //this.saveUser();
+  }
+
+  saveUser() {
+    // save the user
+    this.userService.editUser(this.user).subscribe(
+      res => {
+        console.log('user saved:', this.user);
+      },
+      error => console.log(error)
+    );
   }
 
   goVeiwPost(_id: string) {
     this.router.navigate(['rct-post/view-post'],
-      {queryParams: {postId: _id, mode: "view"}});
+      {queryParams: {postId: _id, mode: "view-mine"}});
   }
+
 }

@@ -88,7 +88,7 @@ export default function setRoutes(app) {
   router.route('/gimmie').post(gimmieCtrl.insert);
   router.route('/gimmie/:id').get(gimmieCtrl.getAllGimmiesForUser);
   router.route('/gimmie/:id').put(gimmieCtrl.update);
-  router.route('/gimme/:id').delete(gimmieCtrl.delete);
+  router.route('/gimmie/:id').delete(gimmieCtrl.delete);
 
   // Apply the routes to our application with the prefix /api
   app.use('/api', router);

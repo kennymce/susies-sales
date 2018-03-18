@@ -23,11 +23,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RctPostComponent } from './rct-post/rct-post.component';
 import { ViewPostComponent } from './rct-post/view-post.component';
 import { CarouselComponent } from './rct-post/carousel.component';
- import { NgxSiemaModule } from 'ngx-siema';
-import {GimmieService} from './services/gimmie.service';
+import { NgxSiemaModule } from 'ngx-siema';
+import { GimmieService } from './services/gimmie.service';
 import { UserPostsComponent } from './Posts/user-posts.component';
 import { NgxSmartModalModule, NgxSmartModalService } from 'ngx-smart-modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarControlComponent } from './shared/calendar-control/calendar-control.component';
+import { MatTableModule, MatCheckboxModule  } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RctPostComponent,
     ViewPostComponent,
     CarouselComponent,
-    UserPostsComponent
+    UserPostsComponent,
+    CalendarControlComponent,
   ],
   imports: [
     RoutingModule,
@@ -53,7 +56,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     NgxSiemaModule.forRoot(),
     NgxSmartModalModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatCheckboxModule,
   ],
   providers: [
     AuthService,
@@ -63,7 +68,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     GimmieService,
     UserService,
     HttpClientModule,
-    NgxSmartModalService
+    NgxSmartModalService,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

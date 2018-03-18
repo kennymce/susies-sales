@@ -9,3 +9,18 @@
   border: none;
   cursor: pointer;
 }
+
+.actionSpan {
+  height: 30px;
+  width: 30px;
+  padding: 5px 10px 5px 10px;
+}
+
+.actionSpan:hover {
+  cursor: pointer;
+  background-color:  rgba(15,85,255,0.2) !important;
+}
+
+.mat-column-select {
+  overflow: initial;
+}

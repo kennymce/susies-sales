@@ -8,7 +8,8 @@ const postSchema = new mongoose.Schema({
   price: Number,
   photos: [{
     type: String
-  }]
+  }],
+  dateTimePublish:  { type : Date }
 });
 
 postSchema.pre('save', function (next) {

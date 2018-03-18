@@ -1,9 +1,11 @@
 import * as mongoose from 'mongoose';
+import DateTimeFormat = Intl.DateTimeFormat;
 
 const gimmieSchema = new mongoose.Schema({
   gimmieId: String,
   userId: String,
-  postId: String
+  postId: String,
+  dateTimeRequested:  { type : Date, default: Date.now }
 });
 
 gimmieSchema.pre('save', function (next) {
