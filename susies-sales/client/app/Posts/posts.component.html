@@ -78,5 +78,11 @@
       </ng-container>
     </mat-table>
 
+    <ngx-smart-modal [closable]="false" [escapable]="true" #myModal [identifier]="'myModal'">
+      <div class="spDatePicker">
+        <dl-date-time-picker #dlDateTimePicker></dl-date-time-picker>
+      </div>
+      <button (click)="myModal.close()">Done</button>
+    </ngx-smart-modal>
   </div>
 </div>

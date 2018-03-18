@@ -10,8 +10,9 @@ import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { User } from '../shared/models/user.model';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckbox } from '@angular/material';
 import { ViewChild } from '@angular/core';
+import {CalendarControlComponent} from '../shared/calendar-control/calendar-control.component';
+import {NgxSmartModalService} from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-posts',
@@ -38,7 +39,7 @@ export class PostsComponent implements OnInit {
   allowMultiSelect = true;
   selection = new SelectionModel<Post>(this.allowMultiSelect, this.initialSelection);
 
-  @ViewChild('myCheckbox') private myCheckbox: MatCheckbox;
+  @ViewChild('bscalendar') bscalendarRef: CalendarControlComponent ;
 
   constructor(private postService: PostService,
               private fileUploadService: FileUploadService,
@@ -46,7 +47,8 @@ export class PostsComponent implements OnInit {
               public toast: ToastComponent,
               private router: Router,
               public auth: AuthService,
-              private userService: UserService) { }
+              private userService: UserService,
+              public ngxSmartModalService: NgxSmartModalService) { }
 
   filesToUpload: FileList;
   user: User;
@@ -182,6 +184,7 @@ export class PostsComponent implements OnInit {
 
   schedulePosts() {
     console.log(this.selectedPosts);
+    this.ngxSmartModalService.getModal('myModal').open();
   }
 
 }

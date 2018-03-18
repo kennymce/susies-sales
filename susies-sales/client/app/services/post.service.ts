@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import {EmptyObservable} from 'rxjs/observable/EmptyObservable';
@@ -61,8 +61,13 @@ export class PostService {
     }
   }
 
+  schedulePosts(posts: IPost[], dateTime: Date) {
+    let params = new HttpParams().set('scheduleDateTime', dateTime.toDateString());
+    return this.http.post('/api/post/schedule',posts,{headers: {'Content-Type': 'application/json'}})
+    // add { params: params }
+  }
+
   createPost(post: IPost): Observable<IPost> {
-    //post.postId = undefined;
     return this.http.post('/api/post', post, {headers: {'Content-Type': 'application/json'}})
       .map(this.extractData)
       .do(post => console.log('creating Post in service: ' + JSON.stringify((post))))

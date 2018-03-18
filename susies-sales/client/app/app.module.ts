@@ -30,6 +30,7 @@ import { NgxSmartModalModule, NgxSmartModalService } from 'ngx-smart-modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarControlComponent } from './shared/calendar-control/calendar-control.component';
 import { MatTableModule, MatCheckboxModule  } from '@angular/material';
+import { DlDateTimePickerDateModule } from 'angular-bootstrap-datetimepicker';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { MatTableModule, MatCheckboxModule  } from '@angular/material';
     BrowserAnimationsModule,
     MatTableModule,
     MatCheckboxModule,
+    DlDateTimePickerDateModule
   ],
   providers: [
     AuthService,
