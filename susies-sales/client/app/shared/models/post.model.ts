@@ -6,4 +6,5 @@ export class Post {
   size?: number;
   price?: number;
   photos?: string[];
+  dateTimePublish: Date;
 }

@@ -7,7 +7,7 @@
             (click)="goCreatePost()"><i
       class="fa fa-id-card"></i> New
     </button>
-    <button (click)="schedulePosts()"> Schedule </button>
+    <button (click)="getDateTimeForSchedule()"> Schedule </button>
   </h4>
   <div>
 
@@ -80,9 +80,9 @@
 
     <ngx-smart-modal [closable]="false" [escapable]="true" #myModal [identifier]="'myModal'">
       <div class="spDatePicker">
-        <dl-date-time-picker #dlDateTimePicker></dl-date-time-picker>
+        <app-calendar-control #bscalendar></app-calendar-control>
       </div>
-      <button (click)="myModal.close()">Done</button>
+      <button (click)="setScheduleDateAndTime();">Done</button>
     </ngx-smart-modal>
   </div>
 </div>

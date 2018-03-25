@@ -11,8 +11,8 @@ import { UserService } from '../services/user.service';
 import { User } from '../shared/models/user.model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ViewChild } from '@angular/core';
-import {CalendarControlComponent} from '../shared/calendar-control/calendar-control.component';
-import {NgxSmartModalService} from 'ngx-smart-modal';
+import { CalendarControlComponent } from '../shared/calendar-control/calendar-control.component';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-posts',
@@ -168,7 +168,7 @@ export class PostsComponent implements OnInit {
     }
   }
 
-// END Material table logic
+  // END Material table logic
 
   selectPostRow(row: any, isSelected: boolean) {
     console.log(isSelected);
@@ -182,9 +182,39 @@ export class PostsComponent implements OnInit {
     console.log(this.selectedPosts);
   }
 
-  schedulePosts() {
+  schedulePosts(_dateTime: Date ) {
+    this.selectedPosts.forEach(function(item){
+      item.dateTimePublish = new Date(_dateTime);
+    });
     console.log(this.selectedPosts);
+    this.ngxSmartModalService.closeLatestModal();
+  }
+
+  getDateTimeForSchedule() {
     this.ngxSmartModalService.getModal('myModal').open();
   }
 
+  setModalData(_date: Date) {
+    console.log('Setting modal data to: ',_date);
+    this.ngxSmartModalService.setModalData(_date, 'myModal');
+  }
+
+  setScheduleDateAndTime() {
+    let scheduleDateTime = new Date(this.bscalendarRef.getDate());
+    // Doesn't matter that these are asynchronous operations
+    this.setModalData(scheduleDateTime);
+    this.schedulePosts(scheduleDateTime);
+    this.doSchedulePosts(scheduleDateTime);
+  }
+
+  doSchedulePosts(_dateTime: Date ) {
+    let postIds = this.selectedPosts.map(posts => posts._id);
+    console.log(`Scheduling the following posts for ${_dateTime}: ${postIds}` );
+    this.postService.schedulePosts(postIds, _dateTime).subscribe(
+      res => {
+        this.toast.setMessage('post added successfully.', 'success');
+      },
+      error => console.log(error)
+    );
+  }
 }

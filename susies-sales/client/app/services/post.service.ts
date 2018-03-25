@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import {EmptyObservable} from 'rxjs/observable/EmptyObservable';
@@ -12,7 +12,7 @@ import 'rxjs/add/operator/take';
 
 import { Post } from '../shared/models/post.model';
 import { IPost } from '../Posts/post';
-import {Gimmie} from '../shared/models/gimmie.model';
+
 
 
 @Injectable()
@@ -61,10 +61,12 @@ export class PostService {
     }
   }
 
-  schedulePosts(posts: IPost[], dateTime: Date) {
-    let params = new HttpParams().set('scheduleDateTime', dateTime.toDateString());
-    return this.http.post('/api/post/schedule',posts,{headers: {'Content-Type': 'application/json'}})
-    // add { params: params }
+  schedulePosts(postIds: string[], dateTime: Date) {
+    // TODO the scheduleDateTime could be put in the req body
+    console.log(`In post service, dateTime is: ${dateTime}`);
+    return this.http.post('/api/Posts/schedule',postIds,
+      {params: new HttpParams().set('scheduleDateTime', dateTime.toUTCString()),
+      headers: new HttpHeaders().set('Content-Type', 'application/json')});
   }
 
   createPost(post: IPost): Observable<IPost> {

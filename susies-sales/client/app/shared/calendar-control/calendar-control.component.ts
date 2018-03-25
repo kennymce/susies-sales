@@ -14,6 +14,7 @@ export class CalendarControlComponent implements OnInit {
     return this.dlDateTimePicker.value;
   }
   ngOnInit() {
+
   }
 
 }
