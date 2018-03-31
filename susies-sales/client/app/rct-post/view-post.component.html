@@ -11,7 +11,6 @@
         </form>
       </div>
 
-
       <!--<app-carousel [photos]="this.post.photos"></app-carousel>-->
       <app-carousel [photos]="this.post.photos"></app-carousel>
     </div>
@@ -25,18 +24,36 @@
       <div class="verticalSpacer"></div>
       <button type="button"
               class="btn btn-info"
-              (click)='claim()'><span *ngIf="!this.gimmied">Yes please!</span><span *ngIf="this.gimmied">Requested</span>
+              (click)='claim()'><span *ngIf="!this.gimmied">Yes please!</span><span
+        *ngIf="this.gimmied">Requested</span>
       </button>
     </div>
   </div>
 
+  <!-- Modal Dialog -->
+  <ngx-smart-modal [closable]="false" [escapable]="true" #myModal [identifier]="'myModal'">
+    <h3>Message for Susie</h3>
+    <div>
+      <!-- Textarea -->
+      <textarea id="privateMessageText" class="privateMessageTextArea"></textarea>
+      <div class="privateMessageButtonContainer">
+        <button (click)="myModal.close()" class="privateMessageCloseButton">Cancel</button>
+        <button (click)="handlePrivateMessage()" class="privateMessageDoneButton">Done</button>
+      </div>
+    </div>
+  </ngx-smart-modal>
 
-  <!--Save, Back and Preview Buttons -->
+  <!--Save, Back and Private Message Buttons -->
   <div class="card-footer" align="center">
     <div class="btn-group row" role="group">
       <button type="button"
               class="btn btn-secondary"
               (click)='goBack()'>Back
+      </button>
+      <span class="horizontalSpacer"></span>
+      <button type="button"
+              class="btn btn-secondary"
+              (click)='privateMessage()'>Private Message
       </button>
       <!--<button type="button"-->
       <!--class="btn btn-info"-->

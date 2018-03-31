@@ -31,6 +31,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarControlComponent } from './shared/calendar-control/calendar-control.component';
 import { MatTableModule, MatCheckboxModule  } from '@angular/material';
 import { DlDateTimePickerDateModule } from 'angular-bootstrap-datetimepicker';
+import { PrivateMessageService } from './services/private-message.service';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { DlDateTimePickerDateModule } from 'angular-bootstrap-datetimepicker';
     UserService,
     HttpClientModule,
     NgxSmartModalService,
+    PrivateMessageService,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

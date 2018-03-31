@@ -16,13 +16,7 @@ export default class PostCtrl extends BaseCtrl {
       , update = {$set: {'dateTimePublish': value}}
       , options = {multi: true, status: true};
     let utcDate = new Date(value);
-    console.log(`date is: ${utcDate.toUTCString()}`);
-    console.log('update many: ', JSON.stringify(req.body));
-    //console.log(`time is: ${value.toDateString()}`)
 
-    console.log(`conditions: ${JSON.stringify(conditions)}, 
-      update: ${JSON.stringify(update)}, 
-      options: ${JSON.stringify(options)}`);
     this.model.update(conditions, update, options, callback);
 
     function callback(err, numAffected) {

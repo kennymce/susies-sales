@@ -1,11 +1,11 @@
 import BaseCtrl from './base';
-import Gimmie from '../models/gimmie';
+import PrivateMessage from '../models/privateMessage';
 
-export default class GimmieCtrl extends BaseCtrl {
-  model = Gimmie;
+export default class PrivateMessageCtrl extends BaseCtrl {
+  model = PrivateMessage;
 
   // Get all for given user
-  getAllGimmiesForUser = (req, res) => {
+  getAllPrivateMessagesForUser = (req, res) => {
     this.model.find({ userId: req.params.id }, (err, item) => {
       if (err) { return console.error(err); }
       res.status(200).json(item);

@@ -7,7 +7,7 @@
             (click)="goCreatePost()"><i
       class="fa fa-id-card"></i> New
     </button>
-    <button (click)="getDateTimeForSchedule()"> Schedule </button>
+    <button [disabled]="this.isNoneSelected()" (click)="getDateTimeForSchedule()"> Schedule </button>
   </h4>
   <div>
 
@@ -36,13 +36,13 @@
 
         <mat-cell *matCellDef="let row">
           <span class="actionSpan">
-            <mat-icon-button class="fa fa-pencil" (click)="goEditPost(row)"></mat-icon-button>
+            <mat-icon-button class="fa fa-pencil" title="Edit "(click)="goEditPost(row)"></mat-icon-button>
           </span>
           <span class="actionSpan">
-            <mat-icon-button class="fa fa-tags" (click)="goVeiwPost(row)"></mat-icon-button>
+            <mat-icon-button class="fa fa-tags" title="View" (click)="goVeiwPost(row)"></mat-icon-button>
           </span>
           <span class="actionSpan">
-            <mat-icon-button class="fa fa-trash" (click)="deletePost(row)"></mat-icon-button>
+            <mat-icon-button class="fa fa-trash" title="Delete" (click)="deletePost(row)"></mat-icon-button>
           </span>
         </mat-cell>
       </ng-container>
@@ -82,7 +82,7 @@
       <div class="spDatePicker">
         <app-calendar-control #bscalendar></app-calendar-control>
       </div>
-      <button (click)="setScheduleDateAndTime();">Done</button>
+      <button [disabled]="!doneButtonEnabled()" (click)="setScheduleDateAndTime();">Done</button>
     </ngx-smart-modal>
   </div>
 </div>

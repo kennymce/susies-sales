@@ -80,6 +80,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
+    "prettier": "1.11.1",
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",

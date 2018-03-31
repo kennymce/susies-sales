@@ -3,8 +3,7 @@ import * as express from 'express';
 import PostCtrl from './controllers/post';
 import UserCtrl from './controllers/user';
 import GimmieCtrl from './controllers/gimmie';
-import Post from './models/post';
-import User from './models/user';
+import PrivateMessageCtrl from './controllers/privateMessage';
 
 export default function setRoutes(app) {
 
@@ -13,6 +12,7 @@ export default function setRoutes(app) {
   const postCtrl = new PostCtrl();
   const userCtrl = new UserCtrl();
   const gimmieCtrl = new GimmieCtrl();
+  const privateMessageCtrl = new PrivateMessageCtrl();
   const multer = require('multer');
 
   // Pictures
@@ -90,6 +90,14 @@ export default function setRoutes(app) {
   router.route('/gimmie/:id').get(gimmieCtrl.getAllGimmiesForUser);
   router.route('/gimmie/:id').put(gimmieCtrl.update);
   router.route('/gimmie/:id').delete(gimmieCtrl.delete);
+
+  // PrivateMessages
+  router.route( '/pm').get(privateMessageCtrl.getAll);
+  router.route('/pm/count').get(privateMessageCtrl.count);
+  router.route('/pm').post(privateMessageCtrl.insert);
+  router.route('/pm/:id').get(privateMessageCtrl.getAllPrivateMessagesForUser);
+  router.route('/pm/:id').put(privateMessageCtrl.update);
+  router.route('/pm/:id').delete(privateMessageCtrl.delete);
 
   // Apply the routes to our application with the prefix /api
   app.use('/api', router);

@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import DateTimeFormat = Intl.DateTimeFormat;
 
 const gimmieSchema = new mongoose.Schema({
   gimmieId: String,
