@@ -8,6 +8,7 @@ import { ActivatedRoute} from '@angular/router';
 import { Router } from '@angular/router';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { FileUploadService } from '../services/file-upload.service';
+import {AppSettings} from '../appSettings';
 
 @Component({
   selector: 'app-rct-post',
@@ -156,7 +157,7 @@ export class RctPostComponent implements OnInit {
   }
 
   openPhoto(photo: string) {
-    window.open('http://localhost:3000/api/pictures/' + photo, '_blank');
+    window.open(AppSettings.API_ENDPOINT + 'pictures/' + photo, '_blank');
   }
 
   preview(): void {

@@ -1,0 +1,61 @@
+<app-loading [condition]="isLoading"></app-loading>
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Private Messages ({{privateMessages.length}})
+  </h4>
+  <div>
+
+    <mat-table [dataSource]="dataSource">
+      <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+      <mat-row *matRowDef="let privateMessages; columns: columnsToDisplay"></mat-row>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+
+        <mat-cell *matCellDef="let row">
+          <span class="actionSpan">
+            <mat-icon-button class="fa fa-reply" title="Reply" (click)="setModalData(row)"></mat-icon-button>
+          </span>
+          <span class="actionSpan">
+            <mat-icon-button class="fa fa-trash" title="Delete" (click)="handleDelete(row)"></mat-icon-button>
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="userId">
+        <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.userId}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="toUser">
+        <mat-header-cell *matHeaderCellDef>To</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.toUser}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="message">
+        <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.message}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="dateTimeOfMessage">
+        <mat-header-cell *matHeaderCellDef>Message Date/Time </mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.dateTimeOfMessage| date:"dd:MMM:yyyy hh-mm"}}</mat-cell>
+      </ng-container>
+    </mat-table>
+
+    <!-- Modal Dialog -->
+    <ngx-smart-modal [closable]="false" [escapable]="true" #myModal [identifier]="'myModal'">
+      <h3>Message for [User]</h3><!-- TODO get the name of the reply to -->
+      <div>
+        <!-- Textarea -->
+        <textarea id="privateMessageText" class="privateMessageTextArea"></textarea>
+        <div class="privateMessageButtonContainer">
+          <button (click)="myModal.close()" class="privateMessageCloseButton">Cancel</button>
+          <button (click)="handlePrivateMessage(privateMessages)" class="privateMessageDoneButton">Done</button>
+        </div>
+      </div>
+    </ngx-smart-modal>
+
+  </div>
+</div>

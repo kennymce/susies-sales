@@ -13,11 +13,13 @@ import { RctPostComponent } from './rct-post/rct-post.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {ViewPostComponent} from './rct-post/view-post.component';
 import {UserPostsComponent} from './Posts/user-posts.component';
+import {PrivateMessagesComponent} from './private-messages/private-messages.component';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
   { path: 'posts', component: PostsComponent },
   { path: 'user-posts', component: UserPostsComponent},
+  { path: 'privateMessages', component: PrivateMessagesComponent},
   { path: 'rct-post/rct-post', component: RctPostComponent},
   { path: 'rct-post/view-post', component: ViewPostComponent},
   { path: 'register', component: RegisterComponent },

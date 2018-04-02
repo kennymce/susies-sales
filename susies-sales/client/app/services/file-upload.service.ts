@@ -1,21 +1,19 @@
-import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { AppSettings } from "../appSettings";
 
 @Injectable()
 export class FileUploadService {
-
-  constructor( private http: HttpClient) {  }
+  constructor(private http: HttpClient) {}
 
   postFiles(filesToUpload: FileList): Observable<boolean> {
-    const endpoint = 'http://localhost:3000/api/pictures'; // TODO make this a parameter
+    const endpoint = AppSettings.API_ENDPOINT + "pictures";
     const formData: FormData = new FormData();
 
     for (let i = 0; i < filesToUpload.length; i++) {
-      formData.append('file', filesToUpload[i], filesToUpload[i]['name']);
+      formData.append("file", filesToUpload[i], filesToUpload[i]["name"]);
     }
-    return this.http
-      .post(endpoint, formData)
-      .map(() =>  true );
+    return this.http.post(endpoint, formData).map(() => true);
   }
 }

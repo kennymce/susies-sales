@@ -16,6 +16,7 @@ import { PrivateMessageService } from "../services/private-message.service";
 import { NgxSmartModalService } from "ngx-smart-modal";
 import { IPrivateMessage } from "../privateMessage/privateMessage";
 import { PrivateMessage } from "../shared/models/privateMessage.model";
+import { AppSettings } from "../appSettings";
 
 @Component({
   selector: "app-view-post",
@@ -237,6 +238,7 @@ export class ViewPostComponent implements OnInit {
       let _privateMessage = new PrivateMessage(
         "new",
         this.user.username,
+        AppSettings.ADMIN_USER_NAME,
         this.post.postId,
         privateMessageText
       );

@@ -6,7 +6,7 @@ export default class PostCtrl extends BaseCtrl {
 
   schedulePosts = (req, res) => {
     console.log('Scheduling posts for date: ', req.query.scheduleDateTime);
-    let scheduleDateTime = req.query.scheduleDateTime; // TODO time is being truncated
+    let scheduleDateTime = req.query.scheduleDateTime;
     this.updateManyById(req, res, req.body, scheduleDateTime, 'scheduleDateTime');
   };
 

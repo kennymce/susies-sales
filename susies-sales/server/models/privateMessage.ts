@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 const privateMessageSchema = new mongoose.Schema({
   privateMessageId: String,
   userId: String,
+  toUser: String,
   postId: String,
   message: String,
   dateTimeOfMessage:  { type : Date, default: Date.now }

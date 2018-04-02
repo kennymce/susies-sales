@@ -1,16 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
-} from "@angular/forms";
 import { Router } from "@angular/router";
 import { PostService } from "../services/post.service";
 import { ToastComponent } from "../shared/toast/toast.component";
 import { Post } from "../shared/models/post.model";
-import { CurrencyPipe } from "@angular/common";
-import { FileUploadService } from "../services/file-upload.service";
 import { AuthService } from "../services/auth.service";
 import { UserService } from "../services/user.service";
 import { User } from "../shared/models/user.model";
@@ -23,24 +15,17 @@ import { NgxSmartModalService } from "ngx-smart-modal";
   selector: "app-posts",
   templateUrl: "./posts.component.html",
   styleUrls: ["./posts.component.css"],
-  providers: [CurrencyPipe, FileUploadService] // TODO FileUploadService should be globally available so it can be a singleton
+  providers: []
 })
+
 export class PostsComponent implements OnInit {
   post = new Post();
   posts: Post[] = [];
   selectedPosts: Post[] = [];
   isLoading = true;
-  isEditing = false;
-
-  addPostForm: FormGroup;
-  description = new FormControl("", Validators.required);
-  from = new FormControl("", Validators.required);
-  size = new FormControl("", Validators.required);
-  price = new FormControl("", Validators.required);
-  photo = new FormControl("", Validators.required);
-
   initialSelection = [];
   allowMultiSelect = true;
+
   selection = new SelectionModel<Post>(
     this.allowMultiSelect,
     this.initialSelection
@@ -51,8 +36,6 @@ export class PostsComponent implements OnInit {
 
   constructor(
     private postService: PostService,
-    private fileUploadService: FileUploadService,
-    private formBuilder: FormBuilder,
     public toast: ToastComponent,
     private router: Router,
     public auth: AuthService,
@@ -60,41 +43,13 @@ export class PostsComponent implements OnInit {
     public ngxSmartModalService: NgxSmartModalService
   ) {}
 
-  filesToUpload: FileList;
   user: User;
   dataSource: Post[];
 
-  handleFileInput(files: FileList) {
-    this.filesToUpload = files;
-    this.uploadFilesToAPI();
-  }
-
-  uploadFilesToAPI() {
-    this.fileUploadService.postFiles(this.filesToUpload).subscribe(
-      data => {
-        // do something, if upload success
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
-
-  //  transformCurrency(number) {
-  //    this.currencyPipe.transform(number, 'GBP');
-  //  }
-  // TODO Currency Pipe https://stackoverflow.com/questions/42254077/angular-2-date-pipe-inside-a-formcontrol-input
 
   ngOnInit() {
     this.getUser();
     this.getPosts();
-    this.addPostForm = this.formBuilder.group({
-      description: this.description,
-      from: this.from,
-      size: this.size,
-      price: this.price,
-      photo: this.photo
-    });
   }
 
   getScheduledPosts() {
@@ -130,22 +85,6 @@ export class PostsComponent implements OnInit {
     this.dataSource = this.posts;
     this.isLoading = false;
     this.getScheduledPosts();
-  }
-
-  addPost() {
-    this.postService.addPosts(this.addPostForm.value).subscribe(
-      res => {
-        this.posts.push(res);
-        this.addPostForm.reset();
-        this.toast.setMessage("post added successfully.", "success");
-      },
-      error => console.log(error)
-    );
-  }
-
-  enableEditing(post: Post) {
-    this.isEditing = true;
-    this.post = post;
   }
 
   goEditPost(row: any) {
