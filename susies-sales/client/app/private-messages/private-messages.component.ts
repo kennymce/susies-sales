@@ -1,15 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { SelectionModel } from "@angular/cdk/collections";
 import { PrivateMessage } from "../shared/models/privateMessage.model";
 import { PrivateMessageService } from "../services/private-message.service";
 import { ToastComponent } from "../shared/toast/toast.component";
 import { IPrivateMessage } from "../privateMessage/privateMessage";
 import { NgxSmartModalService } from "ngx-smart-modal";
 import { AuthService } from "../services/auth.service";
-import { AppSettings } from "../appSettings";
 import { User } from "../shared/models/user.model";
 import { UserService } from "../services/user.service";
 import { TableDataSource } from "angular4-material-table";
+import { HtmlUtility } from "../shared/utility/html";
 
 @Component({
   selector: "app-private-messages",
@@ -17,17 +16,9 @@ import { TableDataSource } from "angular4-material-table";
   styleUrls: ["./private-messages.component.css"]
 })
 export class PrivateMessagesComponent implements OnInit {
-  selectedMessages: PrivateMessage[] = [];
   isLoading = true;
-  initialSelection = [];
-  allowMultiSelect = true;
   privateMessages: PrivateMessage[] = [];
   user: User;
-
-  selection = new SelectionModel<PrivateMessage>(
-    this.allowMultiSelect,
-    this.initialSelection
-  );
 
   constructor(
     private privateMessageService: PrivateMessageService,
@@ -59,7 +50,6 @@ export class PrivateMessagesComponent implements OnInit {
     this.privateMessages = privateMessages;
     this.isLoading = false;
     console.log(this.privateMessages);
-    //this.dataSource = this.privateMessages;
     this.dataSource = new TableDataSource<any>(
       this.privateMessages,
       privateMessages
@@ -103,10 +93,15 @@ export class PrivateMessagesComponent implements OnInit {
     this.ngxSmartModalService.setModalData(privateMessage, "myModal");
   }
 
-  handlePrivateMessage(privateMessage: PrivateMessage) {
-    let privateMessageText = (<HTMLInputElement>document.getElementById(
-      "privateMessageText"
-    )).value;
+  cancelPrivateMessage() {
+    HtmlUtility.resetElementValue("privateMessageText");
+    this.ngxSmartModalService.getModal("myModal").close();
+  }
+
+  handlePrivateMessage() {
+    let privateMessage = this.ngxSmartModalService.getModalData("myModal")
+      .currentData;
+    let privateMessageText = HtmlUtility.getElementValue("privateMessageText");
     if (privateMessageText.length > 0) {
       let _privateMessage = new PrivateMessage(
         "new",
@@ -118,15 +113,16 @@ export class PrivateMessagesComponent implements OnInit {
       console.log("Saving privateMessage: ", _privateMessage);
       this.savePrivateMessage(_privateMessage);
     }
+    HtmlUtility.resetElementValue("privateMessageText");
+    console.log(`privateMessageText - debug: ${privateMessageText}`);
     this.ngxSmartModalService.closeLatestModal();
     this.ngxSmartModalService.resetModalData("myModal");
   }
 
   savePrivateMessage(_privateMessage: IPrivateMessage) {
-    // save the user
     this.privateMessageService.savePrivateMessage(_privateMessage).subscribe(
       res => {
-        this.toast.setMessage("Righto!", "success"); //TODO toaster doesn't work here
+        this.toast.setMessage("Righto!", "success");
       },
       error => console.log(error)
     );
@@ -154,12 +150,5 @@ export class PrivateMessagesComponent implements OnInit {
       this.dataSource.getRow(row.id).cancelOrDelete();
       this.goDeletePrivateMessage(row.currentData);
     }
-  }
-
-  refreshTbale() {
-    // TODO does not refresh. Also, need to do this in posts.component
-    this.privateMessageService
-      .getPrivateMessages()
-      .subscribe((privateMessages: IPrivateMessage[]) => this.dataSource);
   }
 }

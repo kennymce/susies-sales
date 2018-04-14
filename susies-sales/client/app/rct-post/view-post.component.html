@@ -34,12 +34,14 @@
   <ngx-smart-modal [closable]="false" [escapable]="true" #myModal [identifier]="'myModal'">
     <h3>Message for Susie</h3>
     <div>
+      <form id="textAreaMessage">
       <!-- Textarea -->
       <textarea id="privateMessageText" class="privateMessageTextArea"></textarea>
       <div class="privateMessageButtonContainer">
         <button (click)="myModal.close()" class="privateMessageCloseButton">Cancel</button>
         <button (click)="handlePrivateMessage()" class="privateMessageDoneButton">Done</button>
       </div>
+      </form>
     </div>
   </ngx-smart-modal>
 

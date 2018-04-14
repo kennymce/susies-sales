@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
 import { PostService } from "../services/post.service";
 import { ToastComponent } from "../shared/toast/toast.component";
@@ -10,6 +10,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { ViewChild } from "@angular/core";
 import { CalendarControlComponent } from "../shared/calendar-control/calendar-control.component";
 import { NgxSmartModalService } from "ngx-smart-modal";
+import { TableDataSource } from "angular4-material-table";
 
 @Component({
   selector: "app-posts",
@@ -33,6 +34,10 @@ export class PostsComponent implements OnInit {
   scheduledRows = [];
 
   @ViewChild("bscalendar") bscalendarRef: CalendarControlComponent;
+  @Output() postListChange = new EventEmitter<Post[]>();
+
+  dataSource: TableDataSource<Post>;
+  internalDataSource: Post[];
 
   constructor(
     private postService: PostService,
@@ -44,8 +49,6 @@ export class PostsComponent implements OnInit {
   ) {}
 
   user: User;
-  dataSource: Post[];
-
 
   ngOnInit() {
     this.getUser();
@@ -82,7 +85,11 @@ export class PostsComponent implements OnInit {
   }
 
   onGetPostsComplete() {
-    this.dataSource = this.posts;
+    this.internalDataSource = this.posts;
+    this.dataSource = new TableDataSource<any>(this.posts, Post);
+    this.dataSource.datasourceSubject.subscribe(posts =>
+      this.postListChange.emit(posts)
+    );
     this.isLoading = false;
     this.getScheduledPosts();
   }
@@ -105,15 +112,17 @@ export class PostsComponent implements OnInit {
     });
   }
 
-  deletePost(post: Post) {
+  deletePost(row) {
     if (
       window.confirm("Are you sure you want to permanently delete this item?")
     ) {
+      let post = row.currentData;
       this.postService.deletePost(post).subscribe(
         () => {
           const pos = this.posts.map(elem => elem._id).indexOf(post._id);
           this.posts.splice(pos, 1);
           this.toast.setMessage("item deleted successfully.", "success");
+          this.dataSource.getRow(row.id).cancelOrDelete();
         },
         error => console.log(error)
       );
@@ -135,7 +144,7 @@ export class PostsComponent implements OnInit {
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.length;
+    const numRows = this.internalDataSource.length;
     return numSelected == numRows;
   }
 
@@ -147,23 +156,24 @@ export class PostsComponent implements OnInit {
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
-      : this.dataSource.forEach(row => this.selection.select(row));
+      : this.internalDataSource.forEach(row => this.selection.select(row));
     if (this.isAllSelected()) {
       // add all posts to selectedPosts
-      this.selectedPosts = this.dataSource;
+      this.selectedPosts = this.internalDataSource;
     } else if (!this.isAllSelected()) {
       this.selectedPosts = [];
     }
   }
 
   selectPostRow(row: any, isSelected: boolean) {
-    console.log(row);
+    console.log(row.currentData);
+    console.log(`isSelected: ${isSelected}`);
     if (isSelected) {
-      this.selectedPosts.push(row);
+      this.selectedPosts.push(row.currentData);
     } else if (!isSelected) {
-      this.selectedPosts.splice(row);
+      this.selectedPosts.splice(row.currentData);
     }
-    console.log(`Is scheduled: ${this.isScheduled(row.postId)}`);
+    console.log(`Is scheduled: ${this.isScheduled(row.currentData.postId)}`);
   }
 
   // END Material table logic

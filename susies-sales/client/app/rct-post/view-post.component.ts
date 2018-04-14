@@ -17,6 +17,7 @@ import { NgxSmartModalService } from "ngx-smart-modal";
 import { IPrivateMessage } from "../privateMessage/privateMessage";
 import { PrivateMessage } from "../shared/models/privateMessage.model";
 import { AppSettings } from "../appSettings";
+import { HtmlUtility } from "../shared/utility/html";
 
 @Component({
   selector: "app-view-post",
@@ -231,9 +232,7 @@ export class ViewPostComponent implements OnInit {
   }
 
   handlePrivateMessage() {
-    let privateMessageText = (<HTMLInputElement>document.getElementById(
-      "privateMessageText"
-    )).value;
+    let privateMessageText = HtmlUtility.getElementValue("privateMessageText");
     if (privateMessageText.length > 0) {
       let _privateMessage = new PrivateMessage(
         "new",
@@ -253,7 +252,9 @@ export class ViewPostComponent implements OnInit {
     // save the user
     this.privateMessageService.savePrivateMessage(_privateMessage).subscribe(
       res => {
-        this.toast.setMessage("Righto!", "success"); //TODO toaster doesn't work here
+        let privateMessageText = HtmlUtility.getElementValue(
+          "privateMessageText"
+        );
       },
       error => console.log(error)
     );

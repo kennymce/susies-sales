@@ -49,32 +49,32 @@
 
       <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
-        <mat-cell *matCellDef="let post">{{post.description}}</mat-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.description}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="from">
         <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
-        <mat-cell *matCellDef="let post">{{post.from }}</mat-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.from }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="size">
         <mat-header-cell *matHeaderCellDef>Size</mat-header-cell>
-        <mat-cell *matCellDef="let post">{{post.size}}</mat-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.size}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="price">
         <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
-        <mat-cell *matCellDef="let post">£ {{post.price}}</mat-cell>
+        <mat-cell *matCellDef="let row">£ {{row.currentData.price}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="postId">
         <mat-header-cell *matHeaderCellDef> Post_ID </mat-header-cell>
-        <mat-cell *matCellDef="let post">£ {{post.postId}}</mat-cell>
+        <mat-cell *matCellDef="let row">£ {{row.currentData.postId}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="dateTimePublish">
         <mat-header-cell *matHeaderCellDef>Publish Date/Time </mat-header-cell>
-        <mat-cell *matCellDef="let post">{{post.dateTimePublish | date:"dd:MMM:yyyy hh-mm"}}</mat-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.dateTimePublish | date:"dd:MMM:yyyy hh-mm"}}</mat-cell>
       </ng-container>
     </mat-table>
 
