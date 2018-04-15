@@ -28,5 +28,13 @@ export default class PostCtrl extends BaseCtrl {
         res.sendStatus(200);
       }
     }
-  }
+  };
+
+  getUnscheduledPosts = (req, res) => {
+    console.log(`in getUnscheduledPosts`);
+    this.model.find({ dateTimePublish: null }, (err, item) => {
+      if (err) { return console.error(err); }
+      res.status(200).json(item);
+    });
+  };
 }

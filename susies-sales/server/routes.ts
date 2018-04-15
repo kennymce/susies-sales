@@ -68,6 +68,7 @@ export default function setRoutes(app) {
   router.route('/Posts').get(postCtrl.getAll);
   router.route('/Posts/count').get(postCtrl.count);
   router.route( '/Posts/user/:id').get(userCtrl.getAllPostsForUser);
+  router.route( '/Posts/unscheduled').get(postCtrl.getUnscheduledPosts);
   router.route('/Posts/schedule').post(postCtrl.schedulePosts);
   router.route('/post').post(postCtrl.insert);
   router.route('/post/:id').get(postCtrl.get);

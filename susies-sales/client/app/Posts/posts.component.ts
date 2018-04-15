@@ -99,13 +99,13 @@ export class PostsComponent implements OnInit {
 
   goEditPost(row: any) {
     this.router.navigate(["rct-post/rct-post"], {
-      queryParams: { postId: row.postId }
-    });
+      queryParams: { postId: row.currentData.postId }
+  });
   }
 
   goVeiwPost(row: any) {
     this.router.navigate(["rct-post/view-post"], {
-      queryParams: { postId: row.postId, mode: "view" }
+      queryParams: { postId: row.currentData.postId, mode: "view" }
     });
   }
 
