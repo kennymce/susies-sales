@@ -7,7 +7,16 @@
             (click)="goCreatePost()"><i
       class="fa fa-id-card"></i> New
     </button>
-    <button [disabled]="this.isNoneSelected()" (click)="getDateTimeForSchedule()"> Schedule </button>
+    <button [disabled]="this.isNoneSelected()" (click)="getDateTimeForSchedule()"> Schedule</button>
+    <span class="actionSpan" (click)="showHideScheduledPosts()">
+    <mat-icon-button class="fa fa-filter"
+                     title="Toggle between scheduled/unscheduled posts"></mat-icon-button>
+    </span>
+    <span class="horizontalSpacer5px"></span>
+    <span>
+      <label id="unscheduledPostsOnly" class="isFiltered">Unscheduled</label>
+    </span>
+
   </h4>
   <div>
 
@@ -21,8 +30,8 @@
                         [checked]="selection.hasValue() && isAllSelected()"
                         [indeterminate]="selection.hasValue() && !isAllSelected()">
           </mat-checkbox>
-
         </mat-header-cell>
+
         <mat-cell *matCellDef="let row">
           <mat-checkbox (click)="$event.stopPropagation()"
                         (change)="$event ? selection.toggle(row) : null; selectPostRow(row, selection.isSelected(row))"
@@ -35,14 +44,14 @@
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
 
         <mat-cell *matCellDef="let row">
-          <span class="actionSpan">
-            <mat-icon-button class="fa fa-pencil" title="Edit "(click)="goEditPost(row)"></mat-icon-button>
+          <span class="actionSpan" (click)="goEditPost(row)">
+            <mat-icon-button class="fa fa-pencil" title="Edit"></mat-icon-button>
           </span>
-          <span class="actionSpan">
-            <mat-icon-button class="fa fa-tags" title="View" (click)="goVeiwPost(row)"></mat-icon-button>
+          <span class="actionSpan" (click)="goVeiwPost(row)">
+            <mat-icon-button class="fa fa-tags" title="View"></mat-icon-button>
           </span>
-          <span class="actionSpan">
-            <mat-icon-button class="fa fa-trash" title="Delete" (click)="deletePost(row)"></mat-icon-button>
+          <span class="actionSpan" (click)="deletePost(row)">
+            <mat-icon-button class="fa fa-trash" title="Delete"></mat-icon-button>
           </span>
         </mat-cell>
       </ng-container>
@@ -68,13 +77,15 @@
       </ng-container>
 
       <ng-container matColumnDef="postId">
-        <mat-header-cell *matHeaderCellDef> Post_ID </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Post_ID</mat-header-cell>
         <mat-cell *matCellDef="let row">£ {{row.currentData.postId}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="dateTimePublish">
-        <mat-header-cell *matHeaderCellDef>Publish Date/Time </mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.currentData.dateTimePublish | date:"dd:MMM:yyyy hh-mm"}}</mat-cell>
+        <mat-header-cell *matHeaderCellDef>Publish Date/Time</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.dateTimePublish | date:"dd:MMM:yyyy hh-mm"}}
+
+        </mat-cell>
       </ng-container>
     </mat-table>
 

@@ -25,6 +25,14 @@
   overflow: initial;
 }
 
+.isFiltered {
+  border-style: solid;
+  border-color: #a275bc;
+  border-width: 1px;
+  font-size: 12px !important;
+  padding: 5px 5px 5px 5px;
+  margin: 0px 0px 5px 0px;
+}
 .highlight{
   background:rgba(208,255,151,0.32);
 }

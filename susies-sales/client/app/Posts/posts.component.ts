@@ -18,7 +18,6 @@ import { TableDataSource } from "angular4-material-table";
   styleUrls: ["./posts.component.css"],
   providers: []
 })
-
 export class PostsComponent implements OnInit {
   post = new Post();
   posts: Post[] = [];
@@ -26,6 +25,8 @@ export class PostsComponent implements OnInit {
   isLoading = true;
   initialSelection = [];
   allowMultiSelect = true;
+
+  public scheduledOnly: boolean = false;
 
   selection = new SelectionModel<Post>(
     this.allowMultiSelect,
@@ -52,7 +53,7 @@ export class PostsComponent implements OnInit {
 
   ngOnInit() {
     this.getUser();
-    this.getPosts();
+    this.getPosts(true);
   }
 
   getScheduledPosts() {
@@ -74,23 +75,25 @@ export class PostsComponent implements OnInit {
     );
   }
 
-  getPosts() {
+  getPosts(scheduled: boolean) {
     this.postService
-      .getPosts()
+      .getPosts(scheduled)
       .subscribe(
         data => (this.posts = data),
         error => console.log(error),
-        () => this.onGetPostsComplete()
+        () => this.onGetPostsComplete(scheduled)
       );
   }
 
-  onGetPostsComplete() {
+  onGetPostsComplete(scheduled: boolean) {
+    this.scheduledOnly = scheduled;
     this.internalDataSource = this.posts;
     this.dataSource = new TableDataSource<any>(this.posts, Post);
     this.dataSource.datasourceSubject.subscribe(posts =>
       this.postListChange.emit(posts)
     );
     this.isLoading = false;
+    this.setScheduledLabelVisbility();
     this.getScheduledPosts();
   }
 
@@ -195,7 +198,7 @@ export class PostsComponent implements OnInit {
 
   setScheduleDateAndTime() {
     let scheduleDateTime = new Date(this.bscalendarRef.getDate());
-    // Doesn't matter that these are asynchronous operations
+    // Doesn't matter that these are asynchronous operations since we don't care about the order they execute
     this.setModalData(scheduleDateTime);
     this.schedulePosts(scheduleDateTime);
     this.doSchedulePosts(scheduleDateTime);
@@ -228,5 +231,26 @@ export class PostsComponent implements OnInit {
     }
     console.log(`ScheduledRows: ${this.scheduledRows}`);
     return scheduled;
+  }
+
+  setScheduledLabelVisbility() {
+    if (this.scheduledOnly){
+      document.getElementById('unscheduledPostsOnly').style.visibility = 'hidden';
+    }
+    else
+    {
+      document.getElementById('unscheduledPostsOnly').style.visibility = 'visible';
+    }
+  }
+
+  showHideScheduledPosts(): void {
+    this.getPosts(!this.scheduledOnly);
+    /*    this.postService
+          .getPosts(false)
+          .subscribe(
+            data => (this.posts = data),
+            error => console.log(error),
+        () => this.onGetPostsComplete(true)
+      );*/
   }
 }

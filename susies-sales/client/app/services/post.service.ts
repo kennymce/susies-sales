@@ -23,8 +23,14 @@ export class PostService {
   thePost: IPost;
   create: boolean;
 
-  getPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>('/api/Posts');
+  getPosts(scheduled: Boolean): Observable<Post[]> {
+    if (!scheduled) {
+      return this.http.get<Post[]>('/api/Posts/unscheduled');
+    } else
+    {
+      return this.http.get<Post[]>('/api/Posts');
+    }
+
   }
 
   countPosts(): Observable<number> {
@@ -47,7 +53,7 @@ export class PostService {
         this.thePost = <IPost>response;
         return <IPost>response;
       })
-      .do(post => console.log('getting product from service: '+ JSON.stringify(this.thePost)))
+      .do(post => console.log('getting posts from service: '+ JSON.stringify(this.thePost)))
       .catch(PostService.handleError);
   }
 

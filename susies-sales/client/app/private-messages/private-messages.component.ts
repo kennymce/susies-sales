@@ -143,6 +143,15 @@ export class PrivateMessagesComponent implements OnInit {
       );
   }
 
+  getReplyToUser(): string {
+    if (this.ngxSmartModalService.getModalData("myModal")!= null) {
+      let privateMessage = this.ngxSmartModalService.getModalData("myModal")
+        .currentData;
+      return privateMessage.toUser;
+    }
+      else return null;
+  }
+
   handleDelete(row) {
     if (
       window.confirm("Are you sure you want to permanently delete this item?")
