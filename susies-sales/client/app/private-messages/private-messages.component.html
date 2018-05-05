@@ -48,7 +48,7 @@
 
     <!-- Modal Dialog -->
     <ngx-smart-modal [closable]="false" [escapable]="true" #myModal [identifier]="'myModal'">
-      <h3>Message for {{getReplyToUser()}}</h3>
+      <h3>Message for <span>{{this.replyToUser}}</span></h3>
       <div>
         <!-- Textarea -->
         <textarea id="privateMessageText" class="privateMessageTextArea"></textarea>

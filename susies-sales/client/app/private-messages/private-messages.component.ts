@@ -19,6 +19,8 @@ export class PrivateMessagesComponent implements OnInit {
   isLoading = true;
   privateMessages: PrivateMessage[] = [];
   user: User;
+  replyToUser: string;
+  privateMessage : PrivateMessage;
 
   constructor(
     private privateMessageService: PrivateMessageService,
@@ -83,14 +85,11 @@ export class PrivateMessagesComponent implements OnInit {
     this.isLoading = false;
   }
 
-  privateMessage() {
+  setModalData(data: any) {
     this.ngxSmartModalService.getModal("myModal").open();
-  }
-
-  setModalData(privateMessage: PrivateMessage) {
-    console.log("Setting modal data to: ", privateMessage.toString());
-    this.ngxSmartModalService.getModal("myModal").open();
-    this.ngxSmartModalService.setModalData(privateMessage, "myModal");
+    this.ngxSmartModalService.setModalData(data.currentData, "myModal");
+    this.privateMessage = data.currentData;
+    this.replyToUser = data.currentData.userId;
   }
 
   cancelPrivateMessage() {
@@ -99,8 +98,7 @@ export class PrivateMessagesComponent implements OnInit {
   }
 
   handlePrivateMessage() {
-    let privateMessage = this.ngxSmartModalService.getModalData("myModal")
-      .currentData;
+    let privateMessage = this.privateMessage;
     let privateMessageText = HtmlUtility.getElementValue("privateMessageText");
     if (privateMessageText.length > 0) {
       let _privateMessage = new PrivateMessage(
@@ -144,17 +142,12 @@ export class PrivateMessagesComponent implements OnInit {
   }
 
   getReplyToUser(): string {
-    if (this.ngxSmartModalService.getModalData("myModal")!= null) {
-      let privateMessage = this.ngxSmartModalService.getModalData("myModal")
-        .currentData;
-      return privateMessage.toUser;
-    }
-      else return null;
+  return this.replyToUser;
   }
 
   handleDelete(row) {
     if (
-      window.confirm("Are you sure you want to permanently delete this item?")
+      window.confirm("Are you sure you want to permanently delete this message?")
     ) {
       this.dataSource.getRow(row.id).cancelOrDelete();
       this.goDeletePrivateMessage(row.currentData);
