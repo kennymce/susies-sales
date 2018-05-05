@@ -35,14 +35,12 @@ export class PrivateMessagesComponent implements OnInit {
   dataSource: TableDataSource<PrivateMessage>;
 
   ngOnInit() {
-    this.getPrivateMessages();
     this.getUser();
   }
 
   getPrivateMessages(): void {
-    // Get the data with the postId
     this.privateMessageService
-      .getPrivateMessages()
+      .getPrivateMessagesForUser(this.user.username)
       .subscribe((privateMessages: IPrivateMessage[]) =>
         this.onPrivateMessagesRetrieved(privateMessages)
       );
@@ -81,7 +79,7 @@ export class PrivateMessagesComponent implements OnInit {
   }
 
   onGetUserComplete() {
-    console.log("onGetUserComplete...");
+    this.getPrivateMessages();
     this.isLoading = false;
   }
 
