@@ -246,6 +246,7 @@ export class ViewPostComponent implements OnInit {
     }
     this.ngxSmartModalService.closeLatestModal();
     this.ngxSmartModalService.resetModalData("myModal");
+    HtmlUtility.resetElementValue("privateMessageText");
   }
 
   savePrivateMessage(_privateMessage: IPrivateMessage) {
