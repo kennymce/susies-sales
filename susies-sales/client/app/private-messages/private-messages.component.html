@@ -16,11 +16,11 @@
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
 
         <mat-cell *matCellDef="let row">
-          <span class="actionSpan">
-            <mat-icon-button class="fa fa-reply" title="Reply" (click)="setModalData(row)"></mat-icon-button>
+          <span class="actionSpan" (click)="setModalData(row)">
+            <mat-icon-button class="fa fa-reply" title="Reply"></mat-icon-button>
           </span>
-          <span class="actionSpan">
-            <mat-icon-button class="fa fa-trash" title="Delete" (click)="handleDelete(row)"></mat-icon-button>
+          <span class="actionSpan" (click)="handleDelete(row)">
+            <mat-icon-button class="fa fa-trash" title="Delete"></mat-icon-button>
           </span>
         </mat-cell>
       </ng-container>
