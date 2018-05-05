@@ -25,6 +25,7 @@ export class PostsComponent implements OnInit {
   isLoading = true;
   initialSelection = [];
   allowMultiSelect = true;
+  columnsToDisplay = [];
 
   public scheduledOnly: boolean = false;
 
@@ -68,11 +69,32 @@ export class PostsComponent implements OnInit {
     this.userService.getUser(this.auth.currentUser).subscribe(
       data => (this.user = data),
       error => console.log(error),
-      () => {
-        this.isLoading = false;
-        console.log("isLoading=", this.isLoading);
-      }
+      () => this.onGetUserComplete()
     );
+  }
+
+  onGetUserComplete() {
+    this.isLoading = false;
+    if (this.user.role == 'admin') {
+      this.columnsToDisplay = [
+      "description",
+        "from",
+        "size",
+        "price",
+        "actions",
+        "select",
+        "dateTimePublish"
+      ]
+    }else
+    {
+      this.columnsToDisplay = [
+        "description",
+        "from",
+        "size",
+        "price",
+        "actions",
+      ]
+    }
   }
 
   getPosts(scheduled: boolean) {
@@ -100,7 +122,7 @@ export class PostsComponent implements OnInit {
   goEditPost(row: any) {
     this.router.navigate(["rct-post/rct-post"], {
       queryParams: { postId: row.currentData.postId }
-  });
+    });
   }
 
   goVeiwPost(row: any) {
@@ -132,22 +154,13 @@ export class PostsComponent implements OnInit {
     }
   }
 
-  // Material table logic
-
-  columnsToDisplay = [
-    "description",
-    "from",
-    "size",
-    "price",
-    "actions",
-    "select",
-    "dateTimePublish"
-  ];
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.internalDataSource.length;
+    console.log(`numRows = ${numRows}, numSelected = ${numSelected}`);
+    console.log(`IsAllSelected: ${numSelected == numRows}`);
     return numSelected == numRows;
   }
 
@@ -159,7 +172,12 @@ export class PostsComponent implements OnInit {
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
-      : this.internalDataSource.forEach(row => this.selection.select(row));
+      : this.internalDataSource.forEach(row => {
+          this.selection.select(row);
+          // TODO selection model doesn't work with material.
+          // https://stackoverflow.com/questions/47349528/binding-an-angular-material-selection-list
+          console.log(`selecting row: ${row.toString()}`);
+        });
     if (this.isAllSelected()) {
       // add all posts to selectedPosts
       this.selectedPosts = this.internalDataSource;
@@ -176,7 +194,6 @@ export class PostsComponent implements OnInit {
     } else if (!isSelected) {
       this.selectedPosts.splice(row.currentData);
     }
-    console.log(`Is scheduled: ${this.isScheduled(row.currentData.postId)}`);
   }
 
   // END Material table logic
@@ -221,36 +238,17 @@ export class PostsComponent implements OnInit {
     );
   }
 
-  isScheduled(row): boolean {
-    // TODO scheduled rows should have the highlight class applied ( [ngClass]="{'highlight': isScheduled(row)}")
-    let scheduled = false;
-    for (let post of this.scheduledRows) {
-      if (post.postId == row.postId) {
-        scheduled = true;
-      }
-    }
-    console.log(`ScheduledRows: ${this.scheduledRows}`);
-    return scheduled;
-  }
-
   setScheduledLabelVisbility() {
-    if (this.scheduledOnly){
-      document.getElementById('unscheduledPostsOnly').style.visibility = 'hidden';
-    }
-    else
-    {
-      document.getElementById('unscheduledPostsOnly').style.visibility = 'visible';
+    if (this.scheduledOnly) {
+      document.getElementById("unscheduledPostsOnly").style.visibility =
+        "hidden";
+    } else {
+      document.getElementById("unscheduledPostsOnly").style.visibility =
+        "visible";
     }
   }
 
   showHideScheduledPosts(): void {
     this.getPosts(!this.scheduledOnly);
-    /*    this.postService
-          .getPosts(false)
-          .subscribe(
-            data => (this.posts = data),
-            error => console.log(error),
-        () => this.onGetPostsComplete(true)
-      );*/
   }
 }

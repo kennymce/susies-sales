@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import * as mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
   postId: String,
@@ -6,17 +6,19 @@ const postSchema = new mongoose.Schema({
   from: String,
   size: Number,
   price: Number,
-  photos: [{
-    type: String
-  }],
-  dateTimePublish:  { type : Date }
+  photos: [
+    {
+      type: String
+    }
+  ],
+  dateTimePublish: { type: Date }
 });
 
-postSchema.pre('save', function (next) {
+postSchema.pre("save", function(next) {
   // If the postId is 'new' it's a new record so replace the postId with an ObjectId
   let self = this;
 
-  if (self.postId == 'new') {
+  if (self.postId == "new") {
     let postId = mongoose.Types.ObjectId();
     self.postId = postId;
     self._id = postId;
@@ -24,6 +26,11 @@ postSchema.pre('save', function (next) {
   next();
 });
 
-const Post = mongoose.model('Post', postSchema);
+postSchema.pre("remove", function(next) {
+  // Cascade the delete to the gimmies for this post
+  console.log('in postSchema.pre...')
+});
+
+const Post = mongoose.model("Post", postSchema);
 
 export default Post;

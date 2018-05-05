@@ -1,8 +1,10 @@
 import Post from '../models/post';
+import Gimmie from '../models/gimmie';
 import BaseCtrl from './base';
 
 export default class PostCtrl extends BaseCtrl {
   model = Post;
+  gimmie = Gimmie;
 
   schedulePosts = (req, res) => {
     console.log('Scheduling posts for date: ', req.query.scheduleDateTime);
@@ -37,4 +39,6 @@ export default class PostCtrl extends BaseCtrl {
       res.status(200).json(item);
     });
   };
+
+  //TODO cascade delete the gimmies when a post is deleted
 }

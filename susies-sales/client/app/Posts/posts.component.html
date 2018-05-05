@@ -7,9 +7,9 @@
             (click)="goCreatePost()"><i
       class="fa fa-id-card"></i> New
     </button>
-    <button [disabled]="this.isNoneSelected()" (click)="getDateTimeForSchedule()"> Schedule</button>
-    <span class="actionSpan" (click)="showHideScheduledPosts()">
-    <mat-icon-button class="fa fa-filter"
+    <button *ngIf="auth.loggedIn && auth.isAdmin" [disabled]="this.isNoneSelected()" (click)="getDateTimeForSchedule()"> Schedule</button>
+    <span *ngIf="auth.loggedIn && auth.isAdmin" class="actionSpan" (click)="showHideScheduledPosts()">
+    <mat-icon-button  class="fa fa-filter"
                      title="Toggle between scheduled/unscheduled posts"></mat-icon-button>
     </span>
     <span class="horizontalSpacer5px"></span>
@@ -44,13 +44,13 @@
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
 
         <mat-cell *matCellDef="let row">
-          <span class="actionSpan" (click)="goEditPost(row)">
+          <span class="actionSpan" *ngIf="auth.loggedIn && auth.isAdmin" (click)="goEditPost(row) ">
             <mat-icon-button class="fa fa-pencil" title="Edit"></mat-icon-button>
           </span>
           <span class="actionSpan" (click)="goVeiwPost(row)">
             <mat-icon-button class="fa fa-tags" title="View"></mat-icon-button>
           </span>
-          <span class="actionSpan" (click)="deletePost(row)">
+          <span class="actionSpan" *ngIf="auth.loggedIn && auth.isAdmin" (click)="deletePost(row)">
             <mat-icon-button class="fa fa-trash" title="Delete"></mat-icon-button>
           </span>
         </mat-cell>
