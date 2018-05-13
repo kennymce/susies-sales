@@ -1,67 +1,43 @@
 <app-loading [condition]="isLoading"></app-loading>
 <app-toast [message]="toast.message"></app-toast>
-<div class="card">
+<div *ngIf="!isLoading" class="card">
   <h4 class="card-header">{{pageTitle}}</h4>
   <div class="card-block">
     <div class='container'>
-      <form (ngSubmit)="save()" class="form-vertical" [formGroup]="postForm">
+      <form class="form-vertical" [formGroup]="newsForm">
         <fieldset>
 
           <!-- Textarea -->
           <div class="verticalSpacer"></div>
           <div class="form-group row">
-            <label class="col-md-4 control-label text-lg-right" for="description">Description</label>
+            <label class="col-md-4 control-label text-lg-right" for="news">What's the news?</label>
             <div class="col-md-4">
-              <textarea id="description"
+              <textarea id="news"
+                        required = ""
                         class="form-control"
-                        formControlName="description"></textarea>
+                        formControlName="news"></textarea>
             </div>
           </div>
 
-          <!-- Text input-->
+          <!-- Calendar input-->
           <div class="form-group row">
-            <label class="col-md-4 control-label text-lg-right" for="from">From</label>
-            <div class="col-md-5">
-              <input id="from"
-                     type="text"
-                     class="form-control input-md"
-                     required=""
-                     formControlName="from">
+            <label class="col-md-4 control-label text-lg-right" for="publishDateTime">Date and time</label>
+            <span class="horizontalSpacer5px"></span>
+            <button class="btn btn-light"
+                    title="Schedule this news for a date and time"
+                    (click)="getDateTimeForSchedule()"><i class="fa fa-calendar"></i></button>
+            <span class="horizontalSpacer5px"></span>
+            <button class="btn btn-light"
+                    title="Spread the news NOW!"
+                    (click)="scheduleForNow();"><i class="fa fa-exclamation"></i></button>
 
-            </div>
-          </div>
-
-          <!-- Text input-->
-          <div class="form-group row">
-            <label class="col-md-4 control-label text-lg-right" for="size">Size</label>
             <div class="col-md-2">
-              <input id="size"
+              <input id="publishDateTime"
                      type="text"
-                     placeholder="Size"
+                     readonly
+                     required = ""
                      class="form-control input-md"
-                     required=""
-                     formControlName="size">
-
-            </div>
-          </div>
-
-          <!-- Text input-->
-          <div class="form-group row">
-            <label class="col-md-4 control-label text-lg-right" for="price">Price</label>
-            <div class="col-md-2">
-              <input id="price"
-                     type="text"
-                     placeholder="£"
-                     class="form-control input-md"
-                     required=""
-                     value=""
-                     formControlName="price">
-
-              <!-- Invisible input for photos -->
-              <input id="photos"
-                     type="hidden"
-                     formControlName="photos">
-
+                     formControlName="publishDateTime">
             </div>
           </div>
 
@@ -75,6 +51,12 @@
                      class="input-file"
                      type="file"
                      (change)="handleFileInput($event.target.files)" multiple>
+
+              <!-- Invisible input for photos -->
+              <input id="photos"
+                     type="hidden"
+                     formControlName="photos">
+
             </div>
           </div>
         </fieldset>
@@ -88,35 +70,39 @@
                   Photos ({{numberOfFiles}})
                 </h5>
               </div>
-              <ul class="photoList" *ngFor="let photo of post.photos; let p = index">
+              <ul class="photoList" *ngFor="let photo of news.photos; let p = index">
                 <li>
                   <span class="photoListItem"><span><i class="fa fa-external-link"></i></span>
                     <span class="photoListSpacer"></span><span class="photoListText" (click)="openPhoto(photo)">{{photo}}</span></span>
                 </li>
               </ul>
             </div>
+            <div class="verticalSpacer"></div>
           </div>
         </div>
       </form>
     </div>
   </div>
+
   <!--Save, Back and Preview Buttons -->
   <div class="card-footer" align="center">
-    <div class="btn-group row" role="group" aria-label="Basic example">
-      <button type="button"
-              class="btn btn-secondary"
-              (click)='preview()'
-              [disabled]="!postForm.valid">Preview
-      </button>
+    <div class="btn-group row" role="group">
       <button type="button"
               class="btn btn-primary"
               (click)='save("edit")'
-              [disabled]="!postForm.valid">Save
+              [disabled]="!newsForm.valid">Save
       </button>
       <button type="button"
               class="btn btn-secondary"
               (click)='cancel()'>Back
       </button>
     </div>
+    <ngx-smart-modal [closable]="false" [escapable]="true" #myModal [identifier]="'myModal'">
+      <div class="spDatePicker">
+        <app-calendar-control #bscalendar></app-calendar-control>
+      </div>
+      <button [disabled]="!doneButtonEnabled()" (click)="setScheduleDateAndTime();">Done</button>
+    </ngx-smart-modal>
+
   </div>
 </div>

@@ -9,5 +9,10 @@ export namespace HtmlUtility {
       theElement
     )).value;
   }
+  export function setElementValue(theElement, theValue){
+    (<HTMLInputElement>document.getElementById(
+      theElement
+    )).value = theValue;
+  }
 }
 

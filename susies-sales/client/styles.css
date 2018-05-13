@@ -8,3 +8,13 @@ body {
 .input-group {
   margin-bottom: 15px;
 }
+
+a {
+  color: black;
+  text-decoration: none;
+  background-color: transparent;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  color: #fff;
+  background-color: dimgrey;
+}

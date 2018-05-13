@@ -22,11 +22,11 @@
         <div><span>Price: £</span>{{ this.post.price}}</div>
       </div>
       <div class="verticalSpacer"></div>
-      <button type="button"
+      <span *ngIf="auth.loggedIn && !auth.isAdmin"><button type="button"
               class="btn btn-info"
               (click)='claim()'><span *ngIf="!this.gimmied">Yes please!</span><span
         *ngIf="this.gimmied">Requested</span>
-      </button>
+      </button></span>
     </div>
   </div>
 

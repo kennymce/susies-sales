@@ -1,0 +1,25 @@
+#scheduleDateTime {
+  width: 225px;
+}
+/* Make the 'No files chosen' label invisible */
+input[type='file'] {
+  color: transparent;
+}
+.photoList {
+  align-content: left;
+  list-style-type: none;
+}
+.photoListSpacer {
+  margin-left: 5px;
+}
+.photoListItem {
+  cursor: pointer;
+  position: relative;
+}
+.photoListText:hover {
+  text-decoration: underline;
+}
+
+#photoContainer {
+  align-content: left;
+}

@@ -4,6 +4,7 @@ import PostCtrl from './controllers/post';
 import UserCtrl from './controllers/user';
 import GimmieCtrl from './controllers/gimmie';
 import PrivateMessageCtrl from './controllers/privateMessage';
+import NewsCtrl from './controllers/news';
 
 export default function setRoutes(app) {
 
@@ -12,6 +13,7 @@ export default function setRoutes(app) {
   const postCtrl = new PostCtrl();
   const userCtrl = new UserCtrl();
   const gimmieCtrl = new GimmieCtrl();
+  const newsCtrl = new NewsCtrl();
   const privateMessageCtrl = new PrivateMessageCtrl();
   const multer = require('multer');
 
@@ -91,6 +93,13 @@ export default function setRoutes(app) {
   router.route('/gimmie/:id').get(gimmieCtrl.getAllGimmiesForUser);
   router.route('/gimmie/:id').put(gimmieCtrl.update);
   router.route('/gimmie/:id').delete(gimmieCtrl.delete);
+
+  // Gimmies
+  router.route( '/news').get(newsCtrl.getAll);
+  router.route('/news/count').get(newsCtrl.count);
+  router.route('/news').post(newsCtrl.insert);
+  router.route('/news/:id').put(newsCtrl.update);
+  router.route('/news/:id').delete(newsCtrl.delete);
 
   // PrivateMessages
   router.route( '/pm').get(privateMessageCtrl.getAll);

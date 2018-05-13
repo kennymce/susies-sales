@@ -40,6 +40,8 @@ import {
 import { DlDateTimePickerDateModule } from "angular-bootstrap-datetimepicker";
 import { PrivateMessageService } from "./services/private-message.service";
 import { PrivateMessagesComponent } from "./private-messages/private-messages.component";
+import { NewsComponent } from './News/news.component';
+import {NewsService} from './services/news.service';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,8 @@ import { PrivateMessagesComponent } from "./private-messages/private-messages.co
     CarouselComponent,
     UserPostsComponent,
     CalendarControlComponent,
-    PrivateMessagesComponent
+    PrivateMessagesComponent,
+    NewsComponent
   ],
   imports: [
     RoutingModule,
@@ -74,7 +77,7 @@ import { PrivateMessagesComponent } from "./private-messages/private-messages.co
     MatButtonModule,
     MatInputModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
   ],
   providers: [
     AuthService,
@@ -82,6 +85,7 @@ import { PrivateMessagesComponent } from "./private-messages/private-messages.co
     AuthGuardAdmin,
     PostService,
     GimmieService,
+    NewsService,
     UserService,
     HttpClientModule,
     NgxSmartModalService,

@@ -1,5 +1,4 @@
 <div class="container">
-
   <nav class="navbar navbar-expand-sm navbar-nav nav-justified-end" >
     <div class="nav navbar-nav" >
       <ul class="nav nav-pills">
@@ -24,7 +23,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/user-posts" routerLinkActive="active" *ngIf="auth.loggedIn">
+          <a class="nav-link" routerLink="/user-posts" routerLinkActive="active" *ngIf="auth.loggedIn && !auth.isAdmin">
             <i class="fa fa-tags"></i> My Items
           </a>
         </li>
