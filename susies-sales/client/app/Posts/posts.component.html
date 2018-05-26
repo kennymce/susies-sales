@@ -3,20 +3,19 @@
 
 <div class="card" *ngIf="!isLoading">
   <h4 class="card-header">Posts ({{posts.length}})
-    <button *ngIf="auth.loggedIn && auth.isAdmin" style="width:100px"
-            (click)="goCreatePost()"><i
-      class="fa fa-id-card"></i> New
-    </button>
-    <button *ngIf="auth.loggedIn && auth.isAdmin" [disabled]="this.isNoneSelected()" (click)="getDateTimeForSchedule()"> Schedule</button>
-    <span *ngIf="auth.loggedIn && auth.isAdmin" class="actionSpan" (click)="showHideScheduledPosts()">
-    <mat-icon-button  class="fa fa-filter"
-                     title="Toggle between scheduled/unscheduled posts"></mat-icon-button>
-    </span>
-    <span class="horizontalSpacer5px"></span>
-    <span>
-      <label id="unscheduledPostsOnly" class="isFiltered">Unscheduled</label>
-    </span>
-
+      <button *ngIf="auth.loggedIn && auth.isAdmin" style="width:100px"
+              (click)="goCreatePost()"><i
+        class="fa fa-id-card"></i> New
+      </button>
+      <button [disabled]="this.isNoneSelected()" (click)="getDateTimeForSchedule()"> Schedule</button>
+      <span class="actionSpan" (click)="showHideScheduledPosts()">
+      <mat-icon-button class="fa fa-filter"
+                       title="Toggle between scheduled/unscheduled posts"></mat-icon-button>
+      </span>
+      <span class="horizontalSpacer5px"></span>
+      <span>
+        <label id="unscheduledPostsOnly" class="isFiltered">Unscheduled</label>
+      </span>
   </h4>
   <div>
 
@@ -83,7 +82,7 @@
 
       <ng-container matColumnDef="dateTimePublish">
         <mat-header-cell *matHeaderCellDef>Publish Date/Time</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.currentData.dateTimePublish | date:"dd:MMM:yyyy hh-mm"}}
+        <mat-cell *matCellDef="let row">{{this.formatDate(row.currentData.dateTimePublish)}}
 
         </mat-cell>
       </ng-container>

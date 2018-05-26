@@ -1,7 +1,18 @@
+<app-loading [condition]="isLoading"></app-loading>
 <div class="card">
   <h4 class="card-header">Susie's Sales</h4>
   <div class="card-block">
     <div class='jumbotron-fluid'>About Susie's Sales</div>
-    <div class='lead'>Beautiful brand new and previously loved clothes in gorgeous condition. childrens, teens and adults outfits posted daily. Based in watford. xx</div>
+    <div class='lead'>Beautiful brand new and previously loved clothes in gorgeous condition. childrens, teens and
+      adults outfits posted daily. Based in watford. xx
+    </div>
   </div>
 </div>
+<div class="verticalSpacer"></div>
+<div class="newsFeed" *ngIf="auth.loggedIn && !isLoading">
+  <div class="newsElement"  *ngFor="let news of newsStories">
+    <news-element (onNewsStoryDeleted)="this.newsStoryDeleted($event)" [user]="user" [newsStory]="news"></news-element>
+    <div class="verticalSpacer"></div>
+  </div>
+</div>
+

@@ -1,5 +1,4 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
-
 import { RoutingModule } from "./routing.module";
 import { SharedModule } from "./shared/shared.module";
 import { PostService } from "./services/post.service";
@@ -42,6 +41,7 @@ import { PrivateMessageService } from "./services/private-message.service";
 import { PrivateMessagesComponent } from "./private-messages/private-messages.component";
 import { NewsComponent } from './News/news.component';
 import {NewsService} from './services/news.service';
+import { NewsElementComponent } from './News/news-element/news-element.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +62,8 @@ import {NewsService} from './services/news.service';
     UserPostsComponent,
     CalendarControlComponent,
     PrivateMessagesComponent,
-    NewsComponent
+    NewsComponent,
+    NewsElementComponent
   ],
   imports: [
     RoutingModule,

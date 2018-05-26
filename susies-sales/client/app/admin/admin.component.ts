@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-
 import { ToastComponent } from "../shared/toast/toast.component";
 import { AuthService } from "../services/auth.service";
 import { UserService } from "../services/user.service";

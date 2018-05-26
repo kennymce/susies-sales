@@ -11,6 +11,7 @@ import { ViewChild } from "@angular/core";
 import { CalendarControlComponent } from "../shared/calendar-control/calendar-control.component";
 import { NgxSmartModalService } from "ngx-smart-modal";
 import { TableDataSource } from "angular4-material-table";
+import { DateUtility } from '../shared/utility/date';
 
 @Component({
   selector: "app-posts",
@@ -21,6 +22,7 @@ import { TableDataSource } from "angular4-material-table";
 export class PostsComponent implements OnInit {
   post = new Post();
   posts: Post[] = [];
+  user: User;
   selectedPosts: Post[] = [];
   isLoading = true;
   initialSelection = [];
@@ -50,11 +52,14 @@ export class PostsComponent implements OnInit {
     public ngxSmartModalService: NgxSmartModalService
   ) {}
 
-  user: User;
-
   ngOnInit() {
     this.getUser();
-    this.getPosts(true);
+  }
+
+  ngAfterViewChecked() {
+    if (document.getElementById("unscheduledPostsOnly") != undefined) {
+      this.setScheduledLabelVisbility();
+    }
   }
 
   getScheduledPosts() {
@@ -66,35 +71,36 @@ export class PostsComponent implements OnInit {
   }
 
   getUser() {
-    this.userService.getUser(this.auth.currentUser).subscribe(
-      data => (this.user = data),
-      error => console.log(error),
-      () => this.onGetUserComplete()
-    );
+    this.userService
+      .getUser(this.auth.currentUser)
+      .subscribe(
+        data => (this.user = data),
+        error => console.log(error),
+        () => this.onGetUserComplete()
+      );
   }
 
   onGetUserComplete() {
-    this.isLoading = false;
-    if (this.user.role == 'admin') {
-      this.columnsToDisplay = [
-      "description",
-        "from",
-        "size",
-        "price",
-        "actions",
-        "select",
-        "dateTimePublish"
-      ]
-    }else
-    {
+    if (this.user.role == "admin") {
       this.columnsToDisplay = [
         "description",
         "from",
         "size",
         "price",
         "actions",
-      ]
+        "select",
+        "dateTimePublish"
+      ];
+    } else {
+      this.columnsToDisplay = [
+        "description",
+        "from",
+        "size",
+        "price",
+        "actions"
+      ];
     }
+    this.getPosts(true);
   }
 
   getPosts(scheduled: boolean) {
@@ -115,7 +121,6 @@ export class PostsComponent implements OnInit {
       this.postListChange.emit(posts)
     );
     this.isLoading = false;
-    this.setScheduledLabelVisbility();
     this.getScheduledPosts();
   }
 
@@ -153,7 +158,6 @@ export class PostsComponent implements OnInit {
       );
     }
   }
-
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -250,5 +254,13 @@ export class PostsComponent implements OnInit {
 
   showHideScheduledPosts(): void {
     this.getPosts(!this.scheduledOnly);
+  }
+
+  formatDate(dateString){
+    if (dateString != undefined) {
+      const theDate = new Date(dateString)
+      return DateUtility.formatDate(theDate);
+    } else
+      return null;
   }
 }

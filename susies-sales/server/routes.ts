@@ -94,7 +94,7 @@ export default function setRoutes(app) {
   router.route('/gimmie/:id').put(gimmieCtrl.update);
   router.route('/gimmie/:id').delete(gimmieCtrl.delete);
 
-  // Gimmies
+  // News
   router.route( '/news').get(newsCtrl.getAll);
   router.route('/news/count').get(newsCtrl.count);
   router.route('/news').post(newsCtrl.insert);

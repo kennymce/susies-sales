@@ -84,9 +84,10 @@ export class NewsService {
     });
   }
 
-  deleteNews(_id: string): Observable<string> {
-    console.log(`deleting news in newsService: ${_id}`);
-    return this.http.delete(`/api/news/${_id}`, { responseType: "text" });
+  deleteNews(news: News): Observable<string> {
+    console.log(`deleting news in newsService: ${news.newsId}`);
+    // TODO why on earth does this not work?
+    return this.http.delete(`/api/news/${news._id}`, { responseType: 'text' });
   }
 
   private handleAngularJsonBug(error: HttpErrorResponse) {

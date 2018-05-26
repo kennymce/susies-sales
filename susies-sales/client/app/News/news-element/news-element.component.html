@@ -1,0 +1,18 @@
+<div class="card">
+  <div class='container'>
+    <div class="newsText">
+    <span>
+      <span class="removeNewsStory"
+            *ngIf="user.role == 'admin'">
+      <button class="btn btn-sm btn-light"
+              (click)="deleteNewsStory(newsStory)">
+            <i class="fa fa-trash"></i>
+          </button></span>
+      {{newsStory.news}}
+    </span>
+    </div>
+    <div class="newsPhotos" *ngFor="let photo of newsStory.photos">
+      <!--<span>{{photo}}</span>-->
+    </div>
+  </div>
+</div>

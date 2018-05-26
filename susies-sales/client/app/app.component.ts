@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
-import { AuthService } from './services/auth.service';
-import 'bootstrap/dist/js/bootstrap.bundle.js';
+import { Component, ChangeDetectorRef } from "@angular/core";
+import { AuthService } from "./services/auth.service";
+import "bootstrap/dist/js/bootstrap.bundle.js";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html'
+  selector: "app-root",
+  templateUrl: "./app.component.html"
 })
 export class AppComponent {
+  constructor(public auth: AuthService, private cdRef: ChangeDetectorRef) {}
 
-  constructor(public auth: AuthService) { }
-
+  ngAfterViewChecked() {
+    this.cdRef.detectChanges();
+  }
 }

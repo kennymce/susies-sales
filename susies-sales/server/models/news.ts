@@ -17,7 +17,7 @@ newsSchema.pre("save", function(next) {
 
   if (self.newsId == "new") {
     let newsId = mongoose.Types.ObjectId();
-    self.postId = newsId;
+    self.newsId = newsId;
     self._id = newsId;
   }
   next();
