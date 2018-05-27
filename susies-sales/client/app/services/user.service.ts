@@ -17,8 +17,16 @@ export class UserService {
     return this.http.post<any>('/api/login', credentials);
   }
 
-  getUsers(): Observable<User[]> {
+  getAuthorisedUsers(): Observable<User[]> {
     return this.http.get<User[]>('/api/users');
+  }
+
+  getUnauthorisedUsers(): Observable<User[]> {
+    return this.http.get<User[]>('/api/users/new')
+  }
+
+  authoriseUser(user: User): Observable<string> {
+    return this.http.put(`/api/user/thisgirlsok/${user._id}`, user, { responseType: 'text' });
   }
 
   countUsers(): Observable<number> {

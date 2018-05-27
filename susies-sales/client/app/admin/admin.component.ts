@@ -11,7 +11,8 @@ import { Router } from "@angular/router";
   templateUrl: "./admin.component.html"
 })
 export class AdminComponent implements OnInit {
-  users: User[] = [];
+  authorisedUsers: User[] = [];
+  unauthorisedUsers: User[] = [];
   actions: IAdminAction[];
   isLoading = true;
 
@@ -23,14 +24,34 @@ export class AdminComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getUsers();
+    this.getAuthorisedUsers();
   }
 
-  getUsers() {
+  getAuthorisedUsers() {
+    this.userService.getAuthorisedUsers().subscribe(
+      data => {
+        this.authorisedUsers = data;
+        this.getUnauthorisedUsers();
+      },
+      error => console.log(error),
+      () => (this.isLoading = false)
+    );
+  }
+
+  authoriseUser(user) {
+    this.userService.authoriseUser(user).subscribe(
+      data => {
+        this.getAuthorisedUsers();
+      },
+      error => console.log(error)
+    );
+  }
+
+  getUnauthorisedUsers() {
     this.userService
-      .getUsers()
+      .getUnauthorisedUsers()
       .subscribe(
-        data => (this.users = data),
+        data => (this.unauthorisedUsers = data),
         error => console.log(error),
         () => (this.isLoading = false)
       );
@@ -46,7 +67,7 @@ export class AdminComponent implements OnInit {
           data =>
             this.toast.setMessage("user deleted successfully.", "success"),
           error => console.log(error),
-          () => this.getUsers()
+          () => this.getAuthorisedUsers()
         );
     }
   }

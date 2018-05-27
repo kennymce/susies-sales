@@ -10,7 +10,7 @@ import { News } from "../shared/models/news.model";
 @Component({
   selector: "app-about",
   templateUrl: "./about.component.html",
-  styleUrls: ['./about.component.css']
+  styleUrls: ["./about.component.css"]
 })
 export class AboutComponent implements OnInit {
   newsStories: News[];
@@ -27,37 +27,44 @@ export class AboutComponent implements OnInit {
     this.getNewsStories();
   }
 
-  newsStoryDeleted(event){
+  newsStoryDeleted(event) {
     this.getNewsStories();
-    console.log('newsStoryDeleted in parent component');
+    console.log("newsStoryDeleted in parent component");
   }
 
   getNewsStories() {
-    this.newsService
-      .getNews()
-      .subscribe(
-        data => (this.newsStories = data),
-        error => console.log(error),
-        () => this.onGetNewsComplete()
-      );
+    if (!this.auth.currentUser == undefined) {
+      this.newsService
+        .getNews()
+        .subscribe(
+          data => (this.newsStories = data),
+          error => console.log(error),
+          () => this.onGetNewsComplete()
+        );
+    } else
+    {
+      this.isLoading = false;
+    }
   }
 
   onGetNewsComplete() {
     console.log(`loaded ${this.newsStories.length} news stories`);
     this.getUser();
+    this.isLoading = false;
   }
 
   getUser() {
-    this.userService.getUser(this.auth.currentUser).subscribe(
-      data => (this.user = data),
-      error => console.log(error),
-      () => this.onGetUserComplete()
-    );
+    this.userService
+      .getUser(this.auth.currentUser)
+      .subscribe(
+        data => (this.user = data),
+        error => console.log(error),
+        () => this.onGetUserComplete()
+      );
   }
 
-  onGetUserComplete(){
+  onGetUserComplete() {
     this.isLoading = false;
-    console.log('user details fetched');
+    console.log("user details fetched");
   }
-
 }

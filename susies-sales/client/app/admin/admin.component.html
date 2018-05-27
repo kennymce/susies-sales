@@ -11,7 +11,9 @@
       <tr>
         <td>Create a new News Post for the front page</td>
         <td>
-          <button class="btn btn-sm btn-danger" (click)="doCreateNewsPost()">
+          <button class="btn btn-sm btn-success"
+                  (click)="doCreateNewsPost()"
+                  title="create news story">
             <i class="fa fa-bullhorn"></i>
           </button>
         </td>
@@ -24,7 +26,7 @@
 <div class="verticalSpacer"></div>
 
 <div class="card" *ngIf="!isLoading">
-  <h4 class="card-header">Registered users ({{users.length}})</h4>
+  <h4 class="card-header">Registered users ({{authorisedUsers.length}})</h4>
   <div class="card-block">
     <!-- List of users -->
     <table class="table table-bordered table-striped">
@@ -36,19 +38,20 @@
         <th>Actions</th>
       </tr>
       </thead>
-      <tbody *ngIf="users.length === 0">
+      <tbody *ngIf="authorisedUsers.length === 0">
       <tr>
         <td colspan="4">There are no registered users.</td>
       </tr>
       </tbody>
       <tbody>
-      <tr *ngFor="let user of users">
+      <tr *ngFor="let user of authorisedUsers">
         <td>{{user.username}}</td>
         <td>{{user.email}}</td>
         <td>{{user.role}}</td>
         <td>
           <button class="btn btn-sm btn-danger" (click)="deleteUser(user)"
-                  [disabled]="auth.currentUser._id === user._id">
+                  [disabled]="auth.currentUser._id === user._id"
+                  title="delete">
             <i class="fa fa-trash"></i>
           </button>
         </td>
@@ -58,6 +61,49 @@
   </div>
 </div>
 
+<div class="verticalSpacer"></div>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">User requests ({{unauthorisedUsers.length}})</h4>
+  <div class="card-block">
+    <!-- List of users -->
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default">
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="unauthorisedUsers.length === 0">
+      <tr>
+        <td colspan="4">There are no users awaiting approval.</td>
+      </tr>
+      </tbody>
+      <tbody>
+      <tr *ngFor="let user of unauthorisedUsers">
+        <td>{{user.username}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.role}}</td>
+        <td>
+          <button class="btn btn-sm btn-danger" (click)="deleteUser(user)"
+                  [disabled]="auth.currentUser._id === user._id"
+                  title="delete">
+            <i class="fa fa-trash"></i>
+          </button>
+          <span class="horizontalSpacer5px"></span>
+          <button class="btn btn-sm btn-info" (click)="authoriseUser(user)"
+                  [disabled]="auth.currentUser._id === user._id"
+                  title="approve">
+            <i class="fa fa-thumbs-up"></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 
 
