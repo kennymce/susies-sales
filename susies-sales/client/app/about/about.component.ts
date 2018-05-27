@@ -3,8 +3,6 @@ import { UserService } from "../services/user.service";
 import { User } from "../shared/models/user.model";
 import { AuthService } from "../services/auth.service";
 import { NewsService } from "../services/news.service";
-import { Subscription } from "rxjs/Subscription";
-import { AppSettings } from "../appSettings";
 import { News } from "../shared/models/news.model";
 
 @Component({
@@ -33,7 +31,7 @@ export class AboutComponent implements OnInit {
   }
 
   getNewsStories() {
-    if (!this.auth.currentUser == undefined) {
+    console.log(this.auth.currentUser);
       this.newsService
         .getNews()
         .subscribe(
@@ -41,10 +39,6 @@ export class AboutComponent implements OnInit {
           error => console.log(error),
           () => this.onGetNewsComplete()
         );
-    } else
-    {
-      this.isLoading = false;
-    }
   }
 
   onGetNewsComplete() {

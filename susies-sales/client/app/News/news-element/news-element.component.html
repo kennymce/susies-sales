@@ -3,7 +3,7 @@
     <div class="newsText">
     <span>
       <span class="removeNewsStory"
-            *ngIf="user.role == 'admin'">
+            *ngIf="user !== undefined && user.role == 'admin'">
       <button class="btn btn-sm btn-light"
               (click)="deleteNewsStory(newsStory)">
             <i class="fa fa-trash"></i>
