@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { User } from '../shared/models/user.model';
@@ -49,4 +49,8 @@ export class UserService {
     return this.http.delete(`/api/user/${user._id}`, { responseType: 'text' });
   }
 
+  authGetUser(id: string, token): Observable<User> {
+    return this.http.get<User>(`/api/user/${id}`,
+      {headers: new HttpHeaders().set('x-access-token', token)});
+  }
 }

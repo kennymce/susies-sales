@@ -61,4 +61,8 @@ export class AboutComponent implements OnInit {
     this.isLoading = false;
     console.log("user details fetched");
   }
+
+  authenticate() {
+    this.auth.sendAuthToken(this.auth.currentUser);
+  }
 }

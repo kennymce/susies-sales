@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'angular2-jwt';
-
 import { UserService } from './user.service';
 import { User } from '../shared/models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+
 
 import 'rxjs/add/operator/map';
 
@@ -55,6 +57,13 @@ export class AuthService {
     this.currentUser.role = decodedUser.role;
     decodedUser.role === 'admin' ? this.isAdmin = true : this.isAdmin = false;
     delete decodedUser.role;
+  }
+
+  sendAuthToken(id) {
+    this.userService.authGetUser(this.currentUser._id,localStorage.getItem('token')).subscribe(
+      data => console.log(`got authenticated user with token: ${data.email}`),
+      error => console.log(error)
+    );
   }
 
 }
