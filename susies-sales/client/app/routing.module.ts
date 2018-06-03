@@ -18,11 +18,11 @@ import { NewsComponent } from "./News/news.component";
 
 const routes: Routes = [
   { path: "", component: AboutComponent },
-  { path: "posts", component: PostsComponent },
-  { path: "user-posts", component: UserPostsComponent },
-  { path: "privateMessages", component: PrivateMessagesComponent },
-  { path: "rct-post/rct-post", component: RctPostComponent },
-  { path: "rct-post/view-post", component: ViewPostComponent },
+  { path: "posts", component: PostsComponent, canActivate: [AuthGuardLogin] },
+  { path: "user-posts", component: UserPostsComponent, canActivate: [AuthGuardLogin]  },
+  { path: "privateMessages", component: PrivateMessagesComponent, canActivate: [AuthGuardLogin]  },
+  { path: "rct-post/rct-post", component: RctPostComponent, canActivate: [AuthGuardLogin]  },
+  { path: "rct-post/view-post", component: ViewPostComponent, canActivate: [AuthGuardLogin]  },
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },
   { path: "logout", component: LogoutComponent },
@@ -41,4 +41,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class RoutingModule {}
+export class RoutingModule {
+}

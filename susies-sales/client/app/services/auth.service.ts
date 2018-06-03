@@ -3,9 +3,6 @@ import { Router } from '@angular/router';
 import { JwtHelper } from 'angular2-jwt';
 import { UserService } from './user.service';
 import { User } from '../shared/models/user.model';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-
 
 import 'rxjs/add/operator/map';
 
@@ -64,6 +61,10 @@ export class AuthService {
       data => console.log(`got authenticated user with token: ${data.email}`),
       error => console.log(error)
     );
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
   }
 
 }

@@ -22,7 +22,12 @@ export class AboutComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getNewsStories();
+    if (this.auth.currentUser._id != undefined){
+      this.getNewsStories();
+    } else
+    {
+      this.isLoading = false;
+    }
   }
 
   newsStoryDeleted(event) {

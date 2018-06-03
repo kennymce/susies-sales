@@ -7,6 +7,7 @@ export default class UserCtrl extends BaseCtrl {
 
   login = (req, res) => {
     this.model.findOne({email: req.body.email, approved: 'y'}, (err, user) => {
+      console.log('in users.login');
       if (!user) {
         return res.sendStatus(403);
       }
@@ -18,39 +19,6 @@ export default class UserCtrl extends BaseCtrl {
         res.status(200).json({token: token});
       });
     });
-  };
-
-  authenticateUserToken = (req, res, next) => {
-    let token = req.headers["x-access-token"];
-    if (!token) return res.status(401).send({ auth: false, message: "No token provided." });
-    jwt.verify(token, process.env.SECRET_TOKEN, function(err, decoded) {
-      if (err) return res.status(500).send({ auth: false, message: "Failed to authenticate token." });
-
-      console.log("finding user by id", decoded.user._id);
-      User.findOne({ _id: decoded.user._id }, (err, user) => {
-        if (!user) {
-          return res.status(403).send("could not find user");
-        } else {
-          return res.status(200).send("found user");
-        }
-      });
-    });
-  };
-
-  // Get by id authenticated with token
-  authenticatedGet = (req, res) => {
-    let token = req.headers["x-access-token"];
-    if (!token) return res.status(401).send({ auth: false, message: "No token provided." });
-    jwt.verify(token, process.env.SECRET_TOKEN, function(err, decoded) {
-      if (err) return res.status(500).send({ auth: false, message: "Failed to authenticate token." });
-
-      console.log("finding user by id", decoded.user._id);
-      User.findOne({ _id: req.params.id }, (err, item) => {
-        if (err) { return console.error(err); }
-        res.status(200).json(item);
-      });
-    });
-
   };
 
   findByEmail = (email) => {

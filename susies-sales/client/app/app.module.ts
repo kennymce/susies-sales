@@ -1,4 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RoutingModule } from "./routing.module";
 import { SharedModule } from "./shared/shared.module";
 import { PostService } from "./services/post.service";
@@ -39,9 +40,10 @@ import {
 import { DlDateTimePickerDateModule } from "angular-bootstrap-datetimepicker";
 import { PrivateMessageService } from "./services/private-message.service";
 import { PrivateMessagesComponent } from "./private-messages/private-messages.component";
-import { NewsComponent } from './News/news.component';
-import {NewsService} from './services/news.service';
-import { NewsElementComponent } from './News/news-element/news-element.component';
+import { NewsComponent } from "./News/news.component";
+import { NewsService } from "./services/news.service";
+import { NewsElementComponent } from "./News/news-element/news-element.component";
+import { TokenInterceptor } from "./services/token.interceptor";
 
 @NgModule({
   declarations: [
@@ -78,7 +80,7 @@ import { NewsElementComponent } from './News/news-element/news-element.component
     MatButtonModule,
     MatInputModule,
     MatIconModule,
-    MatFormFieldModule,
+    MatFormFieldModule
   ],
   providers: [
     AuthService,
@@ -90,7 +92,14 @@ import { NewsElementComponent } from './News/news-element/news-element.component
     UserService,
     HttpClientModule,
     NgxSmartModalService,
-    PrivateMessageService
+    PrivateMessageService,
+    [
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: TokenInterceptor,
+        multi: true
+      }
+    ]
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
