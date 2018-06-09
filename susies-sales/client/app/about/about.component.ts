@@ -67,7 +67,4 @@ export class AboutComponent implements OnInit {
     console.log("user details fetched");
   }
 
-  authenticate() {
-    this.auth.sendAuthToken(this.auth.currentUser);
-  }
 }

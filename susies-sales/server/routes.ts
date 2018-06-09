@@ -40,8 +40,13 @@ export default function setRoutes(app) {
 
   function requireAuthentication(req, res, next) {
     console.log('in requireAuthentication function');
-    if (req.path == '/api/login'){
-      router.route("/login").post(userCtrl.login);
+    if (req.path == '/api/login' || (req.path == '/api/pictures') && req.method == 'OPTIONS') {
+      if (req.path == '/api/login') {
+        router.route("/login").post(userCtrl.login);
+      } else
+        router.route("/pictures").options(function(req, res) {
+          res.sendStatus(200);
+        });
       next();
     } else {
       let token = req.headers["x-access-token"];
@@ -54,7 +59,7 @@ export default function setRoutes(app) {
           return res.status(500).send({ auth: false, message: "Failed to authenticate token." })
         }
         else {
-          console.log(`authenticated with user: ${decoded.userId}`);
+          console.log(`authenticated user`);
           next();
         }
       });

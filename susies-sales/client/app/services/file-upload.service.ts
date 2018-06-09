@@ -10,7 +10,6 @@ export class FileUploadService {
   postFiles(filesToUpload: FileList): Observable<boolean> {
     const endpoint = AppSettings.API_ENDPOINT + "pictures";
     const formData: FormData = new FormData();
-
     for (let i = 0; i < filesToUpload.length; i++) {
       formData.append("file", filesToUpload[i], filesToUpload[i]["name"]);
     }

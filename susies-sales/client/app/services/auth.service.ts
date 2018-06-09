@@ -56,13 +56,6 @@ export class AuthService {
     delete decodedUser.role;
   }
 
-  sendAuthToken(id) {
-    this.userService.authGetUser(this.currentUser._id,localStorage.getItem('token')).subscribe(
-      data => console.log(`got authenticated user with token: ${data.email}`),
-      error => console.log(error)
-    );
-  }
-
   getToken() {
     return localStorage.getItem('token');
   }
