@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Router } from "@angular/router";
 import { PrivateMessage } from "../shared/models/privateMessage.model";
 import { PrivateMessageService } from "../services/private-message.service";
 import { ToastComponent } from "../shared/toast/toast.component";
@@ -25,6 +26,7 @@ export class PrivateMessagesComponent implements OnInit {
   constructor(
     private privateMessageService: PrivateMessageService,
     public toast: ToastComponent,
+    private router: Router,
     public ngxSmartModalService: NgxSmartModalService,
     private userService: UserService,
     private auth: AuthService
@@ -150,5 +152,11 @@ export class PrivateMessagesComponent implements OnInit {
       this.dataSource.getRow(row.id).cancelOrDelete();
       this.goDeletePrivateMessage(row.currentData);
     }
+  }
+
+  goVeiwPost(row: any) {
+    this.router.navigate(["rct-post/view-post"], {
+      queryParams: { postId: row.currentData.postId, mode: "view" }
+    });
   }
 }

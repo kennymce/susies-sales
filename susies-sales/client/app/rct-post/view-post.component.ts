@@ -18,6 +18,7 @@ import { IPrivateMessage } from "../privateMessage/privateMessage";
 import { PrivateMessage } from "../shared/models/privateMessage.model";
 import { AppSettings } from "../appSettings";
 import { HtmlUtility } from "../shared/utility/html";
+import {Location} from '@angular/common';
 
 @Component({
   selector: "app-view-post",
@@ -49,6 +50,7 @@ export class ViewPostComponent implements OnInit {
     public toast: ToastComponent,
     private userService: UserService,
     private privateMessageService: PrivateMessageService,
+    private _location: Location,
     public ngxSmartModalService: NgxSmartModalService
   ) {}
 
@@ -139,7 +141,7 @@ export class ViewPostComponent implements OnInit {
         queryParams: { postId: this.postId }
       });
     } else if (this.viewMode == "view") {
-      this.router.navigate(["posts"]);
+      this._location.back();
     } else if (this.viewMode == "view-mine") {
       this.router.navigate(["user-posts"]);
     }

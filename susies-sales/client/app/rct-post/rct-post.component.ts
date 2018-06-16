@@ -142,6 +142,7 @@ export class RctPostComponent implements OnInit {
     // TODO deal with duplicate filenames: currently the upload fails silently
     // TODO make the toaster work for errors
   }
+
   uploadFilesToAPI() {
     this.fileUploadService.postFiles(this.filesToUpload).subscribe(data => {
       // upload success
