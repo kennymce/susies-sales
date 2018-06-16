@@ -34,19 +34,12 @@ export default function setRoutes(app) {
     storage: storage
   }).array("file");
 
-  app.all("/*", requireAuthentication, function(req, res, next) {
-    next();
-  });
-
   function requireAuthentication(req, res, next) {
-    console.log('in requireAuthentication function');
-    if (req.path == '/api/login' || (req.path == '/api/pictures') && req.method == 'OPTIONS') {
-      if (req.path == '/api/login') {
-        router.route("/login").post(userCtrl.login);
-      } else
-        router.route("/pictures").options(function(req, res) {
-          res.sendStatus(200);
-        });
+    console.log("in requireAuthentication function for path: ", req.path);
+    if (req.path == "/api/pictures" && req.method == "OPTIONS") {
+      router.route("/pictures").options(function(req, res) {
+        res.sendStatus(200);
+      });
       next();
     } else {
       let token = req.headers["x-access-token"];
@@ -56,9 +49,10 @@ export default function setRoutes(app) {
           .send({ auth: false, message: "No token provided." });
       jwt.verify(token, process.env.SECRET_TOKEN, function(err, decoded) {
         if (err) {
-          return res.status(500).send({ auth: false, message: "Failed to authenticate token." })
-        }
-        else {
+          return res
+            .status(500)
+            .send({ auth: false, message: "Failed to authenticate token." });
+        } else {
           console.log(`authenticated user`);
           next();
         }
@@ -78,6 +72,8 @@ export default function setRoutes(app) {
       res.json({ error_code: 0, err_desc: null });
     });
   });
+
+  // No authentication for pictures GET since the HTTP request doesn't come from my APP
   router.route("/pictures/:name").get(function(req, res, next) {
     let options = {
       root: __dirname + "/uploaded_/",
@@ -98,49 +94,49 @@ export default function setRoutes(app) {
   });
 
   // Posts
-  router.route("/Posts").get(postCtrl.getAll);
-  router.route("/Posts/count").get(postCtrl.count);
-  router.route("/Posts/user/:id").get(userCtrl.getAllPostsForUser);
-  router.route("/Posts/unscheduled").get(postCtrl.getUnscheduledPosts);
-  router.route("/Posts/schedule").post(postCtrl.schedulePosts);
-  router.route("/post").post(postCtrl.insert);
-  router.route("/post/:id").get(postCtrl.get);
-  router.route("/post/:id").put(postCtrl.update);
-  router.route("/post/:id").delete(postCtrl.delete);
+  router.route("/Posts").get(requireAuthentication, postCtrl.getAll);
+  router.route("/Posts/count").get(requireAuthentication, postCtrl.count);
+  router.route("/Posts/user/:id").get(requireAuthentication, userCtrl.getAllPostsForUser);
+  router.route("/Posts/unscheduled").get(requireAuthentication, postCtrl.getUnscheduledPosts);
+  router.route("/Posts/schedule").post(requireAuthentication, postCtrl.schedulePosts);
+  router.route("/post").post(requireAuthentication, postCtrl.insert);
+  router.route("/post/:id").get(requireAuthentication, postCtrl.get);
+  router.route("/post/:id").put(requireAuthentication, postCtrl.update);
+  router.route("/post/:id").delete(requireAuthentication, postCtrl.delete);
 
   // Users
   router.route("/login").post(userCtrl.login);
-  router.route("/users").get(userCtrl.getregisteredUsers);
-  router.route("/users/count").get(userCtrl.count);
-  router.route("/users/new").get(userCtrl.getUnregisteredUsers);
-  router.route("/user").post(userCtrl.insert);
-  router.route("/user/:id").get(userCtrl.get);
-  router.route("/user/:id").put(userCtrl.update);
-  router.route("/user/thisgirlsok/:id").put(userCtrl.authoriseUser);
-  router.route("/user/:id").delete(userCtrl.delete);
+  router.route("/users").get(requireAuthentication, userCtrl.getregisteredUsers);
+  router.route("/users/count").get(requireAuthentication, userCtrl.count);
+  router.route("/users/new").get(requireAuthentication, userCtrl.getUnregisteredUsers);
+  router.route("/user").post(requireAuthentication, userCtrl.insert);
+  router.route("/user/:id").get(requireAuthentication, userCtrl.get);
+  router.route("/user/:id").put(requireAuthentication, userCtrl.update);
+  router.route("/user/thisgirlsok/:id").put(requireAuthentication, userCtrl.authoriseUser);
+  router.route("/user/:id").delete(requireAuthentication, userCtrl.delete);
 
   // Gimmies
-  router.route("/gimmie").get(gimmieCtrl.getAll);
-  router.route("/gimmie/count").get(gimmieCtrl.count);
-  router.route("/gimmie").post(gimmieCtrl.insert);
-  router.route("/gimmie/:id").get(gimmieCtrl.getAllGimmiesForUser);
-  router.route("/gimmie/:id").put(gimmieCtrl.update);
-  router.route("/gimmie/:id").delete(gimmieCtrl.delete);
+  router.route("/gimmie").get(requireAuthentication, gimmieCtrl.getAll);
+  router.route("/gimmie/count").get(requireAuthentication, gimmieCtrl.count);
+  router.route("/gimmie").post(requireAuthentication, gimmieCtrl.insert);
+  router.route("/gimmie/:id").get(requireAuthentication, gimmieCtrl.getAllGimmiesForUser);
+  router.route("/gimmie/:id").put(requireAuthentication, gimmieCtrl.update);
+  router.route("/gimmie/:id").delete(requireAuthentication, gimmieCtrl.delete);
 
   // News
-  router.route("/news").get(newsCtrl.getAll);
-  router.route("/news/count").get(newsCtrl.count);
-  router.route("/news").post(newsCtrl.insert);
-  router.route("/news/:id").put(newsCtrl.update);
-  router.route("/news/:id").delete(newsCtrl.delete);
+  router.route("/news").get(requireAuthentication, newsCtrl.getAll);
+  router.route("/news/count").get(requireAuthentication, newsCtrl.count);
+  router.route("/news").post(requireAuthentication, newsCtrl.insert);
+  router.route("/news/:id").put(requireAuthentication, newsCtrl.update);
+  router.route("/news/:id").delete(requireAuthentication, newsCtrl.delete);
 
   // PrivateMessages
-  router.route("/pm").get(privateMessageCtrl.getAll);
-  router.route("/pm/count").get(privateMessageCtrl.count);
-  router.route("/pm").post(privateMessageCtrl.insert);
-  router.route("/pm/:id").get(privateMessageCtrl.getAllPrivateMessagesForUser);
-  router.route("/pm/:id").put(privateMessageCtrl.update);
-  router.route("/pm/:id").delete(privateMessageCtrl.delete);
+  router.route("/pm").get(requireAuthentication, privateMessageCtrl.getAll);
+  router.route("/pm/count").get(requireAuthentication, privateMessageCtrl.count);
+  router.route("/pm").post(requireAuthentication, privateMessageCtrl.insert);
+  router.route("/pm/:id").get(requireAuthentication, privateMessageCtrl.getAllPrivateMessagesForUser);
+  router.route("/pm/:id").put(requireAuthentication, privateMessageCtrl.update);
+  router.route("/pm/:id").delete(requireAuthentication, privateMessageCtrl.delete);
 
   // Apply the routes to our application with the prefix /api
   app.use("/api", router);
