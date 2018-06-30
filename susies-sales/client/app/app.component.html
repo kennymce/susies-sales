@@ -33,6 +33,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" routerLink="/gimmie/gimmies" routerLinkActive="active" *ngIf="auth.loggedIn && auth.isAdmin">
+            <i class="fa fa-shopping-basket"></i> Gimmies
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" routerLink="/account" routerLinkActive="active" *ngIf="auth.loggedIn">
             <i class="fa fa-user"></i> Account ({{auth.currentUser.username}})
           </a>

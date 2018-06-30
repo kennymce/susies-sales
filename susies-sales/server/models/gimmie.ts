@@ -3,8 +3,9 @@ import * as mongoose from 'mongoose';
 const gimmieSchema = new mongoose.Schema({
   gimmieId: String,
   userId: String,
-  postId: String,
-  dateTimeRequested:  { type : Date, default: Date.now }
+  Post: {type: mongoose.Schema.Types.ObjectId, ref: 'Post'},
+  dateTimeRequested:  { type : Date, default: Date.now },
+  read: { type: String, default: 'n'}
 });
 
 gimmieSchema.pre('save', function (next) {

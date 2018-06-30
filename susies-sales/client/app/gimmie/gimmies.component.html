@@ -1,0 +1,71 @@
+<app-loading [condition]="isLoading"></app-loading>
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Gimmies ({{gimmies.length}})
+  </h4>
+  <div>
+
+    <mat-table [dataSource]="dataSource">
+
+      <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+
+      <mat-row *matRowDef="let privateMessages; columns: columnsToDisplay"></mat-row>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+
+        <mat-cell *matCellDef="let row">
+          <span class="actionSpan" (click)="setModalData(row)">
+            <mat-icon-button class="fa fa-reply" title="Reply"></mat-icon-button>
+          </span>
+          <span class="actionSpan" (click)="handleDelete(row)">
+            <mat-icon-button class="fa fa-trash" title="Delete"></mat-icon-button>
+          </span>
+          <span class="actionSpan" (click)="goVeiwPost(row)">
+            <mat-icon-button class="fa fa-tags" title="View Post"></mat-icon-button>
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="userId">
+        <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.userId}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.Post.description}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="from">
+        <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.Post.from}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="dateTimeRequested">
+        <mat-header-cell *matHeaderCellDef>Gimmie Date/Time </mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.dateTimeRequested| date:"dd:MMM:yyyy hh-mm"}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="read">
+        <mat-header-cell *matHeaderCellDef>Read?</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.currentData.read}}</mat-cell>
+      </ng-container>
+    </mat-table>
+
+    <!-- Modal Dialog -->
+    <ngx-smart-modal [closable]="false" [escapable]="true" #myModal [identifier]="'myModal'">
+      <h3>Message for <span>{{this.replyToUser}}</span></h3>
+      <div>
+        <!-- Textarea -->
+        <textarea id="privateMessageText" class="privateMessageTextArea"></textarea>
+        <div class="privateMessageButtonContainer">
+          <button (click)="cancelPrivateMessage()" class="privateMessageCloseButton">Cancel</button>
+          <button (click)="handlePrivateMessage()" class="privateMessageDoneButton">Done</button>
+        </div>
+      </div>
+    </ngx-smart-modal>
+
+  </div>
+</div>

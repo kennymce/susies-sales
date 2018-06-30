@@ -15,6 +15,7 @@ import { ViewPostComponent } from "./rct-post/view-post.component";
 import { UserPostsComponent } from "./Posts/user-posts.component";
 import { PrivateMessagesComponent } from "./private-messages/private-messages.component";
 import { NewsComponent } from "./News/news.component";
+import { GimmiesComponent } from "./gimmie/gimmies.component";
 
 const routes: Routes = [
   { path: "", component: AboutComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: "privateMessages", component: PrivateMessagesComponent, canActivate: [AuthGuardLogin]  },
   { path: "rct-post/rct-post", component: RctPostComponent, canActivate: [AuthGuardLogin]  },
   { path: "rct-post/view-post", component: ViewPostComponent, canActivate: [AuthGuardLogin]  },
+  { path: "gimmie/gimmies", component: GimmiesComponent, canActivate: [AuthGuardAdmin] },
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },
   { path: "logout", component: LogoutComponent },

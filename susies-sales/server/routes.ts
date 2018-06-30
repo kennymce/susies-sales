@@ -116,7 +116,7 @@ export default function setRoutes(app) {
   router.route("/user/:id").delete(requireAuthentication, userCtrl.delete);
 
   // Gimmies
-  router.route("/gimmie").get(requireAuthentication, gimmieCtrl.getAll);
+  router.route("/gimmie").get(requireAuthentication, gimmieCtrl.getAllGimmies);
   router.route("/gimmie/count").get(requireAuthentication, gimmieCtrl.count);
   router.route("/gimmie").post(requireAuthentication, gimmieCtrl.insert);
   router.route("/gimmie/:id").get(requireAuthentication, gimmieCtrl.getAllGimmiesForUser);

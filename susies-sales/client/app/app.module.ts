@@ -44,6 +44,7 @@ import { NewsComponent } from "./News/news.component";
 import { NewsService } from "./services/news.service";
 import { NewsElementComponent } from "./News/news-element/news-element.component";
 import { TokenInterceptor } from "./services/token.interceptor";
+import { GimmiesComponent } from './gimmie/gimmies.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { TokenInterceptor } from "./services/token.interceptor";
     CalendarControlComponent,
     PrivateMessagesComponent,
     NewsComponent,
-    NewsElementComponent
+    NewsElementComponent,
+    GimmiesComponent
   ],
   imports: [
     RoutingModule,

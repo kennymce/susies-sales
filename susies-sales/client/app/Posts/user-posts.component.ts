@@ -93,12 +93,9 @@ export class UserPostsComponent implements OnInit {
   }
 
   getPosts() {
-    this.user.gimmies.forEach(post => {
-      console.log("Getting posts for Gimmies");
-      this.postService
-        .getPostJSON(post.postId)
-        .subscribe((post: IPost) => this.posts.push(post));
-    });
+    for (let i = 0; i < this.user.gimmies.length; i++ ) {
+      this.posts.push(this.user.gimmies[i].Post);
+    }
   }
 
   setModalData(_id: string) {
@@ -116,9 +113,10 @@ export class UserPostsComponent implements OnInit {
   }
 
   removePost(postId: string) {
+    console.log(`removePost: ${JSON.stringify(this.posts)}`);
     const pos = this.posts.map(elem => elem._id).indexOf(postId);
     this.posts.splice(pos, 1);
-    const gimmie = this.user.gimmies.find(gimmie => gimmie.postId === postId);
+    const gimmie = this.user.gimmies.find(gimmie => gimmie.Post.postId === postId);
     this.doRemovePost(postId, gimmie._id);
   }
 
@@ -139,7 +137,6 @@ export class UserPostsComponent implements OnInit {
 
   doRemovePost(postId: string, gimmieId: string) {
     this.deleteGimmie(postId, gimmieId);
-    //this.saveUser();
   }
 
   saveUser() {
