@@ -53,7 +53,7 @@
               (click)='goBack()'>Back
       </button>
       <span class="horizontalSpacer10px"></span>
-      <button type="button"
+      <button *ngIf="!auth.isAdmin" type="button"
               class="btn btn-secondary"
               (click)='privateMessage()'>Private Message
       </button>

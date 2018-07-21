@@ -30,22 +30,30 @@
 
       <ng-container matColumnDef="userId">
         <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.currentData.userId}}</mat-cell>
+        <mat-cell *matCellDef="let row">
+          <span [style.font-weight]="row.currentData.read=='n' ? 'bold' : 'none'">{{row.currentData.userId}}</span>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.currentData.Post.description}}</mat-cell>
+        <mat-cell *matCellDef="let row">
+          <span [style.font-weight]="row.currentData.read=='n' ? 'bold' : 'none'">{{row.currentData.Post.description}}</span>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="from">
         <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.currentData.Post.from}}</mat-cell>
+        <mat-cell *matCellDef="let row">
+          <span [style.font-weight]="row.currentData.read=='n' ? 'bold' : 'none'">{{row.currentData.Post.from}}</span>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="dateTimeRequested">
-        <mat-header-cell *matHeaderCellDef>Gimmie Date/Time </mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.currentData.dateTimeRequested| date:"dd:MMM:yyyy hh-mm"}}</mat-cell>
+        <mat-header-cell *matHeaderCellDef>Gimmie Date/Time</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span [style.font-weight]="row.currentData.read=='n' ? 'bold' : 'none'">{{row.currentData.dateTimeRequested| date:"dd:MMM:yyyy hh-mm"}}</span>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="read">
