@@ -12,54 +12,59 @@
 
       <mat-row *matRowDef="let privateMessages; columns: columnsToDisplay"></mat-row>
 
-      <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-
-        <mat-cell *matCellDef="let row">
-          <span class="actionSpan" (click)="setModalData(row)">
-            <mat-icon-button class="fa fa-reply" title="Reply"></mat-icon-button>
-          </span>
-          <span class="actionSpan" (click)="handleDelete(row)">
-            <mat-icon-button class="fa fa-trash" title="Delete"></mat-icon-button>
-          </span>
-          <span class="actionSpan" (click)="goVeiwPost(row)">
-            <mat-icon-button class="fa fa-tags" title="View Post"></mat-icon-button>
-          </span>
-        </mat-cell>
-      </ng-container>
-
       <ng-container matColumnDef="userId">
         <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <span [style.font-weight]="row.currentData.read=='n' ? 'bold' : 'none'">{{row.currentData.userId}}</span>
+          <span [className]="row.currentData.read=='n' ? 'unreadGimmie' : 'readGimmie'">{{row.currentData.userId}}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <span [style.font-weight]="row.currentData.read=='n' ? 'bold' : 'none'">{{row.currentData.Post.description}}</span>
+          <span (click)="goVeiwPost(row)"
+            [className]="row.currentData.read=='n' ? 'unreadGimmieDescription' : 'readGimmieDescription'">{{row.currentData.Post.description}}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="from">
         <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <span [style.font-weight]="row.currentData.read=='n' ? 'bold' : 'none'">{{row.currentData.Post.from}}</span>
+          <span [className]="row.currentData.read=='n' ? 'unreadGimmie' : 'readGimmie'">{{row.currentData.Post.from}}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="dateTimeRequested">
         <mat-header-cell *matHeaderCellDef>Gimmie Date/Time</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <span [style.font-weight]="row.currentData.read=='n' ? 'bold' : 'none'">{{row.currentData.dateTimeRequested| date:"dd:MMM:yyyy hh-mm"}}</span>
+          <span [className]="row.currentData.read=='n' ? 'unreadGimmie' : 'readGimmie'">{{row.currentData.dateTimeRequested| date:"dd:MMM:yyyy hh-mm"}}</span>
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="read">
-        <mat-header-cell *matHeaderCellDef>Read?</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.currentData.read}}</mat-cell>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+
+        <mat-cell *matCellDef="let row">
+          <span class="actionSpan" (click)="setModalData(row)">
+            <mat-icon-button class="fa fa-reply" title="Private Message"></mat-icon-button>
+          </span>
+          <ng-container *ngIf="row.currentData.read=='n'">
+          <span class="actionSpan" (click)="handleMarkGimmieAsRead(row)">
+            <mat-icon-button class="fa fa-check" title="Mark as read"></mat-icon-button>
+          </span>
+          </ng-container>
+          <ng-container *ngIf="row.currentData.read=='y'">
+            <span class="actionSpanDisabled">
+            <mat-icon-button class="fa fa-check" title="You've read this one"></mat-icon-button>
+          </span>
+          </ng-container>
+          <span class="actionSpan" (click)="handleDeleteGimmie(row)">
+            <mat-icon-button class="fa fa-trash" title="Delete"></mat-icon-button>
+          </span>
+
+        </mat-cell>
       </ng-container>
+
     </mat-table>
 
     <!-- Modal Dialog -->

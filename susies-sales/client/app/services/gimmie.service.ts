@@ -66,7 +66,6 @@ export class GimmieService{
   }
 
   private updateGimmie(gimmie: Gimmie) {
-    console.log('in updateGimmie method in service');
     let url = `/api/gimmie/${gimmie.gimmieId}`;
     return this.http.put(url, gimmie, {headers: {'Content-Type':'application/json'}})
       .map(() => gimmie)

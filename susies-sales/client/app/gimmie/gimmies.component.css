@@ -5,3 +5,60 @@
 .readGimmie {
   font-weight: normal;
 }
+.actionSpan {
+  height: 30px;
+  width: 30px;
+  padding: 5px 10px 5px 10px;
+}
+
+.actionSpan:hover {
+  cursor: pointer;
+  background-color:  rgba(15,85,255,0.2) !important;
+}
+
+.actionSpanDisabled {
+  height: 30px;
+  width: 30px;
+  padding: 5px 10px 5px 10px;
+}
+
+.actionSpanDisabled:hover {
+  cursor: default;
+  background-color: transparent;
+}
+
+.unreadGimmieDescription {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.readGimmieDescription {
+  font-weight: normal;
+  cursor: pointer;
+}
+
+/* TODO make privateMessage classes global */
+.privateMessageTextArea {
+  width: 99%;
+  height: 57%;
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 50px;
+  bottom: 2px;
+  resize: none;
+}
+
+.privateMessageButtonContainer {
+}
+
+.privateMessageCloseButton {
+  position: absolute;
+  right:    65px;
+  bottom:   2px;
+}
+.privateMessageDoneButton {
+  position: absolute;
+  right:    2px;
+  bottom:   2px;
+}
