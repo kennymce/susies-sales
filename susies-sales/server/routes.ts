@@ -24,7 +24,7 @@ export default function setRoutes(app) {
       cb(null, __dirname + "/uploaded_/");
     },
     filename: function(req, file, cb) {
-      const datetimestamp = Date.now();
+      //const datetimestamp = Date.now();
       cb(null, file.originalname);
       // cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1]);
     }
@@ -124,7 +124,7 @@ export default function setRoutes(app) {
   router.route("/gimmie/:id").delete(requireAuthentication, gimmieCtrl.delete);
 
   // News
-  router.route("/news").get(requireAuthentication, newsCtrl.getAll);
+  router.route("/news").get(requireAuthentication, newsCtrl.getAllPublishedNews);
   router.route("/news/count").get(requireAuthentication, newsCtrl.count);
   router.route("/news").post(requireAuthentication, newsCtrl.insert);
   router.route("/news/:id").put(requireAuthentication, newsCtrl.update);

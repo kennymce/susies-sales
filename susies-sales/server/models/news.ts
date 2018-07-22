@@ -8,7 +8,7 @@ const newsSchema = new mongoose.Schema({
       type: String
     }
   ],
-  dateTimePublish: { type: Date }
+  publishDateTime: { type: Date }
 });
 
 newsSchema.pre("save", function(next) {
